@@ -31,5 +31,5 @@ deploy to helm:
   stage: deploy
   image: alpine/helm:3.2.1
   script:
-    - helm upgrade --install --timeout 0s -f charts/values.yaml -n dev --set image.repository=253846869051.dkr.ecr.ap-northeast-2.amazonaws.com/kiin-frontend-test,image.tag=60200b3a kiin-frontend-new charts/
+    - helm upgrade --install --timeout 0s -f charts/values.yaml -n dev --set image.repository=253846869051.dkr.ecr.ap-northeast-2.amazonaws.com/kiin-frontend-test,image.tag=$CONTAINER_TAG kiin-frontend-new charts/
  
