@@ -1,0 +1,46 @@
+export { default as Intro } from './IntroPage'
+
+export { default as SignUp } from './SignUpPage'
+export { default as Policy } from './SignUpPage/PolicyPage'
+export { default as Certification } from './SignUpPage/CertificationPage'
+
+export { default as Login } from './LoginPage'
+export { default as FindID } from './LoginPage/FindIDPage'
+export { default as FindPW } from './LoginPage/FindPWPage'
+export { default as Reset } from './LoginPage/FindPWPage/Reset'
+
+export { default as Test } from './TestPage'
+export { default as Question } from './TestPage/Question'
+
+export { default as MyKiin } from './MyKiinPage'
+export { default as Neighbor } from './MyKiinPage/Neighbor'
+
+export { default as Search } from './SearchPage'
+export { default as View_0 } from './SearchPage/View'
+
+export { default as Main } from './MainPage'
+export { default as Ranking } from './MainPage/RankingPage'
+export { default as Product } from './MainPage/ProductPage'
+export { default as Review } from './MainPage/ProductPage/ReviewPage'
+
+export { default as MyPage } from './Mypage'
+export { default as Event } from './Mypage/TopMenu/Event/Event'
+export { default as View_1 } from './Mypage/TopMenu/Event/View'
+export { default as MyReview } from './Mypage/TopMenu/MyReview'
+export { default as Friend } from './Mypage/TopMenu/Friend'
+export { default as Interest } from './Mypage/TopMenu/Interest'
+export { default as Point } from './Mypage/TopMenu/Point'
+export { default as Change } from './Mypage/TopMenu/Point/Change'
+export { default as Refund } from './Mypage/TopMenu/Point/Refund'
+export { default as Notice } from './Mypage/BottomMenu/Notice'
+export { default as View_2 } from './Mypage/BottomMenu/Notice/View'
+export { default as FAQ } from './Mypage/BottomMenu/FAQ'
+export { default as View_3 } from './Mypage/BottomMenu/FAQ/View'
+export { default as Support } from './Mypage/BottomMenu/Support'
+export { default as TOS } from './Mypage/BottomMenu/TOS'
+export { default as Account } from './Mypage/BottomMenu/Account'
+export { default as ChangePW } from './Mypage/BottomMenu/Account/ChangePW/ChangePW'
+export { default as NewPW } from './Mypage/BottomMenu/Account/ChangePW/NewPW'
+export { default as Notification } from './Mypage/Notification'
+
+export { default as NotFound } from './ErrorPage'

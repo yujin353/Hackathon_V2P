@@ -1,0 +1,37 @@
+variables:
+  DOCKER_REGISTRY: 253846869051.dkr.ecr.ap-northeast-2.amazonaws.com
+  AWS_DEFAULT_REGION: ap-northeast-2
+  APP_NAME: kiin-frontend-test
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""
+  CONTAINER_TAG: ${CI_COMMIT_SHORT_SHA}
+
+# stages:
+#   - build
+#   - deploy
+  
+# push image to ecr:
+#   stage: build
+#   image: docker:latest
+#   services:
+#     - docker:19-dind
+#   before_script:
+#     - apk add --no-cache curl python3 py3-pip
+#     - pip3 install --no-cache-dir awscli
+#     - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $DOCKER_REGISTRY
+#     - aws --version
+#     - docker info
+#     - docker --version
+#   script:
+#     - docker build -t $DOCKER_REGISTRY/$APP_NAME:$CONTAINER_TAG .
+#     - docker push $DOCKER_REGISTRY/$APP_NAME:$CONTAINER_TAG
+
+deploy to helm:
+  stage: deploy
+  image: alpine/helm:3.2.1
+  script:
+    - helm upgrade --install --timeout 0s -f charts/values.yaml -n dev --set image.repository=253846869051.dkr.ecr.ap-northeast-2.amazonaws.com/kiin-frontend-test,image.tag=60200b3a kiin-frontend-new charts/
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'feature/deploy' 
+      when: always
