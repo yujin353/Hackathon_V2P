@@ -49,7 +49,10 @@ const Review = () => {
                 "rating": rating,
                 "heart": false
             }), contentType: "application/json",
-            success: (response) => setModal(true),
+            success: (response) => {
+                // setModal(true)
+                navigate(-1);
+            },
             error: (response) => console.log(response)
         });
     }
@@ -109,7 +112,7 @@ const Review = () => {
                             </textarea>
                             <p className="p_text">솔직하고 자세한 평가로 참여해주세요.<br />참여도가 우수할수록 높은 포인트를 모을 수 있는 평가에 참여할 수 있어요.</p>
                         </div>
-                        <Modal open={modal} className="customOverlay">
+                        {/* <Modal open={modal} className="customOverlay">
                             <div id="popAssess" className="layerPopup pop_assess">
                                 <div className="popup">
                                     <div className="p_head botm">
@@ -132,7 +135,7 @@ const Review = () => {
                                     </div>
                                 </div>
                             </div>
-                        </Modal>
+                        </Modal> */}
                     </div>
                 </div>
 
