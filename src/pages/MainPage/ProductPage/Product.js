@@ -131,6 +131,30 @@ const Product = () => {
         });
     }
 
+    /* used to delete review */
+    const checkAuthority = (review_id, member_id) => {
+        const value = window.localStorage.getItem("user_pk");
+        if (value == member_id)
+            return 'Y'
+        else return 'N'
+    }
+
+    const deleteReview = (review_id) => {
+        if (window.confirm("정말 삭제하시겠습니까?") === true) {
+            $.ajax({
+                async: true, type: "DELETE",
+                url: "https://api.odoc-api.com/api/v1/reviews-product-filter/" + `${review_id}/`,
+                beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + sessionStorage.getItem("access_token")),
+                success: (response) => {
+                    const element = document.getElementById(review_id)
+                    alert("리뷰가 삭제되었습니다.")
+                    window.location.reload();
+                    },
+                error: (response) => console.log(response),
+            });
+        } else return;
+    }
+
     const reportReview = (review_id) => {
         if (window.confirm("정말 신고하시겠습니까?") === true) {
             $.ajax({
@@ -204,23 +228,13 @@ const Product = () => {
                         </div>
                         <div className="box_cont d-b pr-mb1">
                             <Wordcloud productIngredients={productIngredients}/>
-                        </div> 
+                        </div>
                     </>}
                     <div className="hd_tit">
                         <h2 className="h_tit1">
                             <strong className="c-blue">{username}</strong>님 피부타입에 &nbsp;
                             <span className="c-blue">{rate ? rate : "undefined"}%</span>적합합니다.
                         </h2>
-                    </div>
-
-                    <div className="pr-mb1">
-                        <div className="lst_bar">
-                            <ul>
-                                <li><p>지성</p><div className="bar_b"><span style={{ width: `${rate+7.23}%` }}></span></div><p>{(rate+7.23).toFixed(2)}%</p></li>
-                                <li><p>민감성</p><div className="bar_b"><span style={{ width: `${rate-2.80}%` }}></span></div><p>{(rate-2.80).toFixed(2)}%</p></li>
-                                <li><p>트러블</p><div className="bar_b"><span style={{ width: `${rate-4.43}%` }}></span></div><p>{(rate-4.43).toFixed(2)}%</p></li>
-                            </ul>
-                        </div>
                     </div>
 
                     <div className="hd_tit">
@@ -238,6 +252,7 @@ const Product = () => {
                         <ul className="prod_reviews">
                             {reviewList.slice(0,count).map((v) => {
                                 const rand_simil = productFit(v.member.member_id, v.product.product_id)
+                                const authority = checkAuthority(v.review_id, v.member.member_id)
                                 return (
                                     <li className="col" key={v.review_id}>
                                         <div className="tit">
@@ -257,6 +272,13 @@ const Product = () => {
                                                 <button type="button" onClick={()=>reportReview(v.review_id)} className="btr">
                                                     <span className="i-aft i_report">신고하기</span>
                                                 </button>
+                                                { authority === 'Y'
+                                                    ?
+                                                    <button type="button" className="btn_del" id={v.review_id}
+                                                            name={`${v.review_id}`} onClick={()=>deleteReview(v.review_id)}>
+                                                        <span className="i-set.i_del_b">리뷰삭제</span>
+                                                    </button>
+                                                : null }
                                             </div>
                                         </div>
                                         <div className="botm">
@@ -269,7 +291,7 @@ const Product = () => {
                     </div>
 
                     <div className="btn-bot">
-                        <button className="btn-pk s blue2 bdrs w50p" 
+                        <button className="btn-pk s blue2 bdrs w50p"
                             onClick={()=>{
                                 if(count >= reviewList.length)
                                     alert("모든 리뷰를 확인했습니다.")
@@ -279,7 +301,7 @@ const Product = () => {
                         </button>
                     </div>
 
-                    <button className="btn_fix" 
+                    <button className="btn_fix"
                         onClick={() => navigate("review", {
                             state: {
                                 product_id: params.id,
