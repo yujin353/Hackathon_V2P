@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 // import { useIsMounted } from "../../hooks"
+import { useAccessTknRefresh } from "../../hooks"
 import Slider from "react-slick";
 import $ from "jquery";
 
 const Main = () => {
 	// const isMounted = useIsMounted()
+	const accessTknRefresh = useAccessTknRefresh()
 	const navigate = useNavigate();
 	const location = useLocation();
 	const [username, setUsername] = useState("")
@@ -18,6 +20,8 @@ const Main = () => {
 	}
 	const [modal1, setModal1] = useState(false)
 	const [eventList, setEventList] = useState([])
+	let [likeProducts, setLikeProducts] = useState([])
+	let latestLikeProducts = useRef(likeProducts)
 
 	/* Loading event list */
 	useEffect(() => {
@@ -36,8 +40,8 @@ const Main = () => {
 
 
 	useEffect(() => {
-		if(localStorage.getItem("access_token") === undefined)
-			localStorage.removeItem("access_token")
+		if(sessionStorage.getItem("access_token") === undefined)
+			sessionStorage.removeItem("access_token")
 	}, [])
 
 
@@ -46,7 +50,7 @@ const Main = () => {
 		let isMounted = true;
 		$.ajax({
 			async: false, type: 'GET',
-			url: "https://api.odoc-api.com/api/v1/members/" + localStorage.getItem("user_pk") + "/",
+			url: "https://api.odoc-api.com/api/v1/members/" + sessionStorage.getItem("user_pk") + "/",
 			success: (response) => {
 				if(isMounted)
 					setUsername(response.username)
@@ -65,7 +69,7 @@ const Main = () => {
 		let isMounted = true;
 		$.ajax({
 			async: true, type: 'GET',
-			url: "https://api.odoc-api.com/api/v1/recommendations" + "?member_id=" + localStorage.getItem("user_pk"),
+			url: "https://api.odoc-api.com/api/v1/recommendations" + "?member_id=" + sessionStorage.getItem("user_pk"),
 			success: (response) => {
 				if(isMounted)
 					setRecommendedProd(response)
@@ -100,8 +104,8 @@ const Main = () => {
 		let isMounted = true;
 		$.ajax({
 			async: true, type: "GET",
-			url: "https://api.odoc-api.com/api/v1/product-like/" + "?search=" + localStorage.getItem("user_pk"),
-			beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("access_token")),
+			url: "https://api.odoc-api.com/api/v1/product-like/" + "?search=" + sessionStorage.getItem("user_pk"),
+			beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + sessionStorage.getItem("access_token")),
 			success: (response) => {
 				response.results.map((v) => {
 					const product_id = v.like_product.product_id
@@ -111,7 +115,7 @@ const Main = () => {
 			},
 			error: (response) => {
 				if (response.statusText === "Unauthorized") {
-					localStorage.setItem("access_token", accessTknRefresh())
+					sessionStorage.setItem("access_token", accessTknRefresh())
 					navigate(0);
 				}
 			},
@@ -131,39 +135,51 @@ const Main = () => {
 	}, [])
 
 
-	const logout = () => {
-		$.ajax({
-			async: true, type: 'POST',
-			url: "https://api.odoc-api.com/rest_auth/logout/",
-			data: { "refresh": localStorage.getItem("refresh_token") }, 
-			dataType: 'JSON',
-			success: function (response) {
-				console.log(response);
-				localStorage.removeItem("access_token");
-				localStorage.removeItem("refresh_token");
-				localStorage.removeItem("user_pk");
-				navigate("/login")
-			},
-			error: (response) => console.log(response),
-		});
+	/* products user wants to try */
+	useEffect(() => {
+		let info;
+		let like_product = []
+        $.ajax({
+            async: false, type: "GET",
+            url: "https://api.odoc-api.com/api/v1/product-like/?search=" + sessionStorage.getItem("user_pk"),
+            success: (response) => {
+                info = response.results;
+				for (let i = 0; i < info.length; i++){
+					like_product = like_product.concat(info[i].like_product.product_id);
+					setLikeProducts = like_product;
+				}
+				if ( info.length == 0 ) latestLikeProducts.current = [];
+				else latestLikeProducts.current = setLikeProducts;
+            },
+            error: (response) => { console.log(response.results) }
+        });
+    })	
+
+
+	/* find products user wants to try */
+	const findLikeProducts = (likeIcon) => {
+		let check = "fail";
+        for (let i = 0; i < (latestLikeProducts.current).length; i++){
+			if (likeIcon.id == latestLikeProducts.current[i]) {
+				check = "success";
+				break
+			}
+		}
+		return check;
 	}
 
 
-	const accessTknRefresh = () => {
-		let result;
-		$.ajax({
-			async: false, type: 'POST',
-			url: "https://api.odoc-api.com/api/token/refresh/",
-			data: { "refresh": localStorage.getItem("refresh_token") },
-			dataType: "json",
-			success: (response) => result = response.access,
-			error: function (response) {
-				console.log(response)
-				alert("토큰이 만료되었습니다. 다시 로그인해 주세요")
-				logout();
-			}
-		});
-		return result
+	/* coloring products user wants to try */
+	const likeState = (element) => {
+		let isMounted = true;
+		let likeIcon = document.getElementById(element);
+		let check;
+		if ( likeIcon && isMounted ) {
+			check = findLikeProducts(likeIcon);
+			if ( check == "success" ) return true;
+			else if ( check == "fail" ) return false;
+			else { console.log('likeIcon error'); return false; }
+		}
 	}
 
 
@@ -173,16 +189,27 @@ const Main = () => {
 			url: "https://api.odoc-api.com/api/v2/like-product",
 			data: { "like_product": product_id },
 			dataType: "json",
-			beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("access_token")),
+			beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + sessionStorage.getItem("access_token")),
 			success: (response) => {
 				const element = document.getElementsByName(product_id)
-				$(element).toggleClass("on off")
-				if (response.message === "Like") alert("좋아하는 상품 목록에 추가되었습니다.");
-				else alert("좋아하는 상품 목록에서 제거되었습니다.");
+				$(element).toggleClass("on")
+				if (response.message === "Like") {
+					alert("좋아하는 상품 목록에 추가되었습니다.");
+					if (latestLikeProducts.current.length == 0) {
+						setLikeProducts = [];
+						setLikeProducts = setLikeProducts.concat(product_id);
+						latestLikeProducts.current = setLikeProducts
+					}
+					else latestLikeProducts.current = latestLikeProducts.current.concat(product_id)
+				}
+				else {
+					alert("좋아하는 상품 목록에서 제거되었습니다.");
+					latestLikeProducts.current = latestLikeProducts.current.filter( elem => elem !== product_id )
+				}
+				likeState(product_id)
 			},
 			error: (response) => console.log(response),
 		});
-		
 	}
 
 
@@ -229,7 +256,8 @@ const Main = () => {
 														<span className="im" style={{ backgroundImage: `url(${v.product_img_path})` }}></span>
 													</Link>
 													<button
-														type="button" className="btn_favorit" id={v.product_id}
+														type="button" id={v.product_id}
+														className={ likeState(v.product_id) ? "btn_favorit on" : "btn_favorit" }
 														name={v.product_id} onClick={() => likeProduct(v.product_id)}>
 														<span className="i-set i_favorit">좋아요</span>
 													</button>
@@ -259,7 +287,8 @@ const Main = () => {
 												<span className="im" style={{ backgroundImage: `url(${v.product_img_path})` }}></span>
 											</Link>
 											<button
-												type="button" className="btn_favorit" id={v.product_id}
+												type="button" id={v.product_id}
+												className={ likeState(v.product_id) ? "btn_favorit on" : "btn_favorit" }
 												name={v.product_id} onClick={() => likeProduct(v.product_id)}>
 												<span className="i-set i_favorit">좋아요</span>
 											</button>

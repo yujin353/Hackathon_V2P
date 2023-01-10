@@ -109,7 +109,7 @@ const MyKiin = () => {
         let isMounted = true;
         $.ajax({
             async: false, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/myskin/?search=" + localStorage.getItem("user_pk"),
+            url: "https://api.odoc-api.com/api/v1/myskin/?search=" + sessionStorage.getItem("user_pk"),
             success: (response) => {
                 const results = response.results[0]
                 if(results === undefined)return;
@@ -141,7 +141,7 @@ const MyKiin = () => {
         let isMounted = true;
         $.ajax({
             async: true, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/reviews-member-filter/?search=" + localStorage.getItem("user_pk"),
+            url: "https://api.odoc-api.com/api/v1/reviews-member-filter/?search=" + sessionStorage.getItem("user_pk"),
             /* my-ingredient  -- True: 잘 */
             success: (response) => {
                 if(isMounted)
@@ -156,7 +156,7 @@ const MyKiin = () => {
         let isMounted = true;
         $.ajax({
             async: true, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/product-like/?search=" + localStorage.getItem("user_pk"),
+            url: "https://api.odoc-api.com/api/v1/product-like/?search=" + sessionStorage.getItem("user_pk"),
             success: (response) => {
                 if(isMounted)
                     setWanted(response.results)
@@ -170,7 +170,7 @@ const MyKiin = () => {
         let isMounted = true;
         $.ajax({
             async: true, type: "GET",
-            url: "https://api.odoc-api.com/api/v2/getsameskintype?id=" + localStorage.getItem("user_pk"),
+            url: "https://api.odoc-api.com/api/v2/getsameskintype?id=" + sessionStorage.getItem("user_pk"),
             success: response => {
                 if(isMounted)
                     setUserList(JSON.parse(response.result))
@@ -195,7 +195,7 @@ const MyKiin = () => {
         let isMounted = true;
         $.ajax({
             async: true, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/my-ingredient/?limit=1000000&offset=0&search=" + localStorage.getItem("user_pk"),
+            url: "https://api.odoc-api.com/api/v1/my-ingredient/?limit=1000000&offset=0&search=" + sessionStorage.getItem("user_pk"),
             success: response => {
                 // console.log(response.results.map(x => x.member.length))
 

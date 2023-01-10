@@ -13,14 +13,14 @@ const Login = () => {
 	const errorRef = useRef(null)
 
 	useEffect(()=>{
-		if (!!localStorage.getItem("email")) {
+		if (localStorage.getItem("email")) {
 			setEmail(localStorage.getItem("email"))
 			setRightBox(true)
 		}
-		localStorage.removeItem("phone_certification")
-		localStorage.removeItem("policy_checked")
+		sessionStorage.removeItem("phone_certification")
+		sessionStorage.removeItem("policy_checked")
 	}, [])
-	
+
     const onSignIn = () => {
         $.ajax({
 			async: false, type: "POST",
@@ -31,13 +31,13 @@ const Login = () => {
 				"password": password,
 			}, dataType: "json",
             success: (response) => {
-                localStorage.setItem("access_token", response.access_token);
-                localStorage.setItem("refresh_token", response.refresh_token);
-                localStorage.setItem("user_pk", response.user.pk);
+				sessionStorage.setItem("access_token", response.access_token);
+				sessionStorage.setItem("refresh_token", response.refresh_token);
+				sessionStorage.setItem("user_pk", response.user.pk);
 				if(rightBox)localStorage.setItem("email", email)
 				else localStorage.removeItem("email")
-                alert("로그인 되었습니다.");
-                navigate("/main")
+				alert("로그인 되었습니다.");
+				navigate("/main");
             },
             error: (response) => {
 				console.log(response)

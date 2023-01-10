@@ -58,7 +58,7 @@ const Policy = () => {
         if(flag)return false;
         if ($("#pushAgree").is(':checked')) $("#pushAgree").val("1");
         else $("#pushAgree").val("0");
-        localStorage.setItem("policy_checked", true);
+        sessionStorage.setItem("policy_checked", true);
         navigate("../signup", {
             replace: true, 
             state: {

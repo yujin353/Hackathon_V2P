@@ -13,7 +13,7 @@ const Friend = () => {
     useEffect(()=>{
         $.ajax({
             async: true, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/member-follower/" + "?search=" + localStorage.getItem("user_pk"),
+            url: "https://api.odoc-api.com/api/v1/member-follower/" + "?search=" + sessionStorage.getItem("user_pk"),
             success: (response) => setFollowerList(response.results),
             error: (response) => console.log(response)
         });
@@ -23,7 +23,7 @@ const Friend = () => {
     useEffect(() => {
         $.ajax({
             async: true, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/member-following/" + "?search=" + localStorage.getItem("user_pk"),
+            url: "https://api.odoc-api.com/api/v1/member-following/" + "?search=" + sessionStorage.getItem("user_pk"),
             success: (response) => setFolloweeList(response.results),
             error: (response) => console.log(response)
         });

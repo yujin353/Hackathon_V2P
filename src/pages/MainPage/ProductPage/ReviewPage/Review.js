@@ -41,7 +41,7 @@ const Review = () => {
             async: true, type: "POST",
             url: "https://api.odoc-api.com/api/v1/reviews-product-filter/",
             data: JSON.stringify({
-                "member": parseInt(localStorage.getItem("user_pk")),
+                "member": parseInt(sessionStorage.getItem("user_pk")),
                 "review_article": {
                     "article_content": textInput
                 },

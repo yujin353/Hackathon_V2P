@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react"
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Modal } from "../../../component";
+import { useAccessTknRefresh } from "../../../hooks";
 import $ from "jquery"
 import {
     Chart as ChartJS,
@@ -23,6 +24,7 @@ ChartJS.register(
 );
 
 const Neighbor = () => {
+    const accessTknRefresh = useAccessTknRefresh();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const [username, setUsername] = useState()
@@ -120,7 +122,7 @@ const Neighbor = () => {
     useEffect(() => {
         $.ajax({
             async: false, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/member-follower/" + "?search=" + localStorage.getItem("user_pk"),
+            url: "https://api.odoc-api.com/api/v1/member-follower/" + "?search=" + sessionStorage.getItem("user_pk"),
             success: (response) => {
                 let subscribing = false
                 response.results.map((v) => {
@@ -208,8 +210,8 @@ const Neighbor = () => {
     useEffect(() => {
         $.ajax({
             async: true, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/review-like/" + "?search=" + localStorage.getItem("user_pk"),
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("access_token")),
+            url: "https://api.odoc-api.com/api/v1/review-like/" + "?search=" + sessionStorage.getItem("user_pk"),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + sessionStorage.getItem("access_token")),
             success: (response) => {
                 response.results.forEach((v) => {
                     $("button[name=" + v.like_review.review_id + "]").addClass("on");
@@ -217,7 +219,7 @@ const Neighbor = () => {
             },
             error: (response) => {
                 if (response.statusText == "Unauthorized") {
-                    localStorage.setItem("access_token", accessTknRefresh())
+                    sessionStorage.setItem("access_token", accessTknRefresh())
                     navigate(0)
                 }
             },
@@ -242,49 +244,15 @@ const Neighbor = () => {
             url: "https://api.odoc-api.com/api/v2/follow",
             data: { "follow": userID }, 
             dataType: "json",
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("access_token")),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + sessionStorage.getItem("access_token")),
             success: (response) => console.log(response),
             error: (response) => {
                 console.log(response)
                 if (response.statusText == "Unauthorized") {
-                    localStorage.setItem("access_token", accessTknRefresh())
+                    sessionStorage.setItem("access_token", accessTknRefresh())
                 }
             },
         })
-    }
-
-    const logout = () => {
-        $.ajax({
-            async: true, type: 'POST',
-            url: "https://api.odoc-api.com/rest_auth/logout/",
-            data: { "refresh": localStorage.getItem("refresh_token") },
-            dataType: 'JSON',
-            success: (response) => {
-                console.log(response);
-                localStorage.removeItem("access_token");
-                localStorage.removeItem("refresh_token");
-                localStorage.removeItem("user_pk");
-                navigate("/login")
-            },
-            error: (response) => console.log(response),
-        });
-    }
-
-    const accessTknRefresh = () => {
-        var result;
-        $.ajax({
-            async: false, type: 'POST',
-            url: "https://api.odoc-api.com/api/token/refresh/",
-            data: { "refresh": localStorage.getItem("refresh_token") },
-            dataType: "json",
-            success: (response) => result = response.access,
-            error: (response) => {
-                console.log(response)
-                alert("토큰이 만료되었습니다. 다시 로그인해 주세요")
-                logout();
-            }
-        });
-        return result
     }
 
     const likeReview = (review_id) => {
@@ -295,7 +263,7 @@ const Neighbor = () => {
             url: "https://api.odoc-api.com/api/v2/like-review",
             data: { "like_review": review_id },
             dataType: "json",
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("access_token")),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + sessionStorage.getItem("access_token")),
             success: function (response) {
                 if (response.message == "Like") alert("관심리뷰에 추가되었습니다.");
                 else alert("관심리뷰에서 제거되었습니다.");
@@ -312,7 +280,7 @@ const Neighbor = () => {
                 url: "https://api.odoc-api.com/api/v2/report",
                 data: { "review_id": review_id },
                 dataType: "json",
-                beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("access_token")),
+                beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + sessionStorage.getItem("access_token")),
                 success: (response) => {
                     if (response.message === "Report") alert("정상적으로 신고 접수 되었습니다.")
                     else alert("이미 신고 접수 되었습니다.")
@@ -567,7 +535,7 @@ const Neighbor = () => {
                                         <div className="txt_box1">
                                             <div className="box">
                                                 <p className="t"><span className={`i-aft ${rating_className[v.rating-1]} sm`}>{rating_txt[v.rating - 1]}</span></p>
-                                                <p>{v.review_article.article_content}</p>
+                                                { v.review_article ? <p>{v.review_article.article_content}</p> : null }
                                                 <button type="button" onClick={() => reportReview(v.review_id)} className="btr"><span className="i-aft i_report">신고하기</span></button>
                                             </div>
                                         </div>
