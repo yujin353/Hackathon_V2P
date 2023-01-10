@@ -43,7 +43,9 @@ const MyReview = () => {
                 <div className="inr-c">
                     <div className="lst_prd2 line">
                         <ul className="review_list">    
-                            {reviewList.map((v)=>{
+                            {
+                            reviewList.length!=0?
+                            reviewList.map((v)=>{
                                 return(
                                     <li key={v.review_id}><Link to={`/main/products/${v.product.product_id}`}>
                                         <div className="thumb">
@@ -59,7 +61,10 @@ const MyReview = () => {
                                         </div>
                                     </Link></li>
                                 )
-                            })}
+                            })
+                            :
+                            <p className="emptyArea" style={{color:"#bfc2ca", fontSize:"18px", textAlign:"center", marginTop:"120px"}}>내가 쓴 리뷰가 없습니다.</p>
+                        }
                         </ul>
                     </div>
                 </div>

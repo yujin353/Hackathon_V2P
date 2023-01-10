@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom";
 import { useAccessTknRefresh } from "../../../hooks";
-import $ from "jquery"
+import $, { removeData } from "jquery"
 
 const Interest = () => {
     const accessTknRefresh = useAccessTknRefresh();
@@ -115,6 +115,7 @@ const Interest = () => {
                 <div className="inr-c">
                     <div className="lst_review line">
                         {
+                            reviewList.length!=0?
                             reviewList.map((v) => {
                                 const review = v.like_review
                                 const product = review.product
@@ -153,6 +154,8 @@ const Interest = () => {
                                     </div>
                                 )
                             })
+                            :
+                            <p className="emptyArea" style={{color:"#bfc2ca", fontSize:"18px", textAlign:"center", marginTop:"120px"}}>관심리뷰가 없습니다.</p>
                         }
                     </div>
                 </div>
