@@ -43,7 +43,7 @@ const FindId = () => {
             success: (response) => {
                 if (response.message === "인증 완료되었습니다.") {
                     alert("인증 완료되었습니다.")
-                    localStorage.setItem("phone_certification", true)
+                    sessionStorage.setItem("phone_certification", true)
                     document.getElementById("error_2").className = "t_error hidden"
                     document.getElementById("comp_1").className = "t_comp"
                     setDisabled(false)

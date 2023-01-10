@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom";
+import { useAccessTknRefresh } from "../../../hooks";
 import $ from "jquery"
 
 const Interest = () => {
+    const accessTknRefresh = useAccessTknRefresh();
     const navigate = useNavigate();
     const [reviewList, setReviewList] = useState([]);
     const rating_className = ["i_review_bad", "i_review_normal", "i_review_normal", "i_review_normal", "i_review_good"]
@@ -12,12 +14,12 @@ const Interest = () => {
     useEffect(() => {
         $.ajax({
             async: true, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/review-like/?search=" + localStorage.getItem("user_pk"),
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("access_token")),
+            url: "https://api.odoc-api.com/api/v1/review-like/?search=" + sessionStorage.getItem("user_pk"),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + sessionStorage.getItem("access_token")),
             success: (response) => setReviewList(response.results),
             error: (response) => {
                 if (response.statusText === "Unauthorized") {
-                    localStorage.setItem("access_token", accessTknRefresh())
+                    sessionStorage.setItem("access_token", accessTknRefresh())
                     navigate(0)
                 }
             },
@@ -28,8 +30,8 @@ const Interest = () => {
     useEffect(() => {
         $.ajax({
             async: true, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/review-like/" + "?search=" + localStorage.getItem("user_pk"),
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("access_token")),
+            url: "https://api.odoc-api.com/api/v1/review-like/" + "?search=" + sessionStorage.getItem("user_pk"),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + sessionStorage.getItem("access_token")),
             success: (response) => {
                 response.results.map((v) => {
                     const review_id = v.like_review.review_id
@@ -39,47 +41,12 @@ const Interest = () => {
             },
             error: (response) => {
                 if (response.statusText === "Unauthorized") {
-                    localStorage.setItem("access_token", accessTknRefresh())
+                    sessionStorage.setItem("access_token", accessTknRefresh())
                     navigate(0)
                 }
             },
         })
     }, [])
-
-    const logout = () => {
-        $.ajax({
-            async: true, type: 'POST',
-            url: "https://api.odoc-api.com/rest_auth/logout/",
-            data: { "refresh": localStorage.getItem("refresh_token") },
-            dataType: 'JSON',
-            success: (response) => {
-                console.log(response);
-                localStorage.removeItem("access_token");
-                localStorage.removeItem("refresh_token");
-                localStorage.removeItem("user_pk");
-                navigate("/login")
-            },
-            error: (response) => console.log(response),
-        });
-    }
-
-    const accessTknRefresh = () => {
-        var result;
-        $.ajax({
-            async: false, type: 'POST',
-            url: "https://api.odoc-api.com/api/token/refresh/",
-            data: { "refresh": localStorage.getItem("refresh_token") },
-            dataType: "json",
-            success: (response) => result = response.access,
-            error: (response) => {
-                console.log(response)
-                alert("토큰이 만료되었습니다. 다시 로그인해 주세요")
-                logout();
-            }
-        });
-        return result
-    }
-
 
     /* function to calculate product fit */
     const productFit = (member_id, product_id) => {
@@ -100,7 +67,7 @@ const Interest = () => {
                 async: true, type: "POST",
                 url: "https://api.odoc-api.com/api/v2/report",
                 data: { "review_id": review_id }, dataType: "json",
-                beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("access_token")),
+                beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + sessionStorage.getItem("access_token")),
                 success: (response) => {
                     if (response.message === "Report") alert("정상적으로 신고 접수 되었습니다.")
                     else alert("이미 신고 접수 되었습니다.")
@@ -117,7 +84,7 @@ const Interest = () => {
             async: true, type: "POST",
             url: "https://api.odoc-api.com/api/v2/like-review",
             data: { "like_review": review_id }, dataType: "json",
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("access_token")),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + sessionStorage.getItem("access_token")),
             success: function (response) {
                 if (response.message === "Like") alert("관심리뷰에 추가되었습니다.");
                 else alert("관심리뷰에서 제거되었습니다.");

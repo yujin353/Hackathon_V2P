@@ -9,7 +9,7 @@ const MyReview = () => {
     useEffect(()=>{
         $.ajax({
             async: true,
-            url: "https://api.odoc-api.com/api/v1/reviews-member-filter/?search=" + localStorage.getItem("user_pk"),
+            url: "https://api.odoc-api.com/api/v1/reviews-member-filter/?search=" + sessionStorage.getItem("user_pk"),
             type: "GET",
             success: function (response) {
                 // console.log(response)

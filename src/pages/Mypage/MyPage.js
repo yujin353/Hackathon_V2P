@@ -12,7 +12,7 @@ const MyPage = () => {
 
     /* findout currently logged in user */
     useEffect(() => {
-        const user_pk = localStorage.getItem("user_pk");
+        const user_pk = sessionStorage.getItem("user_pk");
         $.ajax({
             async: false,
             type: 'GET',
@@ -46,7 +46,7 @@ const MyPage = () => {
     }
 
     const logout = () => {
-        var obj = { "refresh": localStorage.getItem("refresh_token") }
+        var obj = { "refresh": sessionStorage.getItem("refresh_token") }
         $.ajax({
             async: true,
             type: 'POST',
@@ -55,9 +55,9 @@ const MyPage = () => {
             dataType: 'JSON',
             success: function (response) {
                 console.log(response);
-                localStorage.removeItem("access_token");
-                localStorage.removeItem("refresh_token");
-                localStorage.removeItem("user_pk");
+                sessionStorage.removeItem("access_token");
+                sessionStorage.removeItem("refresh_token");
+                sessionStorage.removeItem("user_pk");
                 window.location.href = '/login'
             },
             error: function (response) {

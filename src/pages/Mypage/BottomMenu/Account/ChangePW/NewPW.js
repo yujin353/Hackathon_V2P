@@ -38,13 +38,13 @@ const NewPW = () => {
         $.ajax({
             async: true, type: 'POST',
             url: "https://api.odoc-api.com/rest_auth/logout/",
-            data: { "refresh": localStorage.getItem("refresh_token") },
+            data: { "refresh": sessionStorage.getItem("refresh_token") },
             dataType: 'JSON',
             success: (response) => {
                 console.log(response);
-                localStorage.removeItem("access_token");
-                localStorage.removeItem("refresh_token");
-                localStorage.removeItem("user_pk");
+                sessionStorage.removeItem("access_token");
+                sessionStorage.removeItem("refresh_token");
+                sessionStorage.removeItem("user_pk");
                 navigate("/login")
             },
             error: (response) => console.log(response),
@@ -60,7 +60,7 @@ const NewPW = () => {
                 "new_password2": password2,
             },
             dataType: 'json',
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("access_token")),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + sessionStorage.getItem("access_token")),
             success: (response) => {
                 alert("비밀번호가 변경되었습니다.\n로그인 화면으로 이동합니다.")
                 logout();
@@ -80,7 +80,7 @@ const NewPW = () => {
                 setDisabled(true)
             }
         });
-        localStorage.removeItem("phone_certification")
+        sessionStorage.removeItem("phone_certification")
     }
 
     return (

@@ -9,13 +9,13 @@ const Account = () => {
         $.ajax({
             async: true, type: 'POST',
             url: "https://api.odoc-api.com/rest_auth/logout/",
-            data: { "refresh": localStorage.getItem("refresh_token") },
+            data: { "refresh": sessionStorage.getItem("refresh_token") },
             dataType: 'JSON',
             success: function (response) {
                 console.log(response);
-                localStorage.removeItem("access_token");
-                localStorage.removeItem("refresh_token");
-                localStorage.removeItem("user_pk");
+                sessionStorage.removeItem("access_token");
+                sessionStorage.removeItem("refresh_token");
+                sessionStorage.removeItem("user_pk");
                 navigate("/login")
             },
             error: (response) => console.log(response),

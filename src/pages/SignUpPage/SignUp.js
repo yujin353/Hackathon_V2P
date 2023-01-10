@@ -114,8 +114,8 @@ const SignUp = () => {
                 }
             }
         });
-        localStorage.removeItem("phone_certification")
-        localStorage.removeItem("policy_checked")
+        sessionStorage.removeItem("phone_certification")
+        sessionStorage.removeItem("policy_checked")
     }
 
     const autoRecommend = () => {

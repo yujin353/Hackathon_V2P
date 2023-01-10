@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { Wordcloud } from "../../../component"
+import { useAccessTknRefresh } from "../../../hooks"
 import $ from "jquery"
 import { getProductGredients } from "../../../api/product"
 
 const Product = () => {
+    const accessTknRefresh = useAccessTknRefresh();
     const params = useParams()
     const navigate = useNavigate()
     const [productInfo, setProductInfo] = useState({})
@@ -34,7 +36,7 @@ const Product = () => {
     useEffect(() => {
         $.ajax({
             async: false, type: 'GET',
-            url: "https://api.odoc-api.com/api/v1/members/" + localStorage.getItem("user_pk") + "/",
+            url: "https://api.odoc-api.com/api/v1/members/" + sessionStorage.getItem("user_pk") + "/",
             success: (response) => setUsername(response.username),
             error: (response) => {
                 console.log("error", response);
@@ -47,7 +49,7 @@ const Product = () => {
     useEffect(() => {
         $.ajax({
             async: false, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/matching" + `?member_id=${localStorage.getItem("user_pk") }&product_id=${params.id}`,
+            url: "https://api.odoc-api.com/api/v1/matching" + `?member_id=${sessionStorage.getItem("user_pk") }&product_id=${params.id}`,
             success: response => setRate(response.matching_rate),
             error: response => console.log(response)
         })
@@ -73,8 +75,8 @@ const Product = () => {
     useEffect(() => {
         $.ajax({
             async: true, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/review-like/" + "?search=" + localStorage.getItem("user_pk"),
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("access_token")),
+            url: "https://api.odoc-api.com/api/v1/review-like/" + "?search=" + sessionStorage.getItem("user_pk"),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + sessionStorage.getItem("access_token")),
             success: (response) => {
                 response.results.forEach((v) => {
                     $("button[name=" + v.like_review.review_id + "]").addClass("on");
@@ -82,7 +84,7 @@ const Product = () => {
             },
             error: (response) => {
                 if (response.statusText == "Unauthorized") {
-                    localStorage.setItem("access_token", accessTknRefresh())
+                    sessionStorage.setItem("access_token", accessTknRefresh())
                     navigate(0)
                 }
             },
@@ -92,7 +94,7 @@ const Product = () => {
     const initProductGredient = async () => {
         const res = await getProductGredients({
             productId: params.id,
-            memberId: localStorage.getItem("user_pk")
+            memberId: sessionStorage.getItem("user_pk")
         })
         setProductIngredients(res?.data?.results)
     }
@@ -118,7 +120,7 @@ const Product = () => {
             url: "https://api.odoc-api.com/api/v2/like-review",
             data: { "like_review": review_id },
             dataType: "json",
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("access_token")),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + sessionStorage.getItem("access_token")),
             success: function (response) {
                 const element = document.getElementById(review_id)
                 $(element).toggleClass("off on")
@@ -128,7 +130,7 @@ const Product = () => {
             error: (response) => console.log(response),
         });
     }
-   
+
     const reportReview = (review_id) => {
         if (window.confirm("정말 신고하시겠습니까?") === true) {
             $.ajax({
@@ -136,7 +138,7 @@ const Product = () => {
                 url: "https://api.odoc-api.com/api/v2/report",
                 data: { "review_id": review_id },
                 dataType: "json",
-                beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("access_token")),
+                beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + sessionStorage.getItem("access_token")),
                 success: (response) => {
                     if (response.message === "Report") alert("정상적으로 신고 접수 되었습니다.")
                     else alert("이미 신고 접수 되었습니다.")
@@ -145,40 +147,6 @@ const Product = () => {
             });
         } else return;
     };
-
-    const logout = () => {
-        $.ajax({
-            async: true, type: 'POST',
-            url: "https://api.odoc-api.com/rest_auth/logout/",
-            data: { "refresh": localStorage.getItem("refresh_token") },
-            dataType: 'JSON',
-            success: (response) => {
-                console.log(response);
-                localStorage.removeItem("access_token");
-                localStorage.removeItem("refresh_token");
-                localStorage.removeItem("user_pk");
-                navigate("/login")
-            },
-            error: (response) => console.log(response),
-        });
-    }
-
-    const accessTknRefresh = () => {
-        var result;
-        $.ajax({
-            async: false, type: 'POST',
-            url: "https://api.odoc-api.com/api/token/refresh/",
-            data: { "refresh": localStorage.getItem("refresh_token") },
-            dataType: "json",
-            success: (response) => result = response.access,
-            error: (response) => {
-                console.log(response)
-                alert("토큰이 만료되었습니다. 다시 로그인해 주세요")
-                logout();
-            }
-        });
-        return result
-    }
 
     if(productInfo.brand === undefined) return <></>
 
@@ -248,9 +216,9 @@ const Product = () => {
                     <div className="pr-mb1">
                         <div className="lst_bar">
                             <ul>
-                                <li><p>지성</p><div className="bar_b"><span style={{ width: `${rate+7.23}%` }}></span></div><p>{rate+7.23}%</p></li>
-                                <li><p>민감성</p><div className="bar_b"><span style={{ width: `${rate-2.80}%` }}></span></div><p>{rate-2.80}%</p></li>
-                                <li><p>트러블</p><div className="bar_b"><span style={{ width: `${rate-4.43}%` }}></span></div><p>{rate-4.43}%</p></li>
+                                <li><p>지성</p><div className="bar_b"><span style={{ width: `${rate+7.23}%` }}></span></div><p>{(rate+7.23).toFixed(2)}%</p></li>
+                                <li><p>민감성</p><div className="bar_b"><span style={{ width: `${rate-2.80}%` }}></span></div><p>{(rate-2.80).toFixed(2)}%</p></li>
+                                <li><p>트러블</p><div className="bar_b"><span style={{ width: `${rate-4.43}%` }}></span></div><p>{(rate-4.43).toFixed(2)}%</p></li>
                             </ul>
                         </div>
                     </div>
@@ -292,7 +260,7 @@ const Product = () => {
                                             </div>
                                         </div>
                                         <div className="botm">
-                                            <p className="t1">작성일: {(v.review_article?.article_date).substring(0, 10)}</p>
+                                            { v.review_article ? <p className="t1">작성일: {(v.review_article.article_date).substring(0, 10)}</p> : null }
                                         </div>
                                     </li>
                                 )

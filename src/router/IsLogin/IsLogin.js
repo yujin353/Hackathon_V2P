@@ -1,2 +1,2 @@
-const IsLogIn = () => !!localStorage.getItem('access_token');
+const IsLogIn = () => sessionStorage.getItem('access_token');
 export default IsLogIn;

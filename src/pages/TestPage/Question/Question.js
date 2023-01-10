@@ -11,7 +11,7 @@ const Question = () => {
     const setting = {infinite: false}
     const [disabled, setDisabled] = useState(true)
     const [obj, setObj] = useState({ 
-        "member": localStorage.getItem("user_pk") 
+        "member": sessionStorage.getItem("user_pk") 
     })
 
     const submit = () => {
