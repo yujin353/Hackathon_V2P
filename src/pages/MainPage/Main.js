@@ -223,7 +223,7 @@ const Main = () => {
 			<div id="container" className="container main">
 				<div className="top_sch">
 					<div className="inr-c">
-						<div className="in">
+						<div className="in" style={{width:'100%'}}>
 							<Link to="/search">
 								<div className="inp_txt">제품을 검색해 보세요</div>
 								<button className="btn">
@@ -232,9 +232,9 @@ const Main = () => {
 							</Link>
 						</div>
 						<div className="rgh">
-							<button type="button" onClick={()=>{navigate("/mypage/notification")}} className="btn_alram on">
+							{/* <button type="button" onClick={()=>{navigate("/mypage/notification")}} className="btn_alram on">
 								<span className="i-set i_alram"></span>
-							</button>
+							</button> */}
 						</div>
 					</div>
 				</div>
@@ -307,7 +307,7 @@ const Main = () => {
 					<h2 className="h_tit1">
 						<Link to="/mypage/event">
 							<span className="i-aft i_link1">
-								<strong className="c-blue usernick">{username}</strong>님에게 추천해 드리는 키인 이벤트!
+								<strong className="c-blue usernick">{username}</strong>님에게 딱 맞는 팁!
 							</span>
 						</Link>
 					</h2>

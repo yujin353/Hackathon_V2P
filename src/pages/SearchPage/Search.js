@@ -135,7 +135,7 @@ const Search = () => {
                             }
                         </div>
 
-                        <h2 className="h_tit1">추천 검색어</h2>
+                        {/* <h2 className="h_tit1">추천 검색어</h2>
                         <div className="lst_comm2" 
                             onClick={(e)=>{
                                 const innerText = $(e.target).contents()[0].data
@@ -145,7 +145,7 @@ const Search = () => {
                             <button className="btn-pk ss blue2 bdrs"><span>주름개선</span></button>
                             <button className="btn-pk ss blue2 bdrs"><span>히알루론산</span></button>
                             <button className="btn-pk ss blue2 bdrs"><span>미백</span></button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>
