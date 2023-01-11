@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { Modal } from '../../../component';
+// import { Modal } from '../../../component';
 import $ from "jquery"
 
 const View = () =>{
@@ -12,13 +12,14 @@ const View = () =>{
         JSON.parse(localStorage.getItem('keywords')) || [])
     const [empty, setEmpty] = useState(false)
     const [searchPressed, setSearchPressed] = useState(false)
-    const [contents, setContents] = useState([])
+    // const [contents, setContents] = useState([])
     const [count, setCount] = useState(1)
 
     useEffect(() => {
         $.ajax({
             async: false, type: 'GET',
-            url: "https://api.odoc-api.com/api/v1/products/" + "?search=" + input,
+            // url: "https://api.odoc-api.com/api/v1/products/" + "?search=" + input,
+            url: "https://api.odoc-api.com/api/v2/search"+"?word="+input,
             success: (response) => {
                 if(response.results.length === 0)setEmpty(true)
                 setResults(response.results)
@@ -27,34 +28,35 @@ const View = () =>{
         });
     }, [searchPressed])
 
-    useEffect(() => {
-        setSearchPressed(false)
-        if (input.trim() !== "") {
-            $.ajax({
-                async: false, type: 'GET',
-                url: "https://api.odoc-api.com/api/v1/products/" + "?limit=5&offset=0&search=" + input,
-                // url: "https://api.odoc-api.com/api/v2/search"+"?limit=5&offset=0&word="+input,
-                success: (response) => {
-                    // console.log(response)
-                    setContents(() => {
-                        const result = []
-                        response.results.map((v) => {
-                            result.push(v.product_name)
-                        })
-                        // console.log(result)
-                        return result;
-                    })
-                },
-                error: (response) => console.log(response)
-            });
-        } else {
-            setContents([])
-        }
-    }, [input])
+    // /* autoSearchResults */
+    // useEffect(() => {
+    //     setSearchPressed(false)
+    //     if (input.trim() !== "") {
+    //         $.ajax({
+    //             async: false, type: 'GET',
+    //             url: "https://api.odoc-api.com/api/v1/products/" + "?limit=5&offset=0&search=" + input,
+    //             // url: "https://api.odoc-api.com/api/v2/search"+"?limit=5&offset=0&word="+input,
+    //             success: (response) => {
+    //                 // console.log(response)
+    //                 setContents(() => {
+    //                     const result = []
+    //                     response.results.map((v) => {
+    //                         result.push(v.product_name)
+    //                     })
+    //                     // console.log(result)
+    //                     return result;
+    //                 })
+    //             },
+    //             error: (response) => console.log(response)
+    //         });
+    //     } else {
+    //         setContents([])
+    //     }
+    // }, [input])
 
-    useEffect(() => {
-        setContents([])
-    }, [])
+    // useEffect(() => {
+    //     setContents([])
+    // }, [])
 
     const search = () => {
         setSearchParams({ input: input })
@@ -96,7 +98,7 @@ const View = () =>{
                     </div>
                 </div>
             </header>
-            <Modal open={contents.length && !searchPressed} className="autocomplete">
+            {/* <Modal open={contents.length && !searchPressed} className="autocomplete">
                 <ul>
                     {contents.map((v,i) => {
                         if (input.trim() != v) {
@@ -106,7 +108,7 @@ const View = () =>{
                         }
                     })}
                 </ul>
-            </Modal>
+            </Modal> */}
             <div id="container" className="container search">
                 <div className="inr-c">
                     {!empty ?
@@ -116,12 +118,12 @@ const View = () =>{
                                 <ul id="prod_list">
                                     {results.map((v) => {
                                         return (
-                                            <li className="prod" key={v.product_id}><Link to={`/main/products/${v.product_id}`}>
-                                                <div className="thumb"><span className="im" style={{ backgroundImage: `url(${v.product_img_path})` }}></span></div>
+                                            <li className="prod" key={v.ID}><Link to={`/main/products/${v.ID}`}>
+                                                <div className="thumb"><span className="im" style={{ backgroundImage: `url(${v.Image})` }}></span></div>
                                                 <div className="txt">
-                                                    <p className="t1">{v.brand.brand_name}</p>
-                                                    <p className="t2">{v.product_name}</p>
-                                                    <p className="t1 mt20"><span className="i-aft i_star">4.6</span></p>
+                                                    <p className="t1">{v.Brand}</p>
+                                                    <p className="t2">{v.Name}</p>
+                                                    {/* <p className="t1 mt20"><span className="i-aft i_star">4.6</span></p> */}
                                                 </div>
                                             </Link></li>
                                         )

@@ -188,6 +188,7 @@ const Product = () => {
                         {/* <button type="button" className="btn_alram on" onClick={() => navigate("/mypage/notification")}>
                             <span className="i-set i_alram"></span>
                         </button> */}
+                        {/* 상품 좋아요 버튼 추가 */}
                     </div>
                 </div>
             </header>
@@ -240,11 +241,11 @@ const Product = () => {
                     <div className="hd_tit">
                         <h2 className="h_tit1">리뷰 둘러보기</h2>
                         <div className="rgh">
-                            <select className="select1 hd_ty1">
+                            {/* <select className="select1 hd_ty1">
                                 <option value="">최근작성 순</option>
                                 <option value="">피부 유사도 순</option>
                                 <option value="">만족도 순</option>
-                            </select>
+                            </select> */}
                         </div>
                     </div>
 
@@ -258,8 +259,8 @@ const Product = () => {
                                         <div className="tit">
                                             <div className="thumb" onClick={() => navigate(`/mykiin/neighbor?id=${v.member.member_id}`)}><span><img src={require("../../../assets/images/common/img_nomem.jpg")}/></span></div>
                                             <p className="h1" onClick={() => navigate(`/mykiin/neighbor?id=${v.member.member_id}`)}>{v.member.username}</p>
-                                            <p className="t1">피부 유사도 <span className="c-blue">{rand_simil ? rand_simil : "undefined"}%</span></p>
-                                            <div className="bar_b"><span style={{width: `${rand_simil}%`}}></span></div>
+                                            {/* <p className="t1">피부 유사도 <span className="c-blue">{rand_simil ? rand_simil : "undefined"}%</span></p> */}
+                                            {/* <div className="bar_b"><span style={{width: `${rand_simil}%`}}></span></div> */}
                                             <button type="button" className="btn_favorit" id={v.review_id}
                                                 name={`${v.review_id}`} onClick={()=>{likeReview(v.review_id)}}>
                                                 <span className="i-set i_favorit">좋아요</span>
@@ -282,7 +283,11 @@ const Product = () => {
                                             </div>
                                         </div>
                                         <div className="botm">
-                                            { v.review_article ? <p className="t1">작성일: {(v.review_article.article_date).substring(0, 10)}</p> : null }
+                                            { 
+                                                v.review_article ? 
+                                                <p className="t1">작성일: {(v.review_article.article_date).substring(0, 10)}</p> 
+                                                : <p className="t1">작성일: </p> 
+                                            }
                                         </div>
                                     </li>
                                 )

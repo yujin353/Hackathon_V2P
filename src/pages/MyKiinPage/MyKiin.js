@@ -259,10 +259,10 @@ const MyKiin = () => {
                         <p className="tit">내 피부 타입은 <strong className="c-blue">{myskinType ? myskinType : "undefined"}</strong> 입니다.</p>
                         <div className="box">
                             <p>부스팅 타겟은 <strong>{bTarget ? bTarget : "undefined"}</strong>입니다.
-                                <button type="button" className="btn_bmore" ref={btnRef1}
+                                {/* <button type="button" className="btn_bmore" ref={btnRef1}
                                         onClick={()=>{$(btnRef1.current).hide().parent().css("height", "auto");}}>
                                     <span>자세히</span>
-                                </button>
+                                </button> */}
                             </p>
                         </div>
                     </div>
@@ -398,7 +398,7 @@ const MyKiin = () => {
                         <div className="hd_tit">
                             <h2 className="h_tit1">사용해본 제품</h2>
                             <p className="h_txt1"><span>내가 리뷰를 남긴 제품들이에요.<br />리뷰를 작성하고 화장대에 추가해 보세요.</span></p>
-                            <div className="rgh">
+                            {/* <div className="rgh">
                                 <button type="button" className="c-gray btn_prd_del" ref={btnRef3}
                                         onClick={() => {
                                             $(btnRef3.current)
@@ -417,7 +417,7 @@ const MyKiin = () => {
                                         }}>
                                     <span className="i-aft i_chk">저장</span>
                                 </button>
-                            </div>
+                            </div> */}
                         </div>
 
                         <div className="lst_prd">
@@ -446,9 +446,9 @@ const MyKiin = () => {
 
                     <div className="pr-mb2">
                         <div className="hd_tit">
-                            <h2 className="h_tit1">써보고 싶은 제품</h2>
+                            <h2 className="h_tit1">관심 제품</h2>
                             <p className="h_txt1"><span>내가 좋아요 누른 제품들이에요.</span></p>
-                            <div className="rgh">
+                            {/* <div className="rgh">
                                 <button type="button" className="c-gray btn_prd_del" ref={btnRef5}
                                         onClick={() => {
                                             $(btnRef5.current)
@@ -467,7 +467,7 @@ const MyKiin = () => {
                                         }}>
                                     <span className="i-aft i_chk">저장</span>
                                 </button>
-                            </div>
+                            </div> */}
                         </div>
 
                         <div className="lst_prd">

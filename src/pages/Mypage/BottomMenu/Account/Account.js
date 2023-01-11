@@ -45,7 +45,7 @@ const Account = () => {
                 <div className="inr-c">
                     <div className="lst_push">
                         <ul>
-                            <li>
+                            {/* <li>
                                 <p>푸시 알림 받기</p>
                                 <button type="button" className="btn_push on" id="push" 
                                     onClick={()=>{
@@ -54,10 +54,10 @@ const Account = () => {
                                     }}>
                                     <span>알림</span>
                                 </button>
-                            </li>
+                            </li> */}
                             <li><Link to="#" onClick={logout}>로그아웃</Link></li>
                             <li><Link to="#" onClick={()=>alert('준비중입니다.')}>회원탈퇴</Link></li>
-                            <li><Link to="changepw">비밀번호 변경</Link></li>
+                            {/* <li><Link to="changepw">비밀번호 변경</Link></li> */}
                         </ul>
                     </div>
                 </div>

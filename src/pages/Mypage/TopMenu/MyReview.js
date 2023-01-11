@@ -56,9 +56,9 @@ const MyReview = () => {
                                             <p className="t2">{v.product.product_name}</p>
                                             <p className="t1 mt20"><span className="i-aft i_star">{v.rating}</span></p>
                                         </div>
-                                        <div className="btn">
+                                        {/* <div className="btn">
                                             <p>+100P</p>
-                                        </div>
+                                        </div> */}
                                     </Link></li>
                                 )
                             })
