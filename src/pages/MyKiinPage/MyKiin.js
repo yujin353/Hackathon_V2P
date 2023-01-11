@@ -43,6 +43,8 @@ const MyKiin = () => {
     const [userIngredientGood, setUserIngredientGood] = useState([])
     const [userIngredientBad, setUserIngredientBad] = useState([])
     const [userClick, setUserClick] = useState(0)
+    const [ingredientGoodCount, setIngredientGoodCount] = useState(10)
+    const [ingredientBadCount, setIngredientBadCount] = useState(10)
 
     const [count, setCount] = useState(3)
 
@@ -225,12 +227,12 @@ const MyKiin = () => {
         return () => isMounted = false
     }, [])
 
-    function handleButtonClick1(index) {
+    function handleButtonClick1(v, index) {
         setUserClick(index)
         setModal1(!modal1)
     }
 
-    function handleButtonClick2(index) {
+    function handleButtonClick2(v, index) {
         setUserClick(index)
         setModal2(!modal2)
     }
@@ -242,9 +244,9 @@ const MyKiin = () => {
                 <div className="inr-c">
                     <h2 className="tit">MY 키인</h2>
                     <div className="rgh">
-                        <button type="button" className="btn_alram on" onClick={() => navigate("/mypage/notification")}>
+                        {/* <button type="button" className="btn_alram on" onClick={() => navigate("/mypage/notification")}>
                             <span className="i-set i_alram"></span>
-                        </button>
+                        </button> */}
                     </div>
                 </div>
             </header>
@@ -270,15 +272,37 @@ const MyKiin = () => {
                         <div className="box_cont">
                             <p className="h_tit2">나와 잘 맞는 성분</p>
                             <div className="lst_c ty1 pr-mb2">
-                                <ul>
-                                    {userIngredientGood.map((v, index) => {
-                                        return (
-                                            <li key={v.ingredient.ingred_kor}>
-                                                <span onClick = {() => handleButtonClick1(index)}> {v.ingredient.ingred_kor} </span>
-                                            </li>
-                                        )
-                                    })}
-                                </ul>
+                                {
+                                    userIngredientGood.length != 0 ?
+                                    <ul>
+                                    {
+                                        userIngredientGood.slice(0,ingredientGoodCount).map((v, index) => {
+                                            return (
+                                                <li key={v.ingredient.ingred_kor}>
+                                                    <span onClick = {() => handleButtonClick1(v, index)}> {v.ingredient.ingred_kor} </span>
+                                                </li>
+                                            )
+                                        })
+                                    }
+                                    </ul>
+                                    :
+                                    <li>나와 맞는 성분이 없습니다.</li>
+                                }
+                                {
+                                    userIngredientGood.length != 0 ?
+                                    <div className="btn-bot">
+                                        <button className="btn-pk s blue2 bdrs w50p"
+                                            onClick={()=>{
+                                                if(ingredientGoodCount >= userIngredientGood.length)
+                                                    alert("모든 성분을 확인했습니다.")
+                                                else setIngredientGoodCount(prev=>prev+10)
+                                            }}>
+                                            <span>더보기</span>
+                                        </button>
+                                    </div>
+                                    :
+                                    null
+                                }
                                 <ul>
                                     <Modal open = {modal1} className="customOverlay">
                                         <div id="popIngredient" className="layerPopup pop_ingredient">
@@ -301,15 +325,37 @@ const MyKiin = () => {
                             </div>
                             <p className="h_tit2">나와 안 맞는 성분</p>
                             <div className="lst_c ty2 pr-mb2">
-                                <ul>
-                                    {userIngredientBad.map((v, index) => {
-                                        return (
-                                            <li key={v.ingredient.ingred_kor}>
-                                                <span onClick = {() => handleButtonClick2(index)}> {v.ingredient.ingred_kor} </span>
-                                            </li>
-                                        )
-                                    })}
-                                </ul>
+                                {
+                                    userIngredientBad.length != 0 ?
+                                    <ul>
+                                        {
+                                            userIngredientBad.slice(0,ingredientBadCount).map((v, index) => {
+                                                return (
+                                                    <li key={v.ingredient.ingred_kor}>
+                                                        <span onClick = {() => handleButtonClick2(v, index)}> {v.ingredient.ingred_kor} </span>
+                                                    </li>
+                                                )
+                                            })
+                                        }
+                                    </ul>
+                                    :
+                                    <li>나와 안 맞는 성분이 없습니다.</li>
+                                }
+                                {
+                                    userIngredientBad.length != 0 ?
+                                    <div className="btn-bot">
+                                        <button className="btn-pk s blue2 bdrs w50p"
+                                            onClick={()=>{
+                                                if(ingredientBadCount >= userIngredientBad.length)
+                                                    alert("모든 성분을 확인했습니다.")
+                                                else setIngredientBadCount(prev=>prev+10)
+                                            }}>
+                                            <span>더보기</span>
+                                        </button>
+                                    </div>
+                                    :
+                                    null
+                                }
                                 <ul>
                                     <Modal open = {modal2} className="customOverlay">
                                         <div id="popIngredient" className="layerPopup pop_ingredient">

@@ -48,9 +48,9 @@ const Friend = () => {
                         </button>
                     </div>
                     <div className="rgh">
-                        <button type="button" className="btn_alram on" onClick={() => navigate("../notification")}>
+                        {/* <button type="button" className="btn_alram on" onClick={() => navigate("../notification")}>
                             <span className="i-set i_alram"></span>
-                        </button>
+                        </button> */}
                     </div>
                 </div>
             </header>
@@ -77,6 +77,7 @@ const Friend = () => {
                             <div id="tab1" className="lst_list1">
                                 <ul className="i_m_their_follower">
                                     {
+                                        followerList.length != 0 ?
                                         followerList.map((v,i)=>{
                                             const follower = v.follower_member
                                             return (
@@ -86,6 +87,8 @@ const Friend = () => {
                                                 </Link></li>
                                             )
                                         })
+                                        :
+                                        <p className="emptyArea" style={{color:"#bfc2ca", fontSize:"18px", textAlign:"center", marginTop:"120px"}}>내가 구독한 키인 친구가 없습니다.</p>
                                     }
                                 </ul>
                             </div>
@@ -93,6 +96,7 @@ const Friend = () => {
                             <div id="tab2" className="lst_list1">
                                 <ul className="they_following_me">
                                         {
+                                            followeeList.length != 0 ?
                                             followeeList.map((v,i) => {
                                                 const followee = v.following_member
                                                 return (
@@ -102,6 +106,8 @@ const Friend = () => {
                                                     </Link></li>
                                                 )
                                             })
+                                            :
+                                            <p className="emptyArea" style={{color:"#bfc2ca", fontSize:"18px", textAlign:"center", marginTop:"120px"}}>나를 구독한 키인 친구가 없습니다.</p>
                                         }
                                 </ul>
                             </div>

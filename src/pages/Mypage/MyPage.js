@@ -72,9 +72,9 @@ const MyPage = () => {
                 <div className="inr-c">
                     <h2 className="tit">마이페이지</h2>
                     <div className="rgh">
-                        <button type="button" className="btn_alram on" onClick={()=>navigate("notification")}>
+                        {/* <button type="button" className="btn_alram on" onClick={()=>navigate("notification")}>
                             <span className="i-set i_alram"></span>
-                        </button>
+                        </button> */}
                     </div>
                 </div>
             </header>
@@ -128,7 +128,8 @@ const MyPage = () => {
                                 </div>
                             </Modal>
                         </li>
-                        <li><Link to="point" onClick={() => alert('준비중입니다')} ><span className="i-aft i_my_menu3">포인트</span></Link></li>
+                        {/* <li><Link to="point" onClick={() => alert('준비중입니다')} ><span className="i-aft i_my_menu3">포인트</span></Link></li> */}
+                        <li><Link to="mypage/.." onClick={() => alert('준비중입니다')} ><span className="i-aft i_my_menu3">포인트</span></Link></li>
                         <li><Link to="myreview"><span className="i-aft i_my_menu4">리뷰관리</span></Link></li>
                         <li><Link to="friend"><span className="i-aft i_my_menu5">키인친구</span></Link></li>
                         <li><Link to="interest"><span className="i-aft i_my_menu6">관심리뷰</span></Link></li>

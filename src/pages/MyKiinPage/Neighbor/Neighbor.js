@@ -318,10 +318,10 @@ const Neighbor = () => {
                             }}>
                             <span>팔로잉</span>
                         </button>
-                        <button type="button" className="btn_alram on" 
+                        {/* <button type="button" className="btn_alram on" 
                             onClick={() => navigate("/mypage/notification")}>
                             <span className="i-set i_alram"></span>
-                        </button>
+                        </button> */}
                     </div>
                 </div>
             </header>

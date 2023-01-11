@@ -67,10 +67,10 @@ const ChangePW = () => {
                         </button>
                     </div>
                     <div className="rgh">
-                        <button type="button" className="btn_alram on"
+                        {/* <button type="button" className="btn_alram on"
                             onClick={() => navigate("../../notification")}>
                             <span className="i-set i_alram"></span>
-                        </button>
+                        </button> */}
                     </div>
                 </div>
             </header>
