@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { Modal } from '../../component';
+// import { Modal } from '../../component';
 import $ from "jquery"
 
 const Search = () => {
@@ -11,7 +11,7 @@ const Search = () => {
     const [input, setInput] = useState("")
     const [keywords, setKeywords] = useState(
         JSON.parse(localStorage.getItem('keywords')) || [])
-    const [contents, setContents] = useState([])
+    // const [contents, setContents] = useState([])
 
     /* coloring bottom navigation bar icons */
     useEffect(() => {
@@ -23,30 +23,30 @@ const Search = () => {
         else if (pathname.startsWith("/mypage")) $("#fmenu5").addClass("on")
     }, [])
 
-    useEffect(() => {
-        const textInput = input.trim()
-        if(textInput!==""){
-            $.ajax({
-                async: false, type: 'GET',
-                url: "https://api.odoc-api.com/api/v1/products/" + "?limit=5&offset=0&search=" + input,
-                // url: "https://api.odoc-api.com/api/v2/search"+"?limit=5&offset=0&word="+input,
-                success: (response) => {
-                    // console.log(response)
-                    setContents(() => {
-                        const result = []
-                        response.results.map((v) => {
-                            result.push(v.product_name)
-                        })
-                        // console.log(result)
-                        return result;
-                    })
-                },
-                error: (response) => console.log(response)
-            });
-        }else{
-            setContents([])
-        }
-    }, [input])
+    // /* recommend search */
+    // useEffect(() => {
+    //     const textInput = input.trim()
+    //     if(textInput!==""){
+    //         $.ajax({
+    //             async: false, type: 'GET',
+    //             // url: "https://api.odoc-api.com/api/v1/products/" + "?limit=5&offset=0&search=" + input,
+    //             url: "https://api.odoc-api.com/api/v2/search"+"?word="+input,
+    //             success: (response) => {
+    //                 setContents(() => {
+    //                     const result = []
+    //                     response.results.map((v) => {
+    //                         result.push(v.product_name)
+    //                     })
+    //                     // console.log(result)
+    //                     return result;
+    //                 })
+    //             },
+    //             error: (response) => console.log(response)
+    //         });
+    //     }else{
+    //         setContents([])
+    //     }
+    // }, [input])
 
     const search = () => {
         const textInput = input.trim()
@@ -81,7 +81,7 @@ const Search = () => {
                     </div>
                 </div>
             </header>
-            <Modal open={contents.length} className="autocomplete">
+            {/* <Modal open={contents.length} className="autocomplete">
                 <ul>
                     {contents.map((v,i) => {
                         if(input != v){
@@ -91,7 +91,7 @@ const Search = () => {
                         }
                     })}
                 </ul>
-            </Modal>
+            </Modal> */}
             <div id="container" className="container search">
                 <div className="inr-c">
                     <div className="area_search1">

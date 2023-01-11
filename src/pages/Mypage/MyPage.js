@@ -90,9 +90,9 @@ const MyPage = () => {
                                 <p className="h1"><strong className="c-blue usernick">{username}</strong>님</p><br/>
                             </div>
                         </div>
-                        <div className="box_point" onClick={()=>navigate("point")}>
+                        {/* <div className="box_point" onClick={()=>navigate("point")}>
                             <p><span>POINT</span><strong>5,340 P</strong></p>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <div className="my_menu">
