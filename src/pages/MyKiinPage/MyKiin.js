@@ -101,6 +101,14 @@ const MyKiin = () => {
         },
     }
 
+    /* To check duplicate reviews */
+    let dup = []
+    const checkDuplicate = (product_id) => {
+        if (dup[product_id] > 0)
+            return 'Y'
+        else return 'N'
+    }
+
     useEffect(()=>{
         window.scrollTo(0,0);
     },[])
@@ -377,21 +385,26 @@ const MyKiin = () => {
                         <div className="lst_prd">
                             <ul>
                                 {used.map((v,i)=>{
+                                    const duplicate = checkDuplicate(v.product.product_id)
+                                    dup[v.product.product_id] = 1
                                     return (
-                                        <li key={v+i}>
-                                            <div className="thumb">
-                                                <Link to={`/main/products/${v.product.product_id}`}>
-                                                    <span className="im" style={{ backgroundImage: `url(${v.product.product_img_path})` }}></span>
-                                                </Link>
-                                                <button type="button" className="btn_del">
-                                                    <span className="i-set i_del_b">삭제</span>
-                                                </button>
-                                            </div>
-                                            <div className="txt"><Link to={`/main/products/${v.product.product_id}`}>
-                                                <p className="t1">{v.product.brand.brand_name}</p>
-                                                <p className="t2">{v.product.product_name}</p>
-                                            </Link></div>
-                                        </li>
+                                        duplicate === 'N'
+                                            ?
+                                            <li key={v+i}>
+                                                <div className="thumb">
+                                                    <Link to={`/main/products/${v.product.product_id}`}>
+                                                        <span className="im" style={{ backgroundImage: `url(${v.product.product_img_path})` }}></span>
+                                                    </Link>
+                                                    <button type="button" className="btn_del">
+                                                        <span className="i-set i_del_b">삭제</span>
+                                                    </button>
+                                                </div>
+                                                <div className="txt"><Link to={`/main/products/${v.product.product_id}`}>
+                                                    <p className="t1">{v.product.brand.brand_name}</p>
+                                                    <p className="t2">{v.product.product_name}</p>
+                                                </Link></div>
+                                            </li>
+                                            : null
                                     )
                                 })}
                             </ul>

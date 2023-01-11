@@ -102,14 +102,14 @@ const Login = () => {
 							<p className="l">아직 회원이 아니시라구요?</p>
 							<p className="r"><Link to="/certification" className="c-blue">회원가입</Link></p>
 						</div>
-						<div className="t_txt mt40">
-							<p className="l">아이디를 잊으셨나요?</p>
-							<p className="r"><Link to="/findid" className="c-blue">아이디 찾기</Link></p>
-						</div>
-						<div className="t_txt mt30">
-							<p className="l">비밀번호를 잊으셨나요?</p>
-							<p className="r"><Link to="/findpw" className="c-blue">비밀번호 찾기</Link></p>
-						</div>
+						{/*<div className="t_txt mt40">*/}
+						{/*	<p className="l">아이디를 잊으셨나요?</p>*/}
+						{/*	<p className="r"><Link to="/findid" className="c-blue">아이디 찾기</Link></p>*/}
+						{/*</div>*/}
+						{/*<div className="t_txt mt30">*/}
+						{/*	<p className="l">비밀번호를 잊으셨나요?</p>*/}
+						{/*	<p className="r"><Link to="/findpw" className="c-blue">비밀번호 찾기</Link></p>*/}
+						{/*</div>*/}
 					</div>		
 				</div>
 			</div>
