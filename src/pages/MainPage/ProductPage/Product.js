@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { Wordcloud } from "../../../component"
 import { useAccessTknRefresh } from "../../../hooks"
@@ -17,6 +17,8 @@ const Product = () => {
     const rating_className = ["i_review_bad", "i_review_normal", "i_review_normal", "i_review_normal", "i_review_good"]
     const rating_txt = ["별로에요", "보통이에요", "보통이에요", "보통이에요", "잘 맞았어요"]
     const [productIngredients, setProductIngredients] = useState(null);
+    let [likeProducts, setLikeProducts] = useState([])
+	let latestLikeProducts = useRef(likeProducts)
 
     /* loading product info */
     useEffect(() => {
@@ -90,6 +92,80 @@ const Product = () => {
             },
         });
     }, [])
+
+    /* products user wants to try */
+	useEffect(() => {
+		let info;
+		let like_product = []
+        $.ajax({
+            async: false, type: "GET",
+            url: "https://api.odoc-api.com/api/v1/product-like/?search=" + sessionStorage.getItem("user_pk"),
+            success: (response) => {
+                info = response.results;
+				for (let i = 0; i < info.length; i++){
+					like_product = like_product.concat(info[i].like_product.product_id);
+					setLikeProducts = like_product;
+				}
+				if ( info.length == 0 ) latestLikeProducts.current = [];
+				else latestLikeProducts.current = setLikeProducts;
+            },
+            error: (response) => { console.log(response.results) }
+        });
+    })	
+
+    /* find products user wants to try */
+	const findLikeProducts = (likeIcon) => {
+		let check = "fail";
+        for (let i = 0; i < (latestLikeProducts.current).length; i++){
+			if (likeIcon.id == latestLikeProducts.current[i]) {
+				check = "success";
+				break
+			}
+		}
+		return check;
+	}
+
+	/* coloring products user wants to try */
+	const likeState = (element) => {
+		let isMounted = true;
+		let likeIcon = document.getElementById(element);
+		let check;
+		if ( likeIcon && isMounted ) {
+			check = findLikeProducts(likeIcon);
+			if ( check == "success" ) return true;
+			else if ( check == "fail" ) return false;
+			else { console.log('likeIcon error'); return false; }
+		}
+	}
+
+	const likeProduct = (product_id) => {
+		$.ajax({
+			async: true, type: "POST",
+			url: "https://api.odoc-api.com/api/v2/like-product",
+			data: { "like_product": product_id },
+			dataType: "json",
+			beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + sessionStorage.getItem("access_token")),
+			success: (response) => {
+				const element = document.getElementsByName(product_id)
+				$(element).toggleClass("on")
+				if (response.message === "Like") {
+					alert("좋아하는 상품 목록에 추가되었습니다.");
+					if (latestLikeProducts.current.length == 0) {
+						setLikeProducts = [];
+						setLikeProducts = setLikeProducts.concat(product_id);
+						latestLikeProducts.current = setLikeProducts
+					}
+					else latestLikeProducts.current = latestLikeProducts.current.concat(product_id)
+				}
+				else {
+					alert("좋아하는 상품 목록에서 제거되었습니다.");
+					latestLikeProducts.current = latestLikeProducts.current.filter( elem => elem !== product_id )
+				}
+				likeState(product_id)
+			},
+			error: (response) => console.log(response),
+		});
+	}
 
     const initProductGredient = async () => {
         const res = await getProductGredients({
@@ -185,10 +261,16 @@ const Product = () => {
                         </button>
                     </div>
                     <div className="rgh">
+                        {/* 알림버튼 */}
                         {/* <button type="button" className="btn_alram on" onClick={() => navigate("/mypage/notification")}>
                             <span className="i-set i_alram"></span>
                         </button> */}
-                        {/* 상품 좋아요 버튼 추가 */}
+                        <button 
+                            type="button"  id={params.id} style={{verticalAlign:"middle"}}
+                            className={ likeState(params.id) ? "btn_favorit on" : "btn_favorit" }
+                            name={params.id} onClick={() => likeProduct(params.id)}>
+                            <span className="i-set i_favorit">좋아요</span>
+                        </button>
                     </div>
                 </div>
             </header>
