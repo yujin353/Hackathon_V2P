@@ -12,7 +12,6 @@ const Account = () => {
             data: { "refresh": sessionStorage.getItem("refresh_token") },
             dataType: 'JSON',
             success: function (response) {
-                console.log(response);
                 sessionStorage.removeItem("access_token");
                 sessionStorage.removeItem("refresh_token");
                 sessionStorage.removeItem("user_pk");
@@ -20,6 +19,28 @@ const Account = () => {
             },
             error: (response) => console.log(response),
         });
+    }
+
+    const withdraw = () => {
+        if (window.confirm('정말 탈퇴하시겠습니까?')) {
+            $.ajax({
+                async: true, type: 'POST',
+                url: "https://api.odoc-api.com/api/v2/withdraw",
+                data: { "id": sessionStorage.getItem("user_pk")},
+                dataType: 'JSON',
+                success: function (response) {
+                    if (response.message == "Withdraw OK") {
+                        sessionStorage.removeItem("access_token");
+                        sessionStorage.removeItem("refresh_token");
+                        sessionStorage.removeItem("user_pk");
+                        alert("탈퇴 되었습니다.")
+                        navigate("/login")
+                    }
+                },
+                error: (response) => console.log(response),
+            });
+        }
+        else ;
     }
 
     return (
@@ -56,7 +77,7 @@ const Account = () => {
                                 </button>
                             </li> */}
                             <li><Link to="#" onClick={logout}>로그아웃</Link></li>
-                            <li><Link to="#" onClick={()=>alert('준비중입니다.')}>회원탈퇴</Link></li>
+                            <li><Link to="#" onClick={withdraw}>회원탈퇴</Link></li>
                             {/* <li><Link to="changepw">비밀번호 변경</Link></li> */}
                         </ul>
                     </div>
