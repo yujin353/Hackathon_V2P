@@ -26,7 +26,7 @@ const Account = () => {
             $.ajax({
                 async: true, type: 'POST',
                 url: "https://api.odoc-api.com/api/v2/withdraw",
-                data: {"id" : sessionStorage.getItem("user_pk")},
+                data: { "id": sessionStorage.getItem("user_pk")},
                 dataType: 'JSON',
                 success: function (response) {
                     if (response.message == "Withdraw OK") {
