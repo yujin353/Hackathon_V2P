@@ -12,7 +12,6 @@ const Account = () => {
             data: { "refresh": sessionStorage.getItem("refresh_token") },
             dataType: 'JSON',
             success: function (response) {
-                console.log(response);
                 sessionStorage.removeItem("access_token");
                 sessionStorage.removeItem("refresh_token");
                 sessionStorage.removeItem("user_pk");
@@ -31,12 +30,11 @@ const Account = () => {
                 dataType: 'JSON',
                 success: function (response) {
                     if (response.message == "Withdraw OK") {
-                        console.log(response);
                         sessionStorage.removeItem("access_token");
                         sessionStorage.removeItem("refresh_token");
                         sessionStorage.removeItem("user_pk");
                         alert("탈퇴 되었습니다.")
-                        navigate("/")
+                        navigate("/login")
                     }
                 },
                 error: (response) => console.log(response),
