@@ -1,33 +1,11 @@
 import React, { useEffect, useState, useRef } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { Modal } from "../../component";
+import { Graph } from "../../component";
 import $ from "jquery"
-import {
-    Chart as ChartJS,
-    RadialLinearScale,
-    PointElement,
-    LineElement,
-    Filler,
-    Tooltip,
-    Legend,
-} from 'chart.js';
-import { Radar } from 'react-chartjs-2';
-
-ChartJS.register(
-    RadialLinearScale,
-    PointElement,
-    LineElement,
-    Filler,
-    Tooltip,
-    Legend
-);
-
 
 const MyKiin = () => {
     const navigate = useNavigate();
-    const [myskinScore, SetMyskinScore] = useState([])
-    const [myskinType, setMyskinType] = useState(undefined)
-    const [bTarget, setBTarget] = useState(undefined)
     const btnRef1 = useRef(null)
     const btnRef2 = useRef(null)
     const btnRef3 = useRef(null)
@@ -48,61 +26,6 @@ const MyKiin = () => {
 
     const [count, setCount] = useState(3)
 
-    const data = {
-        labels: ['밸런싱', '견고성', '균일성', '탄력성', '안정성'],
-        datasets: [
-            {
-                label: 'My Skin',
-                data: myskinScore,
-                fill: true,
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgb(54, 162, 235)',
-                pointBackgroundColor: 'rgb(54, 162, 235)',
-                pointBorderColor: '#fff',
-                pointHoverBackgroundColor: '#fff',
-                pointHoverBorderColor: 'rgb(54, 162, 235)'
-            }
-        ],
-    };
-
-    const options = {
-        scales: {
-            r: {
-                angleLines: {
-                    display: true,
-                    color: "rgba(0, 0, 0, 0.1)"
-                },
-                grid: {
-                    color: 'rgba(54, 162, 235, 0.2)',
-                    // circular: true
-                },
-                pointLabels: {
-                    display: true,
-                    color: "rgba(0, 0, 0, 0.8)",
-                    // font: { size: 24 }
-                },
-                ticks: {
-                    color: "rgba(0, 0, 0, 0.4)",
-                },
-                min: 0,
-                max: 100,
-                stepSize: 20
-            }
-        },
-        plugins: {
-            legend: {
-                // position: "",
-                fontColor: "red",
-                fontSize: 10
-            }
-        },
-        elements: {
-            line: {
-                borderWidth: 2
-            }
-        },
-    }
-
     /* To check duplicate reviews */
     let dup = []
     const checkDuplicate = (product_id) => {
@@ -114,38 +37,6 @@ const MyKiin = () => {
     useEffect(()=>{
         window.scrollTo(0,0);
     },[])
-
-    useEffect(() => {
-        let isMounted = true;
-        $.ajax({
-            async: false, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/myskin/?search=" + sessionStorage.getItem("user_pk"),
-            success: (response) => {
-                const results = response.results[0]
-                if(results === undefined)return;
-                if(isMounted){
-                    SetMyskinScore(() => {
-                        const result = []
-                        const balance = 100 - (Math.abs(results.do_score - 10) / 6 * 100)
-                        const robustness = 100 - (Math.abs(results.rs_score - 6) / 18 * 100)
-                        const uniformity = 100 - (Math.abs(results.np_score - 4) / 12 * 100)
-                        const resilience = 100 - (Math.abs(results.tw_score - 6) / 18 * 100)
-                        const stability = results.target_id.target_score
-                        result.push(balance)
-                        result.push(robustness)
-                        result.push(uniformity)
-                        result.push(resilience)
-                        result.push(stability)
-                        return result;
-                    })
-                    setMyskinType(results.do_alphabet + results.rs_alphabet + results.np_alphabet + results.tw_alphabet)
-                    setBTarget(results.target_id.target_name)
-                }
-            },
-            error: (response) => console.log(response)
-        });
-        return () => isMounted = false
-    }, [])
 
     useEffect(() => {
         let isMounted = true;
@@ -262,18 +153,7 @@ const MyKiin = () => {
             <div id="container" className="container sub myk">
                 <div className="inr-c">
                     <div className="hd_tit"><h2 className="h_tit1">내 피부타입 분석결과</h2></div>
-                    <div className="area_type"><Radar data={data} options={options} /></div>
-                    <div className="txt_box1 pr-mb1">
-                        <p className="tit">내 피부 타입은 <strong className="c-blue">{myskinType ? myskinType : "undefined"}</strong> 입니다.</p>
-                        <div className="box">
-                            <p>부스팅 타겟은 <strong>{bTarget ? bTarget : "undefined"}</strong>입니다.
-                                {/* <button type="button" className="btn_bmore" ref={btnRef1}
-                                        onClick={()=>{$(btnRef1.current).hide().parent().css("height", "auto");}}>
-                                    <span>자세히</span>
-                                </button> */}
-                            </p>
-                        </div>
-                    </div>
+                    <Graph userPK={sessionStorage.getItem("user_pk")}/>
 
                     <div className="pr-mb1">
                         <h2 className="h_tit1">나의 성분 리스트</h2>

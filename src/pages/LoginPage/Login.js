@@ -60,6 +60,10 @@ const Login = () => {
         });
     }
 
+	const handleKeyPress = (e) => {
+		if (e.key === 'Enter') onSignIn();
+	}
+
     return (
         <div>
 			<header id="header" className="header">
@@ -84,7 +88,7 @@ const Login = () => {
 						<div className="mb30" ref={errorRef}>
 							<span className="ico"><i className="i-set i_pw"></i></span>
 							<input type="password" id="password" className="inp_txt w100p" placeholder="비밀번호를 입력해 주세요"
-								value={password} onChange={(e) => setPassword(e.target.value)} />
+								value={password} onChange={(e) => setPassword(e.target.value)} onKeyDown={handleKeyPress} />
 						</div>
 						<p className="t_error mb30 hidden">아이디와 비밀번호를 정확하게 입력해주세요.</p>
 						<div className="mb10">
