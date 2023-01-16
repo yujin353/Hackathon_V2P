@@ -156,7 +156,7 @@ const Ranking = () => {
                                                 { index== 0 ? <div className="num"><span className="i-set i_rank1">1</span></div>
                                                     : index === 1 ? <div className="num"><span className="i-set i_rank2">2</span></div>
                                                         : index === 2 ? <div className="num"><span className="i-set i_rank3">3</span></div>
-                                                            : <div className="num"><span className="i-set i_rank">(index+1)</span></div> }
+                                                            : <div className="num"><span className="i-set i_rank">{index+1}</span></div> }
                                                 <div className="thumb"><img className="im" src={v.Image} /></div>
                                                 <div className="txt">
                                                     <p className="t1">{v.Brand}</p>
@@ -177,7 +177,7 @@ const Ranking = () => {
                                                 { index== 0 ? <div className="num"><span className="i-set i_rank1">1</span></div>
                                                     : index === 1 ? <div className="num"><span className="i-set i_rank2">2</span></div>
                                                         : index === 2 ? <div className="num"><span className="i-set i_rank3">3</span></div>
-                                                            : <div className="num"><span className="i-set i_rank">(index+1)</span></div> }
+                                                            : <div className="num"><span className="i-set i_rank">{index+1}</span></div> }
                                                 <div className="thumb"><img className="im" src={v.Image} /></div>
                                                 <div className="txt">
                                                     <p className="t1">{v.Brand}</p>
@@ -198,7 +198,7 @@ const Ranking = () => {
                                                     { index== 0 ? <div className="num"><span className="i-set i_rank1">1</span></div>
                                                         : index === 1 ? <div className="num"><span className="i-set i_rank2">2</span></div>
                                                             : index === 2 ? <div className="num"><span className="i-set i_rank3">3</span></div>
-                                                                : <div className="num"><span className="i-set i_rank">(index+1)</span></div> }
+                                                                : <div className="num"><span className="i-set i_rank">{index+1}</span></div> }
                                                     <div className="thumb"><img className="im" src={v.Image} /></div>
                                                     <div className="txt">
                                                         <p className="t1">{v.Brand}</p>
@@ -219,7 +219,7 @@ const Ranking = () => {
                                                     { index== 0 ? <div className="num"><span className="i-set i_rank1">1</span></div>
                                                         : index === 1 ? <div className="num"><span className="i-set i_rank2">2</span></div>
                                                             : index === 2 ? <div className="num"><span className="i-set i_rank3">3</span></div>
-                                                                : <div className="num"><span className="i-set i_rank">(index+1)</span></div> }
+                                                                : <div className="num"><span className="i-set i_rank">{index+1}</span></div> }
                                                     <div className="thumb"><img className="im" src={v.Image} /></div>
                                                     <div className="txt">
                                                         <p className="t1">{v.Brand}</p>
