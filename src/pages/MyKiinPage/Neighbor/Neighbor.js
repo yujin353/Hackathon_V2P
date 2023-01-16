@@ -1,27 +1,9 @@
 import React, { useState, useEffect, useRef } from "react"
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Modal } from "../../../component";
+import { Graph } from "../../../component";
 import { useAccessTknRefresh } from "../../../hooks";
 import $ from "jquery"
-import {
-    Chart as ChartJS,
-    RadialLinearScale,
-    PointElement,
-    LineElement,
-    Filler,
-    Tooltip,
-    Legend,
-} from 'chart.js';
-import { Radar } from 'react-chartjs-2';
-
-ChartJS.register(
-    RadialLinearScale,
-    PointElement,
-    LineElement,
-    Filler,
-    Tooltip,
-    Legend
-);
 
 const Neighbor = () => {
     const accessTknRefresh = useAccessTknRefresh();
@@ -37,71 +19,20 @@ const Neighbor = () => {
     const btnRef4 = useRef(null)
     const btnRef5 = useRef(null)
     const btnRef6 = useRef(null)
-    const [myskinScore, SetMyskinScore] = useState([])
-    const [myskinType, setMyskinType] = useState()
     const [bScore, setBScore] = useState([])
-    const [bTarget, setBTarget] = useState()
     const [modal1, setModal1] = useState(false)
+    const [modal2, setModal2] = useState(false)
     const [used, setUsed] = useState([])
     const [wanted, setWanted] = useState([])
     const [reviewList, setReviewList] = useState([])
+    const [userIngredientGood, setUserIngredientGood] = useState([])
+    const [userIngredientBad, setUserIngredientBad] = useState([])
+    const [userClick, setUserClick] = useState(0)
+    const [ingredientGoodCount, setIngredientGoodCount] = useState(10)
+    const [ingredientBadCount, setIngredientBadCount] = useState(10)
 
     const rating_className = ["i_review_bad", "i_review_normal", "i_review_normal", "i_review_normal", "i_review_good"]
     const rating_txt = ["별로에요", "보통이에요", "보통이에요", "보통이에요", "잘 맞았어요"]
-    const data = {
-        labels: ['밸런싱', '견고성', '균일성', '탄력성', '안정성'],
-        datasets: [
-            {
-                label: 'My Skin',
-                data: myskinScore,
-                fill: true,
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgb(54, 162, 235)',
-                pointBackgroundColor: 'rgb(54, 162, 235)',
-                pointBorderColor: '#fff',
-                pointHoverBackgroundColor: '#fff',
-                pointHoverBorderColor: 'rgb(54, 162, 235)'
-            }
-        ],
-    };
-
-    const options = {
-        scales: {
-            r: {
-                angleLines: {
-                    display: true,
-                    color: "rgba(0, 0, 0, 0.1)"
-                },
-                grid: {
-                    color: 'rgba(54, 162, 235, 0.2)',
-                    // circular: true
-                },
-                pointLabels: {
-                    display: true,
-                    color: "rgba(0, 0, 0, 0.8)",
-                    // font: { size: 24 }
-                },
-                ticks: {
-                    color: "rgba(0, 0, 0, 0.4)",
-                },
-                min: 0,
-                max: 100,
-                stepSize: 20
-            }
-        },
-        plugins: {
-            legend: {
-                // position: "",
-                fontColor: "red",
-                fontSize: 10
-            }
-        },
-        elements: {
-            line: {
-                borderWidth: 2
-            }
-        },
-    }
 
     useEffect(() => {
         if(!!userID === false)
@@ -139,34 +70,6 @@ const Neighbor = () => {
             },
             error: (response) => console.log(response)
         })
-    }, [])
-
-    useEffect(() => {
-        $.ajax({
-            async: false, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/myskin/?search=" + userID,
-            success: (response) => {
-                const results = response.results[0]
-                if (results === undefined) return;
-                SetMyskinScore(() => {
-                    const result = []
-                    const balance = 100 - (Math.abs(results.do_score - 10) / 6 * 100)
-                    const robustness = 100 - (Math.abs(results.rs_score - 6) / 18 * 100)
-                    const uniformity = 100 - (Math.abs(results.np_score - 4) / 12 * 100)
-                    const resilience = 100 - (Math.abs(results.tw_score - 6) / 18 * 100)
-                    const stability = results.target_id.target_score
-                    result.push(balance)
-                    result.push(robustness)
-                    result.push(uniformity)
-                    result.push(resilience)
-                    result.push(stability)
-                    return result;
-                })
-                setMyskinType(results.do_alphabet + results.rs_alphabet + results.np_alphabet + results.tw_alphabet)
-                setBTarget(results.target_id.target_name)
-            }, 
-            error: (response) => console.log(response)
-        });
     }, [])
 
     useEffect(() => {
@@ -225,6 +128,49 @@ const Neighbor = () => {
             },
         });
     })
+
+    /* set neighbor's Good, Bad Ingredient */
+    useEffect(() => {
+        let isMounted = true;
+        $.ajax({
+            async: true, type: "GET",
+            url: "https://api.odoc-api.com/api/v1/my-ingredient/?limit=1000000&offset=0&search=" + userID,
+            success: response => {
+
+                const result = response.results;
+
+                if(result === undefined)return;
+                if(isMounted) {
+
+                    const results = response.results
+                    let good = []
+                    let bad = []
+                    for(let i=0; i<results.length; i++)
+                    {
+                        if(results[i].ingred_status == true)
+                            good.push(results[i])
+                        else
+                            bad.push(results[i])
+                    }
+                    setUserIngredientBad(bad)
+                    setUserIngredientGood(good)
+
+                }
+            },
+            error: response => console.log(response.results)
+        });
+        return () => isMounted = false
+    }, [])
+
+    function handleButtonClick1(v, index) {
+        setUserClick(index)
+        setModal1(!modal1)
+    }
+
+    function handleButtonClick2(v, index) {
+        setUserClick(index)
+        setModal2(!modal2)
+    }
 
     /* function to calculate product fit */
     const productFit = (member_id, product_id) => {
@@ -328,64 +274,116 @@ const Neighbor = () => {
             <div id="container" className="container sub myk">
                 <div className="inr-c">
                     <div className="hd_tit"><h2 className="h_tit1">피부타입 분석결과</h2></div>
-                    <div className="area_type"><Radar data={data} options={options} /></div>
-                    <div className="txt_box1 pr-mb1">
-                        <p className="tit">내 피부 타입은 <strong className="c-blue">{myskinType}</strong> 입니다.</p>
-                        <div className="box">
-                            <p>부스팅 타겟은 <strong>{bTarget}</strong>입니다.
-                                {/* <button type="button" className="btn_bmore" ref={btnRef1}
-                                    onClick={() => { $(btnRef1.current).hide().parent().css("height", "auto"); }}>
-                                    <span>자세히</span>
-                                </button> */}
-                            </p>
-                        </div>
-                    </div>
+                    <Graph userPK={userID}/>
 
                     <div className="pr-mb1">
                         <h2 className="h_tit1">나의 성분 리스트</h2>
                         <div className="box_cont">
                             <p className="h_tit2">나와 잘 맞는 성분</p>
                             <div className="lst_c ty1 pr-mb2">
+                                {
+                                    userIngredientGood.length != 0 ?
+                                    <ul>
+                                    {
+                                        userIngredientGood.slice(0,ingredientGoodCount).map((v, index) => {
+                                            return (
+                                                <li key={v.ingredient.ingred_kor}>
+                                                    <span onClick = {() => handleButtonClick1(v, index)}> {v.ingredient.ingred_kor} </span>
+                                                </li>
+                                            )
+                                        })
+                                    }
+                                    </ul>
+                                    :
+                                    <li>나와 맞는 성분이 없습니다.</li>
+                                }
+                                {
+                                    userIngredientGood.length != 0 ?
+                                    <div className="btn-bot">
+                                        <button className="btn-pk s blue2 bdrs w50p"
+                                            onClick={()=>{
+                                                if(ingredientGoodCount >= userIngredientGood.length)
+                                                    alert("모든 성분을 확인했습니다.")
+                                                else setIngredientGoodCount(prev=>prev+10)
+                                            }}>
+                                            <span>더보기</span>
+                                        </button>
+                                    </div>
+                                    :
+                                    null
+                                }
                                 <ul>
-                                    <li>
-                                        <span onClick={() => setModal1(!modal1)}>헥산다이올</span>
-                                        <Modal open={modal1} className="customOverlay">
-                                            <div id="popIngredient" className="layerPopup pop_ingredient">
-                                                <div className="popup">
-                                                    <div className="p_head botm">
-                                                        <h2 className="hidden">성분상세</h2>
-                                                        <button type="button" className="b-close btn_close" onClick={() => setModal1(!modal1)}>
-                                                            <span>x</span>
-                                                        </button>
-                                                    </div>
-
-                                                    <div className="p_cont">
-                                                        <p className="h1">부틸렌글라이콜</p>
-                                                        <p className="h2">배합목적 : 착향제, 피부컨디셔닝제, 용제, 점도감소제</p>
-                                                        <p className="t1">
-                                                            부틸렌글라이콜은 옥수수오일, 포도주, 생선의간유, 해바라기씨오일, 토양효모 등의 발효 생성물에서 만들어진 성분입니다.<br />
-                                                            부틸렌글라이콜은 무색의 단맛을 가지고 있으며 냄새가 거의 없는 맑은 액체입니다.<br />
-                                                            또한, 1-3부탄디올 혹은 줄여서 1,3-BG 그리고 B-부틸렌글라이콜이라는 이름으로 불리기도 합니다.<br /><br />
-                                                            한편, 화장품을 만들 때 부틸렌글라이콜은 전성분 표기에서 2~3번째 놓일 정도로 배합비율이 높은 편입니다.<br />
-                                                            다른 특징으로 부틸렌글라이콜은 입자가 큰 유기체 알코올로 수분을 끌어당기는 보습제 역할을 합니다.<br />
-                                                            이것은 끈적임과 자극이 적고 사용감이 가벼운편으로 주로 화장품의 모이스처라이저 제품에 사용됩니다.<br />
-                                                            피부에 특별한 효과를 주기 위한 성분으로 건조하거나 손상된 피부를 개선, 피부탈락 감소, 유연성 회복을 위하여 사용
-                                                        </p>
-                                                    </div>
+                                    <Modal open = {modal1} className="customOverlay">
+                                        <div id="popIngredient" className="layerPopup pop_ingredient">
+                                            <div className="popup">
+                                                <div className="p_head botm">
+                                                    <h2 className="hidden">성분상세</h2>
+                                                    <button type="button" className="b-close btn_close" onClick={()=>setModal1()}>
+                                                        <span>x</span>
+                                                    </button>
+                                                </div>
+                                                <div className="bad_p_cont">
+                                                    <p className="h1"> {userIngredientGood[userClick]?.ingredient.ingred_kor} </p>
+                                                    <p className="h2">배합목적 : {userIngredientGood[userClick]?.ingredient.ingred_purpose} </p>
+                                                    <p className="t1"> {userIngredientGood[userClick]?.ingredient.ingred_text} </p>
                                                 </div>
                                             </div>
-                                        </Modal>
-                                    </li>
-                                    <li onClick={null}><span>폴리글레시릴</span></li>
-                                    <li onClick={null}><span>이눌린라우릴카바메이트</span></li>
+                                        </div>
+                                    </Modal>
                                 </ul>
                             </div>
                             <p className="h_tit2">나와 안 맞는 성분</p>
                             <div className="lst_c ty2 pr-mb2">
+                            {
+                                    userIngredientBad.length != 0 ?
+                                    <ul>
+                                        {
+                                            userIngredientBad.slice(0,ingredientBadCount).map((v, index) => {
+                                                return (
+                                                    <li key={v.ingredient.ingred_kor}>
+                                                        <span onClick = {() => handleButtonClick2(v, index)}> {v.ingredient.ingred_kor} </span>
+                                                    </li>
+                                                )
+                                            })
+                                        }
+                                    </ul>
+                                    :
+                                    <li>나와 안 맞는 성분이 없습니다.</li>
+                                }
+                                {
+                                    userIngredientBad.length != 0 ?
+                                    <div className="btn-bot">
+                                        <button className="btn-pk s blue2 bdrs w50p"
+                                            onClick={()=>{
+                                                if(ingredientBadCount >= userIngredientBad.length)
+                                                    alert("모든 성분을 확인했습니다.")
+                                                else setIngredientBadCount(prev=>prev+10)
+                                            }}>
+                                            <span>더보기</span>
+                                        </button>
+                                    </div>
+                                    :
+                                    null
+                                }
                                 <ul>
-                                    <li onClick={null}><span>헥산다이올</span></li>
-                                    <li onClick={null}><span>폴리글레시릴</span></li>
-                                    <li onClick={null}><span>이눌린라우릴카바메이트</span></li>
+                                    <Modal open = {modal2} className="customOverlay">
+                                        <div id="popIngredient" className="layerPopup pop_ingredient">
+                                            <div className="popup">
+                                                <div className="p_head botm">
+                                                    <h2 className="hidden">성분상세</h2>
+                                                    <button type="button" className="b-close btn_close" onClick={()=>setModal2()}>
+                                                        <span>x</span>
+                                                    </button>
+                                                </div>
+
+                                                <div className="bad_p_cont">
+                                                    <p className="h1"> {userIngredientBad[userClick]?.ingredient.ingred_kor} </p>
+                                                    <p className="h2">배합목적 : {userIngredientBad[userClick]?.ingredient.ingred_purpose} </p>
+                                                    <p className="t1"> {userIngredientBad[userClick]?.ingredient.ingred_text} </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Modal>
                                 </ul>
                             </div>
                         </div>
@@ -549,6 +547,15 @@ const Neighbor = () => {
                     </div>
                 </div>
             </div>
+            <footer id="footer" className="footer">
+                <ul className="div1">
+                    <li className="off" id="fmenu1"><Link to="/test"><span className="i-aft i_fmenu1">평가</span></Link></li>
+                    <li className="off" id="fmenu2"><Link to="/mykiin"><span className="i-aft i_fmenu2">MY키인</span></Link></li>
+                    <li className="off" id="fmenu3"><Link to="/main"><span className="i-aft i_fmenu3">메인</span></Link></li>
+                    <li className="off" id="fmenu4"><Link to="/search"><span className="i-aft i_fmenu4">제품검색</span></Link></li>
+                    <li className="off" id="fmenu5"><Link to="/mypage"><span className="i-aft i_fmenu5">마이페이지</span></Link></li>
+                </ul>
+            </footer>
         </div>  
     )
 }

@@ -69,6 +69,14 @@ const View = () =>{
         }
     }
 
+    const handleKeyPress = (e) => {
+		if (e.key === 'Enter') {
+            setSearchPressed(!searchPressed)
+            setCount(count + 1)
+            search();
+        }
+	}
+
     return (
         <div>
             <header id="header" className="header">
@@ -84,7 +92,7 @@ const View = () =>{
                     </div>
                     <div className="cen">
                         <input type="text" id="hd_search" className="inp_txt w100p" placeholder="제품을 검색해 보세요"
-                            value={input} onChange={(e) => { setInput(e.target.value) }}/>
+                            value={input} onChange={(e) => { setInput(e.target.value) }} onKeyDown={handleKeyPress} />
                     </div>
                     <div className="rgh">
                         <button type="button" className="btn_sch_r" id="search_btn"
@@ -162,6 +170,15 @@ const View = () =>{
                     }
                 </div>
             </div>
+            <footer id="footer" className="footer">
+                <ul className="div1">
+                    <li className="off" id="fmenu1"><Link to="/test"><span className="i-aft i_fmenu1">평가</span></Link></li>
+                    <li className="off" id="fmenu2"><Link to="/mykiin"><span className="i-aft i_fmenu2">MY키인</span></Link></li>
+                    <li className="off" id="fmenu3"><Link to="/main"><span className="i-aft i_fmenu3">메인</span></Link></li>
+                    <li className="off" id="fmenu4"><Link to="/search"><span className="i-aft i_fmenu4">제품검색</span></Link></li>
+                    <li className="off" id="fmenu5"><Link to="/mypage"><span className="i-aft i_fmenu5">마이페이지</span></Link></li>
+                </ul>
+            </footer>
         </div>
     )
 }

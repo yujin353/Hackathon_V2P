@@ -59,6 +59,10 @@ const Search = () => {
         }
     }
 
+    const handleKeyPress = (e) => {
+		if (e.key === 'Enter') search();
+	}
+
     return (
         <div>
             <header id="header" className="header">
@@ -71,7 +75,7 @@ const Search = () => {
                     </div>
                     <div className="cen">
                         <input type="text" id="hd_search" className="inp_txt w100p" placeholder="제품을 검색해 보세요" 
-                            value={input} onChange={(e)=>{setInput(e.target.value)}}/>
+                            value={input} onChange={(e)=>{setInput(e.target.value)}} onKeyDown={handleKeyPress} />
                     </div>
                     <div className="rgh">
                         <button type="button" className="btn_sch_r" id="search_btn" 
