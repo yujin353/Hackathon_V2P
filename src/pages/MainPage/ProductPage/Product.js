@@ -10,6 +10,7 @@ const Product = () => {
     const params = useParams()
     const navigate = useNavigate()
     const [productInfo, setProductInfo] = useState({})
+    const [average, setAverage] = useState("")
     const [username, setUsername] = useState("")
     const [rate, setRate] = useState()
     const [reviewList, setReviewList] =  useState([])
@@ -18,7 +19,8 @@ const Product = () => {
     const rating_txt = ["별로에요", "보통이에요", "보통이에요", "보통이에요", "잘 맞았어요"]
     const [productIngredients, setProductIngredients] = useState(null);
     let [likeProducts, setLikeProducts] = useState([])
-	let latestLikeProducts = useRef(likeProducts)
+    let latestLikeProducts = useRef(likeProducts)
+    let stars
 
     /* loading product info */
     useEffect(() => {
@@ -32,6 +34,16 @@ const Product = () => {
                 navigate("/main")
             }
         })
+    }, [])
+
+    /* loading product review average */
+    useEffect(() => {
+        $.ajax({
+            async: true, type: "GET",
+            url: "https://api.odoc-api.com/api/v2/review-average" + "?id=" + params.id,
+            success: (response) => setAverage(response.message),
+            error: (response) => console.log(response)
+        });
     }, [])
 
     /* findout currently logged in user */
@@ -111,7 +123,7 @@ const Product = () => {
             },
             error: (response) => { console.log(response.results) }
         });
-    })	
+    })
 
     /* find products user wants to try */
 	const findLikeProducts = (likeIcon) => {
@@ -250,6 +262,7 @@ const Product = () => {
 
     if(productInfo.brand === undefined) return <></>
 
+    stars = average * 100.0 / 5.0
     return (
         <div>
             <header id="header" className="header">
@@ -297,8 +310,8 @@ const Product = () => {
                                 <li>
                                     <p>평균 평점</p>
                                     <div className="r">
-                                        <div className="i_grade"><span style={{ width: "80%" }}></span></div>
-                                        <p>4.0</p>
+                                        <div className="i_grade"><span style={{ width: stars + "%" }}></span></div>
+                                        <p>{average ? average : "undefined"}</p>
                                     </div>
                                 </li>
                             </ul>

@@ -4998,6 +4998,7 @@ html {
 }
 .lst_grade .i_grade {
   position: relative;
+  right: 10px;
   width: 192px;
   width: 25.6vw;
   height: 30px;
