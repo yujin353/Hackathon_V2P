@@ -75,7 +75,7 @@ const Ingredient = ( {userPK} ) => {
                         }
                         </ul>
                         :
-                        <li>나와 맞는 성분이 없습니다.</li>
+                        <p className="h_tit2-1">나와 맞는 성분이 없습니다.</p>
                     }
                     {
                         userIngredientGood.length != 0 ?
@@ -128,7 +128,7 @@ const Ingredient = ( {userPK} ) => {
                             }
                         </ul>
                         :
-                        <li>나와 안 맞는 성분이 없습니다.</li>
+                        <p className="h_tit2-2">나와 안 맞는 성분이 없습니다.</p>
                     }
                     {
                         userIngredientBad.length != 0 ?

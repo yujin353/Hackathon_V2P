@@ -74,7 +74,7 @@ const MyKiin = () => {
                     <Graph userPK={sessionStorage.getItem("user_pk")}/>
                     <Ingredient userPK={sessionStorage.getItem("user_pk")}/>
                     <Used_Wanted_Product userPK={sessionStorage.getItem("user_pk")} />
-                    
+
                     <h2 className="h_tit1">나와 비슷한 피부를 가진 이웃</h2>
                     <div className="lst_list1">
                         <ul>
