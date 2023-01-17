@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react"
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { Modal } from "../../../component";
-import { Graph } from "../../../component";
+import { Graph, Ingredient, Used_Wanted_Product, Footer } from "../../../component";
 import { useAccessTknRefresh } from "../../../hooks";
 import $ from "jquery"
 
@@ -20,16 +19,7 @@ const Neighbor = () => {
     const btnRef5 = useRef(null)
     const btnRef6 = useRef(null)
     const [bScore, setBScore] = useState([])
-    const [modal1, setModal1] = useState(false)
-    const [modal2, setModal2] = useState(false)
-    const [used, setUsed] = useState([])
-    const [wanted, setWanted] = useState([])
     const [reviewList, setReviewList] = useState([])
-    const [userIngredientGood, setUserIngredientGood] = useState([])
-    const [userIngredientBad, setUserIngredientBad] = useState([])
-    const [userClick, setUserClick] = useState(0)
-    const [ingredientGoodCount, setIngredientGoodCount] = useState(10)
-    const [ingredientBadCount, setIngredientBadCount] = useState(10)
 
     const rating_className = ["i_review_bad", "i_review_normal", "i_review_normal", "i_review_normal", "i_review_good"]
     const rating_txt = ["별로에요", "보통이에요", "보통이에요", "보통이에요", "잘 맞았어요"]
@@ -75,28 +65,6 @@ const Neighbor = () => {
     useEffect(() => {
         $.ajax({
             async: true, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/reviews-member-filter/?search=" + userID,
-            success: (response) => { 
-                const result = []
-                response.results.map(v=>{if(v.product!=null)result.push(v)})
-                setUsed(result) 
-            },
-            error: (response) => console.log(response.results)
-        });
-    }, [])
-
-    useEffect(() => {
-        $.ajax({
-            async: true, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/product-like/?search=" + userID,
-            success: (response) => setWanted(response.results),
-            error: (response) => console.log(response.results)
-        });
-    }, [])
-
-    useEffect(() => {
-        $.ajax({
-            async: true, type: "GET",
             url: "https://api.odoc-api.com/api/v1/reviews-member-filter/" + "?search=" + userID,
             success: (response) => {
                 const result = [];
@@ -128,49 +96,6 @@ const Neighbor = () => {
             },
         });
     })
-
-    /* set neighbor's Good, Bad Ingredient */
-    useEffect(() => {
-        let isMounted = true;
-        $.ajax({
-            async: true, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/my-ingredient/?limit=1000000&offset=0&search=" + userID,
-            success: response => {
-
-                const result = response.results;
-
-                if(result === undefined)return;
-                if(isMounted) {
-
-                    const results = response.results
-                    let good = []
-                    let bad = []
-                    for(let i=0; i<results.length; i++)
-                    {
-                        if(results[i].ingred_status == true)
-                            good.push(results[i])
-                        else
-                            bad.push(results[i])
-                    }
-                    setUserIngredientBad(bad)
-                    setUserIngredientGood(good)
-
-                }
-            },
-            error: response => console.log(response.results)
-        });
-        return () => isMounted = false
-    }, [])
-
-    function handleButtonClick1(v, index) {
-        setUserClick(index)
-        setModal1(!modal1)
-    }
-
-    function handleButtonClick2(v, index) {
-        setUserClick(index)
-        setModal2(!modal2)
-    }
 
     /* function to calculate product fit */
     const productFit = (member_id, product_id) => {
@@ -274,233 +199,11 @@ const Neighbor = () => {
             <div id="container" className="container sub myk">
                 <div className="inr-c">
                     <div className="hd_tit"><h2 className="h_tit1">피부타입 분석결과</h2></div>
+
                     <Graph userPK={userID}/>
+                    <Ingredient userPK={userID} />
+                    <Used_Wanted_Product userPK={userID} />
 
-                    <div className="pr-mb1">
-                        <h2 className="h_tit1">나의 성분 리스트</h2>
-                        <div className="box_cont">
-                            <p className="h_tit2">나와 잘 맞는 성분</p>
-                            <div className="lst_c ty1 pr-mb2">
-                                {
-                                    userIngredientGood.length != 0 ?
-                                    <ul>
-                                    {
-                                        userIngredientGood.slice(0,ingredientGoodCount).map((v, index) => {
-                                            return (
-                                                <li key={v.ingredient.ingred_kor}>
-                                                    <span onClick = {() => handleButtonClick1(v, index)}> {v.ingredient.ingred_kor} </span>
-                                                </li>
-                                            )
-                                        })
-                                    }
-                                    </ul>
-                                    :
-                                    <li>나와 맞는 성분이 없습니다.</li>
-                                }
-                                {
-                                    userIngredientGood.length != 0 ?
-                                    <div className="btn-bot">
-                                        <button className="btn-pk s blue2 bdrs w50p"
-                                            onClick={()=>{
-                                                if(ingredientGoodCount >= userIngredientGood.length)
-                                                    alert("모든 성분을 확인했습니다.")
-                                                else setIngredientGoodCount(prev=>prev+10)
-                                            }}>
-                                            <span>더보기</span>
-                                        </button>
-                                    </div>
-                                    :
-                                    null
-                                }
-                                <ul>
-                                    <Modal open = {modal1} className="customOverlay">
-                                        <div id="popIngredient" className="layerPopup pop_ingredient">
-                                            <div className="popup">
-                                                <div className="p_head botm">
-                                                    <h2 className="hidden">성분상세</h2>
-                                                    <button type="button" className="b-close btn_close" onClick={()=>setModal1()}>
-                                                        <span>x</span>
-                                                    </button>
-                                                </div>
-                                                <div className="bad_p_cont">
-                                                    <p className="h1"> {userIngredientGood[userClick]?.ingredient.ingred_kor} </p>
-                                                    <p className="h2">배합목적 : {userIngredientGood[userClick]?.ingredient.ingred_purpose} </p>
-                                                    <p className="t1"> {userIngredientGood[userClick]?.ingredient.ingred_text} </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </Modal>
-                                </ul>
-                            </div>
-                            <p className="h_tit2">나와 안 맞는 성분</p>
-                            <div className="lst_c ty2 pr-mb2">
-                            {
-                                    userIngredientBad.length != 0 ?
-                                    <ul>
-                                        {
-                                            userIngredientBad.slice(0,ingredientBadCount).map((v, index) => {
-                                                return (
-                                                    <li key={v.ingredient.ingred_kor}>
-                                                        <span onClick = {() => handleButtonClick2(v, index)}> {v.ingredient.ingred_kor} </span>
-                                                    </li>
-                                                )
-                                            })
-                                        }
-                                    </ul>
-                                    :
-                                    <li>나와 안 맞는 성분이 없습니다.</li>
-                                }
-                                {
-                                    userIngredientBad.length != 0 ?
-                                    <div className="btn-bot">
-                                        <button className="btn-pk s blue2 bdrs w50p"
-                                            onClick={()=>{
-                                                if(ingredientBadCount >= userIngredientBad.length)
-                                                    alert("모든 성분을 확인했습니다.")
-                                                else setIngredientBadCount(prev=>prev+10)
-                                            }}>
-                                            <span>더보기</span>
-                                        </button>
-                                    </div>
-                                    :
-                                    null
-                                }
-                                <ul>
-                                    <Modal open = {modal2} className="customOverlay">
-                                        <div id="popIngredient" className="layerPopup pop_ingredient">
-                                            <div className="popup">
-                                                <div className="p_head botm">
-                                                    <h2 className="hidden">성분상세</h2>
-                                                    <button type="button" className="b-close btn_close" onClick={()=>setModal2()}>
-                                                        <span>x</span>
-                                                    </button>
-                                                </div>
-
-                                                <div className="bad_p_cont">
-                                                    <p className="h1"> {userIngredientBad[userClick]?.ingredient.ingred_kor} </p>
-                                                    <p className="h2">배합목적 : {userIngredientBad[userClick]?.ingredient.ingred_purpose} </p>
-                                                    <p className="t1"> {userIngredientBad[userClick]?.ingredient.ingred_text} </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </Modal>
-                                </ul>
-                            </div>
-                        </div>
-                        <button type="button" id="btn_box_more" className="btn-pk s blue2 bdrs w100p" ref={btnRef2}
-                            onClick={() => {
-                                $(btnRef2.current).children(".i-aft").toggleClass("i_arr_b1 i_arr_b2")
-                                if ($(btnRef2.current).children(".i-aft").contents()[0].data === "열기") {
-                                    $(btnRef2.current).children(".i-aft").contents()[0].data = "닫기"
-                                    $(btnRef2.current).prev().show()
-                                } else {
-                                    $(btnRef2.current).children(".i-aft").contents()[0].data = "열기"
-                                    $(btnRef2.current).prev().hide()
-                                }
-                            }}>
-                            <span className="i-aft i_arr_b1">열기</span>
-                        </button>
-                    </div>
-
-                    <div className="pr-mb2">
-                        <div className="hd_tit">
-                            <h2 className="h_tit1">사용해본 제품</h2>
-                            <p className="h_txt1"><span>내가 리뷰를 남긴 제품들이에요.<br />리뷰를 작성하고 화장대에 추가해 보세요.</span></p>
-                            {/* <div className="rgh">
-                                <button type="button" className="c-gray btn_prd_del" ref={btnRef3}
-                                    onClick={() => {
-                                        $(btnRef3.current)
-                                            .hide()
-                                            .next().show()
-                                            .closest(".hd_tit").next(".lst_prd").find(".btn_del").show()
-                                    }}>
-                                    <span className="i-aft i_del">관리</span>
-                                </button>
-                                <button type="button" className="c-blue d-n btn_prd_save" ref={btnRef4}
-                                    onClick={() => {
-                                        $(btnRef4.current)
-                                            .hide()
-                                            .prev().show()
-                                            .closest(".hd_tit").next(".lst_prd").find(".btn_del").hide()
-                                    }}>
-                                    <span className="i-aft i_chk">저장</span>
-                                </button>
-                            </div> */}
-                        </div>
-
-                        <div className="lst_prd">
-                            <ul>
-                                {used.map((v, i) => {
-                                    return (
-                                        <li key={v + i}>
-                                            <div className="thumb">
-                                                <Link to={`/main/products/${v.product.product_id}`}>
-                                                    <span className="im" style={{ backgroundImage: `url(${v.product.product_img_path})` }}></span>
-                                                </Link>
-                                                <button type="button" className="btn_del">
-                                                    <span className="i-set i_del_b">삭제</span>
-                                                </button>
-                                            </div>
-                                            <div className="txt"><Link to={`/main/products/${v.product.product_id}`}>
-                                                <p className="t1">{v.product.brand.brand_name}</p>
-                                                <p className="t2">{v.product.product_name}</p>
-                                            </Link></div>
-                                        </li>
-                                    )
-                                })}
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div className="pr-mb2">
-                        <div className="hd_tit">
-                            <h2 className="h_tit1">관심 제품</h2>
-                            <p className="h_txt1"><span>내가 좋아요 누른 제품들이에요.</span></p>
-                            {/* <div className="rgh">
-                                <button type="button" className="c-gray btn_prd_del" ref={btnRef5}
-                                    onClick={() => {
-                                        $(btnRef5.current)
-                                            .hide()
-                                            .next().show()
-                                            .closest(".hd_tit").next(".lst_prd").find(".btn_del").show()
-                                    }}>
-                                    <span className="i-aft i_del">관리</span>
-                                </button>
-                                <button type="button" className="c-blue d-n btn_prd_save" ref={btnRef6}
-                                    onClick={() => {
-                                        $(btnRef6.current)
-                                            .hide()
-                                            .prev().show()
-                                            .closest(".hd_tit").next(".lst_prd").find(".btn_del").hide()
-                                    }}>
-                                    <span className="i-aft i_chk">저장</span>
-                                </button>
-                            </div> */}
-                        </div>
-
-                        <div className="lst_prd">
-                            <ul>
-                                {wanted.map((v, i) => {
-                                    return (
-                                        <li key={v + i}>
-                                            <div className="thumb">
-                                                <Link to={`/main/products/${v.like_product.product_id}`}>
-                                                    <span className="im" style={{ backgroundImage: `url(${v.like_product.product_img_path})` }}></span>
-                                                </Link>
-                                                <button type="button" className="btn_del">
-                                                    <span className="i-set i_del_b">삭제</span>
-                                                </button>
-                                            </div>
-                                            <div className="txt"><Link to={`/main/products/${v.like_product.product_id}`}>
-                                                <p className="t1">{v.like_product.brand.brand_name}</p>
-                                                <p className="t2">{v.like_product.product_name}</p>
-                                            </Link></div>
-                                        </li>
-                                    )
-                                })}
-                            </ul>
-                        </div>
-                    </div>
                     <div className="hd_tit">
                         <h2 className="h_tit1"><strong className="c-blue">{username}</strong>님이 작성한 리뷰</h2>
                     </div>
@@ -547,15 +250,9 @@ const Neighbor = () => {
                     </div>
                 </div>
             </div>
-            <footer id="footer" className="footer">
-                <ul className="div1">
-                    <li className="off" id="fmenu1"><Link to="/test"><span className="i-aft i_fmenu1">평가</span></Link></li>
-                    <li className="off" id="fmenu2"><Link to="/mykiin"><span className="i-aft i_fmenu2">MY키인</span></Link></li>
-                    <li className="off" id="fmenu3"><Link to="/main"><span className="i-aft i_fmenu3">메인</span></Link></li>
-                    <li className="off" id="fmenu4"><Link to="/search"><span className="i-aft i_fmenu4">제품검색</span></Link></li>
-                    <li className="off" id="fmenu5"><Link to="/mypage"><span className="i-aft i_fmenu5">마이페이지</span></Link></li>
-                </ul>
-            </footer>
+
+            <Footer />
+
         </div>  
     )
 }
