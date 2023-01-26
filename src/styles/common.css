@@ -4665,6 +4665,11 @@ html {
   word-wrap: normal;
   overflow: hidden;
 }
+.lst_prd2 .txt .btn_favorit {
+  position: absolute;
+  right: 30px;
+  right: 4vw;
+}
 .lst_prd2 .txt .t1 {
   font-size: 24px;
   font-size: 3.2vw;
@@ -4808,6 +4813,11 @@ html {
   text-align: center;
   font-weight: 700;
   color: #8b8f96;
+}
+.lst_prd2.ranking li .btn_favorit {
+  position: relative;
+  right: -44vw;
+  top: -5.2vw;
 }
 #container.event {
   padding-bottom: 100px;

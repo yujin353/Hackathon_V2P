@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useAccessTknRefresh } from "../../../hooks"
 // import { Modal } from '../../../component';
 import { Footer } from "../../../component";
 import $ from "jquery"
@@ -15,6 +16,10 @@ const View = () =>{
     const [searchPressed, setSearchPressed] = useState(false)
     // const [contents, setContents] = useState([])
     const [count, setCount] = useState(1)
+    const [recommend, setRecommend] = useState([])
+    let [likeProducts, setLikeProducts] = useState([])
+    let latestLikeProducts = useRef(likeProducts)
+    const accessTknRefresh = useAccessTknRefresh()
 
     useEffect(() => {
         $.ajax({
@@ -59,6 +64,18 @@ const View = () =>{
     //     setContents([])
     // }, [])
 
+    /* recommend products if no search results are found */
+    useEffect(() => {
+        $.ajax({
+            async: true, type: 'GET',
+            url: "https://api.odoc-api.com/api/v2/randomrecommend",// + "&member_id=" + sessionStorage.getItem("user_pk"),
+            success: (response) => {
+                setRecommend(response.results)
+            },
+            error: (response) => console.log(response)
+        });
+    }, [])
+
     const search = () => {
         setSearchParams({ input: input })
         if (input.trim() === "") {
@@ -77,6 +94,85 @@ const View = () =>{
             search();
         }
 	}
+
+    /* 좋아요 버튼 구현 */
+    /* retrieves user's favorite product */
+    useEffect(() => {
+        let isMounted = true;
+        $.ajax({
+            async: true, type: "GET",
+            url: "https://api.odoc-api.com/api/v1/product-like/" + "?search=" + sessionStorage.getItem("user_pk"),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + sessionStorage.getItem("access_token")),
+            success: (response) => {
+                response.results.map((v) => {
+                    const product_id = v.like_product.product_id
+                    const element = document.getElementsByName(product_id)
+                    $(element).addClass("on")
+                })
+            },
+            error: (response) => {
+                if (response.statusText === "Unauthorized") {
+                    sessionStorage.setItem("access_token", accessTknRefresh())
+                    navigate(0);
+                }
+            },
+        })
+        return () => isMounted = false
+    }, [])
+
+    /* find products user wants to try */
+    const findLikeProducts = (likeIcon) => {
+        let check = "fail";
+        for (let i = 0; i < (latestLikeProducts.current).length; i++){
+            if (likeIcon.id == latestLikeProducts.current[i]) {
+                check = "success";
+                break
+            }
+        }
+        return check;
+    }
+
+    /* coloring products user wants to try */
+    const likeState = (element) => {
+        let isMounted = true;
+        let likeIcon = document.getElementById(element);
+        let check;
+        if ( likeIcon && isMounted ) {
+            check = findLikeProducts(likeIcon);
+            if ( check == "success" ) return true;
+            else if ( check == "fail" ) return false;
+            else { console.log('likeIcon error'); return false; }
+        }
+    }
+
+    const likeProduct = (product_id) => {
+        $.ajax({
+            async: true, type: "POST",
+            url: "https://api.odoc-api.com/api/v2/like-product",
+            data: { "like_product": product_id },
+            dataType: "json",
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + sessionStorage.getItem("access_token")),
+            success: (response) => {
+                const element = document.getElementsByName(product_id)
+                $(element).toggleClass("on")
+                if (response.message === "Like") {
+                    alert("좋아하는 상품 목록에 추가되었습니다.");
+                    if (latestLikeProducts.current.length == 0) {
+                        setLikeProducts = [];
+                        setLikeProducts = setLikeProducts.concat(product_id);
+                        latestLikeProducts.current = setLikeProducts
+                    }
+                    else latestLikeProducts.current = latestLikeProducts.current.concat(product_id)
+                }
+                else {
+                    alert("좋아하는 상품 목록에서 제거되었습니다.");
+                    latestLikeProducts.current = latestLikeProducts.current.filter( elem => elem !== product_id )
+                }
+                likeState(product_id)
+            },
+            error: (response) => console.log(response),
+        });
+    }
 
     return (
         <div>
@@ -127,14 +223,32 @@ const View = () =>{
                                 <ul id="prod_list">
                                     {results.map((v) => {
                                         return (
-                                            <li className="prod" key={v.ID}><Link to={`/main/products/${v.ID}`}>
-                                                <div className="thumb"><span className="im" style={{ backgroundImage: `url(${v.Image})` }}></span></div>
-                                                <div className="txt">
-                                                    <p className="t1">{v.Brand}</p>
-                                                    <p className="t2">{v.Name}</p>
-                                                    {/* <p className="t1 mt20"><span className="i-aft i_star">4.6</span></p> */}
+                                            <li className="prod" key={v.ID}>
+                                                <div className="thumb">
+                                                    <Link to={`/main/products/${v.ID}`}>
+                                                        <span className="im" style={{ backgroundImage: `url(${v.Image})` }}></span>
+                                                    </Link>
+                                                    {/*<button*/}
+                                                    {/*    type="button" id={v.ID}*/}
+                                                    {/*    className={ likeState(v.ID) ? "btn_favorit on" : "btn_favorit" }*/}
+                                                    {/*    name={v.ID} onClick={() => likeProduct(v.ID)}>*/}
+                                                    {/*    <span className="i-set i_favorit">좋아요</span>*/}
+                                                    {/*</button>*/}
                                                 </div>
-                                            </Link></li>
+                                                <div className="txt">
+                                                    <Link to={`/main/products/${v.ID}`}>
+                                                        <p className="t1">{v.Brand}</p>
+                                                        <p className="t2">{v.Name}</p>
+                                                        {/* <p className="t1 mt20"><span className="i-aft i_star">4.6</span></p> */}
+                                                    </Link>
+                                                    <button
+                                                        type="button" id={v.ID}
+                                                        className={ likeState(v.ID) ? "btn_favorit on" : "btn_favorit" }
+                                                        name={v.ID} onClick={() => likeProduct(v.ID)}>
+                                                        <span className="i-set i_favorit">좋아요</span>
+                                                    </button>
+                                                </div>
+                                            </li>
                                         )
                                     })}
                                 </ul>
@@ -145,26 +259,29 @@ const View = () =>{
                             <h2 className="h_tit1">이런 제품은 어떠세요?</h2>
                             <div className="lst_prd">
                                 <ul onClick={()=>setCount(count+1)}>
-                                    <li>
-                                        <div className="thumb">
-                                            <Link to="#"><img className="im" src={require("../../../assets/images/tmp_prd.jpg")} /></Link>
-                                            {/* <button type="button" className="btn_favorit off"><span className="i-set i_favorit">좋아요</span></button> */}
-                                        </div>
-                                        <div className="txt"><Link to="#">
-                                            <p className="t1">Test Brand1</p>
-                                            <p className="t2">Test Product1</p>
-                                        </Link></div>
-                                    </li>
-                                    <li>
-                                        <div className="thumb">
-                                            <Link to="#"><img className="im" src={require("../../../assets/images/tmp_prd.jpg")} /></Link>
-                                            {/* <button type="button" className="btn_favorit off"><span className="i-set i_favorit">좋아요</span></button> */}
-                                        </div>
-                                        <div className="txt"><Link to="#">
-                                            <p className="t1">Test Brand2</p>
-                                            <p className="t2">Test Product2</p>
-                                        </Link></div>
-                                    </li>
+                                    {recommend.map((v) => {
+                                        return (
+                                            <li key={v.ID}>
+                                                <div className="thumb">
+                                                    <Link to={`../../main/products/${v.ID}`}>
+                                                        <img className="im" src={v.Image} />
+                                                    </Link>
+                                                    <button
+                                                        type="button" id={v.ID}
+                                                        className={ likeState(v.ID) ? "btn_favorit on" : "btn_favorit" }
+                                                        name={v.ID} onClick={() => likeProduct(v.ID)}>
+                                                        <span className="i-set i_favorit">좋아요</span>
+                                                    </button>
+                                                </div>
+                                                <div className="txt">
+                                                    <Link to={`../../main/products/${v.ID}`}>
+                                                        <p className="t1">{v.Brand}</p>
+                                                        <p className="t2">{v.Name}</p>
+                                                    </Link>
+                                                </div>
+                                            </li>
+                                        )
+                                    })}
                                 </ul>
                             </div>
                         </div>

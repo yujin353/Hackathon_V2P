@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import {useNavigate, useLocation, Link} from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 // import { Modal } from '../../component';
 import { Footer } from "../../component";
 import $ from "jquery"
+import {useAccessTknRefresh} from "../../hooks";
 
 const Search = () => {
     const navigate = useNavigate();
@@ -13,6 +14,11 @@ const Search = () => {
     const [keywords, setKeywords] = useState(
         JSON.parse(localStorage.getItem('keywords')) || [])
     // const [contents, setContents] = useState([])
+    const [count, setCount] = useState(1)
+    const [recommend, setRecommend] = useState([])
+    let [likeProducts, setLikeProducts] = useState([])
+    let latestLikeProducts = useRef(likeProducts)
+    const accessTknRefresh = useAccessTknRefresh()
 
     /* coloring bottom navigation bar icons */
     useEffect(() => {
@@ -49,6 +55,19 @@ const Search = () => {
     //     }
     // }, [input])
 
+    /* product recommendation */
+    useEffect(() => {
+        $.ajax({
+            async: true, type: 'GET',
+            url: "https://api.odoc-api.com/api/v2/randomrecommend",// + "&member_id=" + sessionStorage.getItem("user_pk"),
+            success: (response) => {
+                setRecommend(response.results)
+            },
+            error: (response) => console.log(response)
+        });
+    }, [])
+
+
     const search = () => {
         const textInput = input.trim()
         if(textInput==="")
@@ -63,6 +82,86 @@ const Search = () => {
     const handleKeyPress = (e) => {
 		if (e.key === 'Enter') search();
 	}
+
+    /* 좋아요 버튼 구현 */
+    /* retrieves user's favorite product */
+    useEffect(() => {
+        let isMounted = true;
+        $.ajax({
+            async: true, type: "GET",
+            url: "https://api.odoc-api.com/api/v1/product-like/" + "?search=" + sessionStorage.getItem("user_pk"),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + sessionStorage.getItem("access_token")),
+            success: (response) => {
+                response.results.map((v) => {
+                    const product_id = v.like_product.product_id
+                    const element = document.getElementsByName(product_id)
+                    $(element).addClass("on")
+                })
+            },
+            error: (response) => {
+                if (response.statusText === "Unauthorized") {
+                    sessionStorage.setItem("access_token", accessTknRefresh())
+                    navigate(0);
+                }
+            },
+        })
+        return () => isMounted = false
+    }, [])
+
+    /* find products user wants to try */
+    const findLikeProducts = (likeIcon) => {
+        let check = "fail";
+        for (let i = 0; i < (latestLikeProducts.current).length; i++){
+            if (likeIcon.id == latestLikeProducts.current[i]) {
+                check = "success";
+                break
+            }
+        }
+        return check;
+    }
+
+    /* coloring products user wants to try */
+    const likeState = (element) => {
+        let isMounted = true;
+        let likeIcon = document.getElementById(element);
+        let check;
+        if ( likeIcon && isMounted ) {
+            check = findLikeProducts(likeIcon);
+            if ( check == "success" ) return true;
+            else if ( check == "fail" ) return false;
+            else { console.log('likeIcon error'); return false; }
+        }
+    }
+
+    const likeProduct = (product_id) => {
+        $.ajax({
+            async: true, type: "POST",
+            url: "https://api.odoc-api.com/api/v2/like-product",
+            data: { "like_product": product_id },
+            dataType: "json",
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + sessionStorage.getItem("access_token")),
+            success: (response) => {
+                const element = document.getElementsByName(product_id)
+                $(element).toggleClass("on")
+                if (response.message === "Like") {
+                    alert("좋아하는 상품 목록에 추가되었습니다.");
+                    if (latestLikeProducts.current.length == 0) {
+                        setLikeProducts = [];
+                        setLikeProducts = setLikeProducts.concat(product_id);
+                        latestLikeProducts.current = setLikeProducts
+                    }
+                    else latestLikeProducts.current = latestLikeProducts.current.concat(product_id)
+                }
+                else {
+                    alert("좋아하는 상품 목록에서 제거되었습니다.");
+                    latestLikeProducts.current = latestLikeProducts.current.filter( elem => elem !== product_id )
+                }
+                likeState(product_id)
+            },
+            error: (response) => console.log(response),
+        });
+    }
+
 
     return (
         <div>
@@ -103,7 +202,7 @@ const Search = () => {
                         <h2 className="h_tit1">최근 검색어</h2>
                         <div className="lst_comm pr-mb2">
                             {keywords.length ?
-                                keywords.slice(0, 7).map((v,i)=>{
+                                keywords.slice(0, 5).map((v,i)=>{
                                     return(
                                         <p key={v+i}
                                             style={{
@@ -152,13 +251,43 @@ const Search = () => {
                             <button className="btn-pk ss blue2 bdrs"><span>미백</span></button>
                         </div> */}
                     </div>
+                    <div className="area_search2">
+                        <h2 className="h_tit1">이런 제품은 어떠세요?</h2>
+                        <div className="lst_prd">
+                            <ul onClick={()=>setCount(count+1)}>
+                                {recommend.map((v) => {
+                                    return (
+                                        <li key={v.ID}>
+                                            <div className="thumb">
+                                                <Link to={`../../main/products/${v.ID}`}>
+                                                    <img className="im" src={v.Image} />
+                                                </Link>
+                                                <button
+                                                    type="button" id={v.ID}
+                                                    className={ likeState(v.ID) ? "btn_favorit on" : "btn_favorit" }
+                                                    name={v.ID} onClick={() => likeProduct(v.ID)}>
+                                                    <span className="i-set i_favorit">좋아요</span>
+                                                </button>
+                                            </div>
+                                            <div className="txt">
+                                                <Link to={`../../main/products/${v.ID}`}>
+                                                    <p className="t1">{v.Brand}</p>
+                                                    <p className="t2">{v.Name}</p>
+                                                </Link>
+                                            </div>
+                                        </li>
+                                    )
+                                })}
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
             <Footer />
 
+            </div>
         </div>
     )
 }
 
-export default Search
+export default Search;
