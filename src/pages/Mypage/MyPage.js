@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { Link, useNavigate } from "react-router-dom"
 import { Modal, Footer } from '../../component'
+import cookies from "react-cookies"
 import $ from "jquery"
 
 const MyPage = () => {
@@ -58,6 +59,8 @@ const MyPage = () => {
                 sessionStorage.removeItem("access_token");
                 sessionStorage.removeItem("refresh_token");
                 sessionStorage.removeItem("user_pk");
+                cookies.remove("access_token");
+                cookies.remove("refresh_token");
                 window.location.href = '/login'
             },
             error: function (response) {
