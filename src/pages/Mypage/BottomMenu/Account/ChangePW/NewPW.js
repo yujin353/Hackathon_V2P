@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react"
 import { useNavigate } from "react-router-dom";
+import cookies from "react-cookies"
 import $ from "jquery"
 
 const NewPW = () => {
@@ -45,6 +46,8 @@ const NewPW = () => {
                 sessionStorage.removeItem("access_token");
                 sessionStorage.removeItem("refresh_token");
                 sessionStorage.removeItem("user_pk");
+                cookies.remove("access_token")
+                cookies.remove("refresh_token")
                 navigate("/login")
             },
             error: (response) => console.log(response),

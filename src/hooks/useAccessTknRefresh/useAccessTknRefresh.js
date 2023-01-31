@@ -1,4 +1,6 @@
 import { useNavigate } from "react-router-dom"
+import cookies from "react-cookies"
+import { useCookieToRefresh } from "../"
 import $ from "jquery"
 
 const Logout = () => {
@@ -13,6 +15,8 @@ const Logout = () => {
             sessionStorage.removeItem("access_token");
             sessionStorage.removeItem("refresh_token");
             sessionStorage.removeItem("user_pk");
+            cookies.remove("access_token");
+            cookies.remove("refresh_token");
             navigate("/login")
         },
         error: (response) => console.log(response),
@@ -20,6 +24,7 @@ const Logout = () => {
 }
 
 const useAccessTknRefresh = () => {
+    const cookieToRefresh = useCookieToRefresh();
     let result;
     $.ajax({
         async: false, type: 'POST',
@@ -29,8 +34,20 @@ const useAccessTknRefresh = () => {
         success: (response) => result = response.access,
         error: function (response) {
             console.log(response)
-            alert("토큰이 만료되었습니다. 다시 로그인해 주세요")
-            Logout();
+            if (cookies.load("refresh_token")) { // expires session. use cookies
+                result = cookieToRefresh();
+                if (result == "error"){
+                    alert("다시 로그인해 주세요")
+                    Logout();
+                }
+                sessionStorage.setItem("access_token", result)
+                sessionStorage.setItem("refresh_token", cookies.load("refresh_token"))
+                sessionStorage.setItem("user_pk", localStorage.getItem("user_pk")) //change after
+            }
+            else{
+                alert("다시 로그인해 주세요")
+                Logout();
+            }
         }
     });
     return result
