@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { NaverLogin } from "../../component";
 import { useCookieToRefresh } from "../../hooks";
 import cookies from "react-cookies";
 import $ from "jquery";
@@ -140,8 +139,6 @@ const Login = () => {
 						{/*	<p className="l">비밀번호를 잊으셨나요?</p>*/}
 						{/*	<p className="r"><Link to="/findpw" className="c-blue">비밀번호 찾기</Link></p>*/}
 						{/*</div>*/}
-
-						<NaverLogin />
 					</div>
 				</div>
 			</div>
