@@ -5194,6 +5194,35 @@ html {
   font-size: 2.66666667vw;
   color: #8b8f96;
 }
+.txt_box3 .box {
+  position: relative;
+  padding: 20px 30px;
+  padding: 2.66666667vw 4vw;
+  margin-top: 30px;
+  margin-top: 4vw;
+  font-size: 26px;
+  font-size: 3.46666667vw;
+  line-height: 40px;
+  line-height: 5.33333333vw;
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+  border-radius: 12px;
+  -webkit-border-radius: 1.6vw;
+  -moz-border-radius: 1.6vw;
+  border-radius: 1.6vw;
+  color: #34373f;
+  background-color: #edf2ff;
+}
+#container .botm2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  margin-top: 2.66666667vw;
+  font-size: 24px;
+  font-size: 3.2vw;
+  color: #8b8f96;
+}
 .lst_review .botm {
   display: flex;
   align-items: center;
