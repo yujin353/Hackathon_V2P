@@ -25,6 +25,7 @@ const Logout = () => {
 
 const useAccessTknRefresh = () => {
     const cookieToRefresh = useCookieToRefresh();
+    const navigate = useNavigate();
     let result;
     $.ajax({
         async: false, type: 'POST',
@@ -39,6 +40,7 @@ const useAccessTknRefresh = () => {
                 if (result == "error"){
                     alert("다시 로그인해 주세요")
                     Logout();
+                    navigate("/login")
                 }
                 sessionStorage.setItem("access_token", result)
                 sessionStorage.setItem("refresh_token", cookies.load("refresh_token"))
@@ -47,6 +49,7 @@ const useAccessTknRefresh = () => {
             else{
                 alert("다시 로그인해 주세요")
                 Logout();
+                navigate("/login")
             }
         }
     });
