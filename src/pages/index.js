@@ -14,6 +14,7 @@ export { default as Question } from './TestPage/Question'
 
 export { default as MyKiin } from './MyKiinPage'
 export { default as Neighbor } from './MyKiinPage/Neighbor'
+export { default as DetailResult } from './MyKiinPage/DetailResultPage'
 
 export { default as Search } from './SearchPage'
 export { default as View_0 } from './SearchPage/View'

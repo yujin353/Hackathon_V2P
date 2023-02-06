@@ -1,4 +1,5 @@
-import React, {  useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import {Link, useNavigate} from "react-router-dom";
 import {
     Chart as ChartJS,
     RadialLinearScale,
@@ -7,14 +8,16 @@ import {
     Legend,
 } from 'chart.js';
 import { PolarArea } from 'react-chartjs-2';
-import $ from "jquery"
+import $ from "jquery";
 
 ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend);
 
-const Graph = ( {userPK} ) => {
-    const [myskinScore, setMyskinScore] = useState([])
-    const [myskinType, setMyskinType] = useState(undefined)
-    const [bTarget, setBTarget] = useState(undefined)
+const Graph = ({ userPK }) => {
+    const [myskinScore, setMyskinScore] = useState([]);
+    const [myskinType, setMyskinType] = useState(undefined);
+    const [bTarget, setBTarget] = useState(undefined);
+    const btnRef1 = useRef(null)
+    const navigate = useNavigate()
 
     const data = {
         labels: ['밸런싱', '견고성', '균일성', '탄력성', '안정성'],
@@ -28,9 +31,14 @@ const Graph = ( {userPK} ) => {
                     'rgba(255, 206, 86, 0.5)',
                     'rgba(75, 192, 192, 0.5)',
                     'rgba(153, 102, 255, 0.5)',
-                    'rgba(255, 159, 64, 0.5)',
+                    // 'rgba(31, 188 , 211, 0.5)',
+                    // 'rgba(203, 226 , 180, 0.5)',
+                    // 'rgba(247, 191 , 168, 0.5)',
+                    // 'rgba(246, 182 , 202, 0.5)',
+                    // 'rgba(155, 213 , 189, 0.5)',
                 ],
                 borderWidth: 1,
+                // borderColor: '#FF6384',
             }
         ],
     };
@@ -41,53 +49,66 @@ const Graph = ( {userPK} ) => {
                 min: 0,
                 max: 100,
             },
+        },
+        plugins: {
+            tooltip: {
+                callbacks: {
+                    label: function (context) {
+                        let label = context.label || ''; // 밸런싱, 견고성, 균일성 ...
+                        let data = ['밸런싱은 이러이러하고 저러저러하다', 2, 3, 4, 5]; // custom
+                        if (label) {
+                            label = label + ': ' + context.raw + `\n` + data[context.dataIndex];
+                        }
+                        return label;
+                    },
+                }
+            }
         }
-    }
+    };
 
     useEffect(() => {
         $.ajax({
             async: false, type: "GET",
             url: "https://api.odoc-api.com/api/v1/myskin/?search=" + userPK,
             success: (response) => {
-                const results = response.results[0]
+                const results = response.results[0];
                 if (results === undefined) return;
                 setMyskinScore(() => {
-                    const result = []
-                    const balance = results.balancing_score // 밸런싱
-                    const robustness = results.strong_score // 견고성
-                    const uniformity = results.even_score // 균일성
-                    const resilience = results.tight_score // 탄력성
-                    const stability = results.target_id.target_score // 안정성
-                    result.push(balance)
-                    result.push(robustness)
-                    result.push(uniformity)
-                    result.push(resilience)
-                    result.push(stability)
+                    const result = [];
+                    const balance = results.balancing_score; // 밸런싱
+                    const robustness = results.strong_score; // 견고성
+                    const uniformity = results.even_score; // 균일성
+                    const resilience = results.tight_score; // 탄력성
+                    const stability = results.target_id.target_score; // 안정성
+                    result.push(balance);
+                    result.push(robustness);
+                    result.push(uniformity);
+                    result.push(resilience);
+                    result.push(stability);
                     return result;
-                })
-                setMyskinType(results.do_alphabet + results.rs_alphabet + results.np_alphabet + results.tw_alphabet)
-                setBTarget(results.target_id.target_name)
-            }, 
+                });
+                setMyskinType(results.do_alphabet + results.rs_alphabet + results.np_alphabet + results.tw_alphabet);
+                setBTarget(results.target_id.target_name);
+            },
             error: (response) => console.log(response)
         });
-    }, [])
+    }, []);
 
     return (
         <>
-            <div className="area_type"><PolarArea data={data} options={options}/></div>
+            <div className="area_type"><PolarArea data={data} options={options} /></div>
             <div className="txt_box1 pr-mb1">
                 <p className="tit">내 피부 타입은 <strong className="c-blue">{myskinType ? myskinType : "undefined"}</strong> 입니다.</p>
                 <div className="box">
                     <p>부스팅 타겟은 <strong>{bTarget ? bTarget : "undefined"}</strong>입니다.
-                        {/* <button type="button" className="btn_bmore" ref={btnRef1}
-                                onClick={()=>{$(btnRef1.current).hide().parent().css("height", "auto");}}>
-                            <span>자세히</span>
-                        </button> */}
+                        { <button type="button" className="btn_bmore" ref={btnRef1} onClick={()=>navigate(`/mykiin/detailresult?id=${userPK}`)}>
+                            <span>결과가 더 궁금하다면?</span>
+                        </button> }
                     </p>
                 </div>
             </div>
         </>
-    )
-}
+    );
+};
 
 export default Graph;

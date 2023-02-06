@@ -55,6 +55,7 @@ const Product = () => {
             error: (response) => {
                 console.log("error", response);
                 alert("login failed.")
+                navigate("/login")
             },
         });
     }, [])
