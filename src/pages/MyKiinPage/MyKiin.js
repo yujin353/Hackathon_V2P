@@ -17,14 +17,6 @@ const MyKiin = () => {
 
     const [count, setCount] = useState(3)
 
-    /* To check duplicate reviews */
-    let dup = []
-    const checkDuplicate = (product_id) => {
-        if (dup[product_id] > 0)
-            return 'Y'
-        else return 'N'
-    }
-
     useEffect(()=>{
         window.scrollTo(0,0);
     },[])

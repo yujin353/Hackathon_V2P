@@ -79,7 +79,7 @@ const Account = () => {
                                     <span>알림</span>
                                 </button>
                             </li> */}
-                            <li><Link to="#" onClick={logout}>로그아웃</Link></li>
+                            {/*<li><Link to="#" onClick={logout}>로그아웃</Link></li>*/}
                             <li><Link to="#" onClick={withdraw}>회원탈퇴</Link></li>
                             {/* <li><Link to="changepw">비밀번호 변경</Link></li> */}
                         </ul>

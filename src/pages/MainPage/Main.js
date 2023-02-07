@@ -59,6 +59,7 @@ const Main = () => {
 			error: (response) => {
 				console.log("error", response);
 				alert("login failed.")
+				navigate("/login")
 			},
 		});
 		return () => isMounted = false

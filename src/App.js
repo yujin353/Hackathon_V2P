@@ -1,22 +1,22 @@
 import React from "react";
 import { Outlet, Route, Routes } from "react-router-dom";
-import { 
-  Intro, 
-    Login, FindID, FindPW, Reset,
-    Certification, Policy, SignUp,
-  Test, 
-    Question,
+import {
+  Intro,
+  Login, FindID, FindPW, Reset,
+  Certification, Policy, SignUp,
+  Test,
+  Question,
   MyKiin,
-    Neighbor,
-  Main, 
-    Ranking, Product, Review,
-  Search, 
-    View_0,
-  MyPage, 
-    Notification, 
-    Event, View_1, MyReview, Friend, Interest, Point, Change, Refund,
-    Notice, View_2, FAQ, View_3, Support, Account, TOS, ChangePW, NewPW,
-  NotFound,
+  Neighbor,
+  Main,
+  Ranking, Product, Review,
+  Search,
+  View_0,
+  MyPage,
+  Notification,
+  Event, View_1, MyReview, Friend, Interest, Point, Change, Refund,
+  Notice, View_2, FAQ, View_3, Support, Account, TOS, ChangePW, NewPW,
+  NotFound, DetailResult,
 } from './pages'
 import { PublicRoute, PrivateRoute, Certificated, PolicyChecked } from "./router"
 
@@ -46,6 +46,7 @@ export default function App() {
           <Route path="/mykiin" element={<PrivateRoute><Outlet /></PrivateRoute>}>
             <Route path="" element={<PrivateRoute><MyKiin /></PrivateRoute>} />
             <Route path="neighbor" element={<PrivateRoute><Neighbor /></PrivateRoute>} />
+            <Route path="detailresult" element={<PrivateRoute><DetailResult /></PrivateRoute>} />
           </Route>
 
           <Route path="/main" element={<PrivateRoute><Outlet /></PrivateRoute>}>
