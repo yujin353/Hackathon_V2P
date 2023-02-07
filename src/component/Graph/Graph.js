@@ -38,7 +38,6 @@ const Graph = ({ userPK }) => {
                     // 'rgba(155, 213 , 189, 0.5)',
                 ],
                 borderWidth: 1,
-                // borderColor: '#FF6384',
             }
         ],
     };
@@ -49,20 +48,6 @@ const Graph = ({ userPK }) => {
                 min: 0,
                 max: 100,
             },
-        },
-        plugins: {
-            tooltip: {
-                callbacks: {
-                    label: function (context) {
-                        let label = context.label || ''; // 밸런싱, 견고성, 균일성 ...
-                        let data = ['밸런싱은 이러이러하고 저러저러하다', 2, 3, 4, 5]; // custom
-                        if (label) {
-                            label = label + ': ' + context.raw + `\n` + data[context.dataIndex];
-                        }
-                        return label;
-                    },
-                }
-            }
         }
     };
 
