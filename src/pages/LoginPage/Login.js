@@ -6,7 +6,6 @@ import $ from "jquery";
 
 const Login = () => {
 	const navigate = useNavigate();
-	const cookieToRefresh = useCookieToRefresh();
 	const [leftBox, setLeftBox] = useState(false);
 	const [rightBox, setRightBox] = useState(false);
 	const onChangeLeftBox = () => { setLeftBox(!leftBox); };
@@ -22,7 +21,8 @@ const Login = () => {
 		}
 		if (cookies.load("refresh_token")) {
 			setLeftBox(true);
-			let result = cookieToRefresh;
+			const cookieToRefresh = useCookieToRefresh;
+			let result = cookieToRefresh();
 			if (result === "error") setLeftBox(false);
 			else {
 				navigate("/main");

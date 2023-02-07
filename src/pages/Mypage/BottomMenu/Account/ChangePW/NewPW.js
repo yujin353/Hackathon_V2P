@@ -1,19 +1,19 @@
-import React, {useState, useEffect} from "react"
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import cookies from "react-cookies"
-import $ from "jquery"
+import cookies from "react-cookies";
+import $ from "jquery";
 
 const NewPW = () => {
     const navigate = useNavigate();
-    const [password1, setPassword1] = useState("")
-    const [password2, setPassword2] = useState("")
-    const [disabled, setDisabled] = useState(true)
+    const [password1, setPassword1] = useState("");
+    const [password2, setPassword2] = useState("");
+    const [disabled, setDisabled] = useState(true);
 
     useEffect(() => {
-        onChangePassword()
-        if ($("#pwdok").hasClass("t_comp")) setDisabled(false)
-        else setDisabled(true)
-    }, [password1, password2])
+        onChangePassword();
+        if ($("#pwdok").hasClass("t_comp")) setDisabled(false);
+        else setDisabled(true);
+    }, [password1, password2]);
 
     const onChangePassword = () => {
         document.getElementById('pwderror2').className = "hidden";
@@ -23,7 +23,7 @@ const NewPW = () => {
             document.getElementById('pwdlengtherror').className = "t_error";
             document.getElementById('pwderror5').className = "hidden";
         } else {
-            document.getElementById('pwdlengtherror').className = "hidden"
+            document.getElementById('pwdlengtherror').className = "hidden";
             if (password2.length === 0) {
                 document.getElementById('pwderror5').className = "hidden";
             } else if (password1 !== password2) {
@@ -33,7 +33,7 @@ const NewPW = () => {
                 document.getElementById('pwdok').className = "t_comp";
             }
         }
-    }
+    };
 
     const logout = () => {
         $.ajax({
@@ -46,13 +46,13 @@ const NewPW = () => {
                 sessionStorage.removeItem("access_token");
                 sessionStorage.removeItem("refresh_token");
                 sessionStorage.removeItem("user_pk");
-                cookies.remove("access_token")
-                cookies.remove("refresh_token")
-                navigate("/login")
+                cookies.remove("access_token");
+                cookies.remove("refresh_token");
+                navigate("/login");
             },
             error: (response) => console.log(response),
         });
-    }
+    };
 
     const changePassword = () => {
         $.ajax({
@@ -65,12 +65,12 @@ const NewPW = () => {
             dataType: 'json',
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + sessionStorage.getItem("access_token")),
             success: (response) => {
-                alert("비밀번호가 변경되었습니다.\n로그인 화면으로 이동합니다.")
+                alert("비밀번호가 변경되었습니다.\n로그인 화면으로 이동합니다.");
                 logout();
             },
             error: (response) => {
-                const text = JSON.parse(response.responseText)
-                console.log(text)
+                const text = JSON.parse(response.responseText);
+                console.log(text);
                 if (text.new_password2) {
                     if (text.new_password2[0] === "비밀번호가 너무 일상적인 단어입니다.") {
                         document.getElementById('pwderror2').className = "t_error";
@@ -80,11 +80,11 @@ const NewPW = () => {
                         document.getElementById('pwdok').className = "hidden";
                     }
                 }
-                setDisabled(true)
+                setDisabled(true);
             }
         });
-        sessionStorage.removeItem("phone_certification")
-    }
+        sessionStorage.removeItem("phone_certification");
+    };
 
     return (
         <div>
@@ -106,17 +106,17 @@ const NewPW = () => {
             <div id="container" className="container sub member">
                 <div className="inr-c">
                     <div className="area_member">
-                        <h2 className="h_tit2 mb40"><br/>변경할 비밀번호를 입력해 주세요.</h2>
+                        <h2 className="h_tit2 mb40"><br />변경할 비밀번호를 입력해 주세요.</h2>
                         <form method="post" id="joinform" name="joinform">
                             <fieldset>
                                 <div className="box-inp">
                                     <div>
                                         <label htmlFor="password">새로운 비밀번호</label>
-                                        <input type="password" id="password" name="password" 
-                                            placeholder="10~20자 이내의 영문, 숫자를 입력하세요" 
+                                        <input type="password" id="password" name="password"
+                                            placeholder="10~20자 이내의 영문, 숫자를 입력하세요"
                                             onChange={(e) => {
-                                                document.getElementById("pwderror1").className = "hidden"
-                                                setPassword1(e.target.value)
+                                                document.getElementById("pwderror1").className = "hidden";
+                                                setPassword1(e.target.value);
                                             }} />
                                         <p id="pwdlengtherror" className="t_error hidden">10~20자 이내의 영문, 숫자를 입력하세요</p>
                                         <p id="pwderror1" className="t_error hidden">비밀번호를 입력해주세요</p>
@@ -126,10 +126,10 @@ const NewPW = () => {
                                     <div>
                                         <label htmlFor="password_re">비밀번호 재입력</label>
                                         <input type="password" id="password_re" name="password_re"
-                                            placeholder="비밀번호를 다시한번 입력하세요" 
+                                            placeholder="비밀번호를 다시한번 입력하세요"
                                             onChange={(e) => {
-                                                document.getElementById("pwderror4").className = "hidden"
-                                                setPassword2(e.target.value)
+                                                document.getElementById("pwderror4").className = "hidden";
+                                                setPassword2(e.target.value);
                                             }} />
                                         <p id="pwderror4" className="t_error hidden">비밀번호를 다시한번 입력해주세요</p>
                                         <p id="pwderror5" className="t_error hidden">비밀번호가 일치하지 않습니다</p>
@@ -142,12 +142,12 @@ const NewPW = () => {
                 </div>
             </div>
             <div className="fix_botm">
-                <button type="button" className="btn-pk blue n" onClick={() => { changePassword()}} disabled={disabled}>
+                <button type="button" className="btn-pk blue n" onClick={() => { changePassword(); }} disabled={disabled}>
                     <span>비밀번호 변경</span>
                 </button>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default NewPW;

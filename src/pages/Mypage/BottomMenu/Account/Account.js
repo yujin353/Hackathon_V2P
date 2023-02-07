@@ -1,7 +1,7 @@
-import React from "react"
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import cookies from "react-cookies"
-import $ from "jquery"
+import cookies from "react-cookies";
+import $ from "jquery";
 
 const Account = () => {
     const navigate = useNavigate();
@@ -16,35 +16,35 @@ const Account = () => {
                 sessionStorage.removeItem("access_token");
                 sessionStorage.removeItem("refresh_token");
                 sessionStorage.removeItem("user_pk");
-                cookies.remove("access_token")
-                cookies.remove("refresh_token")
-                navigate("/login")
+                cookies.remove("access_token");
+                cookies.remove("refresh_token");
+                navigate("/login");
             },
             error: (response) => console.log(response),
         });
-    }
+    };
 
     const withdraw = () => {
         if (window.confirm('정말 탈퇴하시겠습니까?')) {
             $.ajax({
                 async: true, type: 'POST',
                 url: "https://api.odoc-api.com/api/v2/withdraw",
-                data: { "id": sessionStorage.getItem("user_pk")},
+                data: { "id": sessionStorage.getItem("user_pk") },
                 dataType: 'JSON',
                 success: function (response) {
-                    if (response.message == "Withdraw OK") {
+                    if (response.message === "Withdraw OK") {
                         sessionStorage.removeItem("access_token");
                         sessionStorage.removeItem("refresh_token");
                         sessionStorage.removeItem("user_pk");
-                        alert("탈퇴 되었습니다.")
-                        navigate("/login")
+                        alert("탈퇴 되었습니다.");
+                        navigate("/login");
                     }
                 },
                 error: (response) => console.log(response),
             });
         }
-        else ;
-    }
+        else;
+    };
 
     return (
         <div>
@@ -87,7 +87,7 @@ const Account = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default Account;

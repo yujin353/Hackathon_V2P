@@ -37,6 +37,7 @@ export default function App() {
             <Route path="" element={<PublicRoute><FindPW /></PublicRoute>}/>
             <Route path="reset" element={<PublicRoute><Reset /></PublicRoute>}/>
           </Route>
+          <Route path="termofservice" element={<PublicRoute><TOS /></PublicRoute>} />
 
           <Route path="/test" element={<PrivateRoute><Outlet /></PrivateRoute>}>
             <Route path="" element={<PrivateRoute><Test /></PrivateRoute>} />

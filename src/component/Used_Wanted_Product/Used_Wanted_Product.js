@@ -1,30 +1,29 @@
-import React, { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
-import $ from "jquery"
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import $ from "jquery";
 
-const Used_Wanted_Product = ( {userPK} ) => {
-    const [used, setUsed] = useState([])
-    const [wanted, setWanted] = useState([])
-    let dup = []
+const Used_Wanted_Product = ({ userPK }) => {
+    const [used, setUsed] = useState([]);
+    const [wanted, setWanted] = useState([]);
+    let dup = [];
     const checkDuplicate = (product_id) => {
         if (dup[product_id] > 0)
-            return 'Y'
-        else return 'N'
-    }
-
+            return 'Y';
+        else return 'N';
+    };
 
     useEffect(() => {
         $.ajax({
             async: true, type: "GET",
             url: "https://api.odoc-api.com/api/v1/reviews-member-filter/?search=" + userPK,
-            success: (response) => { 
-                const result = []
-                response.results.map(v=>{if(v.product!=null)result.push(v)})
-                setUsed(result) 
+            success: (response) => {
+                const result = [];
+                response.results.map(v => { if (v.product != null) result.push(v); });
+                setUsed(result);
             },
             error: (response) => console.log(response.results)
         });
-    }, [])
+    }, []);
 
     useEffect(() => {
         $.ajax({
@@ -33,7 +32,7 @@ const Used_Wanted_Product = ( {userPK} ) => {
             success: (response) => setWanted(response.results),
             error: (response) => console.log(response.results)
         });
-    }, [])
+    }, []);
 
     return (
         <>
@@ -46,8 +45,8 @@ const Used_Wanted_Product = ( {userPK} ) => {
                 <div className="lst_prd">
                     <ul>
                         {used.map((v, i) => {
-                            const duplicate = checkDuplicate(v.product.product_id)
-                            dup[v.product.product_id] = 1
+                            const duplicate = checkDuplicate(v.product.product_id);
+                            dup[v.product.product_id] = 1;
                             return (
                                 duplicate === 'N' ?
                                     <li key={v + i}>
@@ -65,7 +64,7 @@ const Used_Wanted_Product = ( {userPK} ) => {
                                         </Link></div>
                                     </li>
                                     : null
-                            )
+                            );
                         })}
                     </ul>
                 </div>
@@ -95,13 +94,13 @@ const Used_Wanted_Product = ( {userPK} ) => {
                                         <p className="t2">{v.like_product.product_name}</p>
                                     </Link></div>
                                 </li>
-                            )
+                            );
                         })}
                     </ul>
                 </div>
             </div>
         </>
-    )
-}
+    );
+};
 
 export default Used_Wanted_Product;

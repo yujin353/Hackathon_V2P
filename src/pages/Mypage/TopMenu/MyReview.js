@@ -1,25 +1,28 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import $ from "jquery"
+import { useAccessTknRefresh } from "../../../hooks";
+import $ from "jquery";
 
 const MyReview = () => {
     const navigate = useNavigate();
-    const [reviewList, setReviewList] = useState([])
+    const accessTknRefresh = useAccessTknRefresh();
+    const [reviewList, setReviewList] = useState([]);
 
-    useEffect(()=>{
+    useEffect(() => {
         $.ajax({
             async: true,
             url: "https://api.odoc-api.com/api/v1/reviews-member-filter/?search=" + sessionStorage.getItem("user_pk"),
             type: "GET",
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: function (response) {
                 // console.log(response)
-                setReviewList(response.results.reverse())
+                setReviewList(response.results.reverse());
             },
             error: function (response) {
-                console.log(response)
+                console.log(response);
             }
         });
-    }, [])
+    }, []);
 
     const deleteReview = (review_id) => {
         if (window.confirm("정말 삭제하시겠습니까?") === true) {
@@ -44,7 +47,7 @@ const MyReview = () => {
                     <h2 className="tit">내가 쓴 리뷰</h2>
                     <div className="lft">
                         <button type="button" className="btn-back c-white"
-                                onClick={()=>navigate(-1)}>
+                            onClick={() => navigate(-1)}>
                             <span className="i-aft i_back">뒤로</span>
                         </button>
                     </div>
@@ -102,7 +105,7 @@ const MyReview = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default MyReview;

@@ -2,40 +2,43 @@ import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
 import { SkinQuiz } from "./SkinQuiz";
-import $ from "jquery"
+import { useAccessTknRefresh } from "../../../hooks";
+import $ from "jquery";
 
 const Question = () => {
     const navigate = useNavigate();
+    const accessTknRefresh = useAccessTknRefresh();
     const sliderRef = useRef(null);
     const btnRef = useRef(null);
-    const setting = {infinite: false}
-    const [disabled, setDisabled] = useState(true)
-    const [obj, setObj] = useState({ 
-        "member": sessionStorage.getItem("user_pk") 
-    })
+    const setting = { infinite: false };
+    const [disabled, setDisabled] = useState(true);
+    const [obj, setObj] = useState({
+        "member": sessionStorage.getItem("user_pk")
+    });
 
     const submit = () => {
-        console.log(obj)
+        console.log(obj);
         $.ajax({
             async: false, type: 'POST',
             url: "https://api.odoc-api.com/api/v1/testskin/",
             data: obj, dataType: 'json',
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: response => {
-                console.log(response)
-                alert("스킨퀴즈가 완료되었습니다.\n마이키인 페이지로 이동합니다.")
-                navigate("/mykiin")
+                console.log(response);
+                alert("스킨퀴즈가 완료되었습니다.\n마이키인 페이지로 이동합니다.");
+                navigate("/mykiin");
             },
             error: response => console.log(response)
-        })
-    }
+        });
+    };
 
     return (
         <div>
             <header id="header" className="header">
                 <div className="inr-c">
                     <h2 className="hidden">테스트</h2>
-                    <button type="button" 
-                        onClick={()=>{if(window.confirm("이전 페이지로 이동하시겠습니까?\n작성 중인 내용이 저장되지 않고 사라집니다."))navigate(-1)}}>
+                    <button type="button"
+                        onClick={() => { if (window.confirm("이전 페이지로 이동하시겠습니까?\n작성 중인 내용이 저장되지 않고 사라집니다.")) navigate(-1); }}>
                         <span className="i-aft i_back"></span>
                     </button>
                 </div>
@@ -64,32 +67,32 @@ const Question = () => {
                                             <p className="tit_q">Question {v.id}</p>
                                             <p className="tit"> {v.question} </p>
                                             <ul>
-                                                {v.option.map((x, i)=>{
-                                                    return(
-                                                        <li key={x+i}>
-                                                            <button id={`Q${v.id}_${i+1}`}type="button" className="btn" ref={btnRef}
-                                                                onClick={()=>{
-                                                                    setObj(prev =>{
-                                                                        const result = prev
-                                                                        result[`Q${v.id < 10 ? "0" + v.id : v.id}`] = i + 1
-                                                                        return result
-                                                                    })
-                                                                    Object.keys(obj).length === 21 ? setDisabled(false) : setDisabled(true)
-                                                                    const size = $(".area_test")[`${v.id-1}`].children[4].children.length
-                                                                    for (let k = 0; k < size; k++) $(`#Q${v.id}_${k}`).removeClass("on")
-                                                                    $(`#Q${v.id}_${i+1}`).addClass("on")
-                                                                    sliderRef.current.slickNext()
+                                                {v.option.map((x, i) => {
+                                                    return (
+                                                        <li key={x + i}>
+                                                            <button id={`Q${v.id}_${i + 1}`} type="button" className="btn" ref={btnRef}
+                                                                onClick={() => {
+                                                                    setObj(prev => {
+                                                                        const result = prev;
+                                                                        result[`Q${v.id < 10 ? "0" + v.id : v.id}`] = i + 1;
+                                                                        return result;
+                                                                    });
+                                                                    Object.keys(obj).length === 21 ? setDisabled(false) : setDisabled(true);
+                                                                    const size = $(".area_test")[`${v.id - 1}`].children[4].children.length;
+                                                                    for (let k = 0; k < size; k++) $(`#Q${v.id}_${k}`).removeClass("on");
+                                                                    $(`#Q${v.id}_${i + 1}`).addClass("on");
+                                                                    sliderRef.current.slickNext();
                                                                 }}>
                                                                 <span>{x}</span>
                                                             </button>
                                                         </li>
-                                                    )
+                                                    );
                                                 })}
                                             </ul>
                                         </div>
                                     </div>
-                                )
-                            })}   
+                                );
+                            })}
                         </Slider>
                     </div>
                 </div>
@@ -103,7 +106,7 @@ const Question = () => {
                 </div> :
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default Question;

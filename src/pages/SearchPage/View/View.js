@@ -1,38 +1,38 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { useAccessTknRefresh } from "../../../hooks"
+import cookies from "react-cookies";
+import { useAccessTknRefresh } from "../../../hooks";
 // import { Modal } from '../../../component';
 import { Footer } from "../../../component";
-import $ from "jquery"
+import $ from "jquery";
 
-const View = () =>{
-    const navigate = useNavigate()
+const View = () => {
+    const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
-    const [input, setInput] = useState(searchParams.get("input"))
-    const [results, setResults] = useState([])
-    const [keywords,] = useState(
-        JSON.parse(localStorage.getItem('keywords')) || [])
-    const [empty, setEmpty] = useState(false)
-    const [searchPressed, setSearchPressed] = useState(false)
+    const [input, setInput] = useState(searchParams.get("input"));
+    const [results, setResults] = useState([]);
+    const [keywords,] = useState(cookies.load('keywords') ? cookies.load('keywords') : []);
+    const [empty, setEmpty] = useState(false);
+    const [searchPressed, setSearchPressed] = useState(false);
     // const [contents, setContents] = useState([])
-    const [count, setCount] = useState(1)
-    const [recommend, setRecommend] = useState([])
-    let [likeProducts, setLikeProducts] = useState([])
-    let latestLikeProducts = useRef(likeProducts)
-    const accessTknRefresh = useAccessTknRefresh()
+    const [count, setCount] = useState(1);
+    const [recommend, setRecommend] = useState([]);
+    let [likeProducts, setLikeProducts] = useState([]);
+    let latestLikeProducts = useRef(likeProducts);
+    const accessTknRefresh = useAccessTknRefresh();
 
     useEffect(() => {
         $.ajax({
             async: false, type: 'GET',
-            // url: "https://api.odoc-api.com/api/v1/products/" + "?search=" + input,
-            url: "https://api.odoc-api.com/api/v2/search"+"?word="+input,
+            // url: "https://api.odoc-api.com/api/v1/products/?search=" + input,
+            url: "https://api.odoc-api.com/api/v2/search?word=" + input,
             success: (response) => {
-                if(response.results.length === 0)setEmpty(true)
-                setResults(response.results)
+                if (response.results.length === 0) setEmpty(true);
+                setResults(response.results);
             },
             error: (response) => console.log(response)
         });
-    }, [searchPressed])
+    }, [searchPressed]);
 
     // /* autoSearchResults */
     // useEffect(() => {
@@ -40,8 +40,8 @@ const View = () =>{
     //     if (input.trim() !== "") {
     //         $.ajax({
     //             async: false, type: 'GET',
-    //             url: "https://api.odoc-api.com/api/v1/products/" + "?limit=5&offset=0&search=" + input,
-    //             // url: "https://api.odoc-api.com/api/v2/search"+"?limit=5&offset=0&word="+input,
+    //             url: "https://api.odoc-api.com/api/v1/products/?limit=5&offset=0&search=" + input,
+    //             // url: "https://api.odoc-api.com/api/v2/search?limit=5&offset=0&word="+input,
     //             success: (response) => {
     //                 // console.log(response)
     //                 setContents(() => {
@@ -69,31 +69,32 @@ const View = () =>{
         $.ajax({
             async: true, type: 'GET',
             url: "https://api.odoc-api.com/api/v2/randomrecommend",// + "&member_id=" + sessionStorage.getItem("user_pk"),
+            // beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: (response) => {
-                setRecommend(response.results)
+                setRecommend(response.results);
             },
             error: (response) => console.log(response)
         });
-    }, [])
+    }, []);
 
     const search = () => {
-        setSearchParams({ input: input })
+        setSearchParams({ input: input });
         if (input.trim() === "") {
-            setEmpty(true)
+            setEmpty(true);
         } else {
-            setEmpty(false)
-            const result = keywords.filter((element) => element !== input)
-            localStorage.setItem('keywords', JSON.stringify([input, ...result]))
+            setEmpty(false);
+            const result = keywords.filter((element) => element !== input);
+            cookies.save('keywords', JSON.stringify([input, ...result]));
         }
-    }
+    };
 
     const handleKeyPress = (e) => {
-		if (e.key === 'Enter') {
-            setSearchPressed(!searchPressed)
-            setCount(count + 1)
+        if (e.key === 'Enter') {
+            setSearchPressed(!searchPressed);
+            setCount(count + 1);
             search();
         }
-	}
+    };
 
     /* 좋아요 버튼 구현 */
     /* retrieves user's favorite product */
@@ -101,49 +102,49 @@ const View = () =>{
         let isMounted = true;
         $.ajax({
             async: true, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/product-like/" + "?search=" + sessionStorage.getItem("user_pk"),
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + sessionStorage.getItem("access_token")),
+            url: "https://api.odoc-api.com/api/v1/product-like/?search=" + sessionStorage.getItem("user_pk"),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: (response) => {
                 response.results.map((v) => {
-                    const product_id = v.like_product.product_id
-                    const element = document.getElementsByName(product_id)
-                    $(element).addClass("on")
-                })
+                    const product_id = v.like_product.product_id;
+                    const element = document.getElementsByName(product_id);
+                    $(element).addClass("on");
+                });
             },
             error: (response) => {
                 if (response.statusText === "Unauthorized") {
-                    sessionStorage.setItem("access_token", accessTknRefresh())
+                    sessionStorage.setItem("access_token", accessTknRefresh());
                     navigate(0);
                 }
             },
-        })
-        return () => isMounted = false
-    }, [])
+        });
+        return () => isMounted = false;
+    }, []);
 
     /* find products user wants to try */
     const findLikeProducts = (likeIcon) => {
         let check = "fail";
-        for (let i = 0; i < (latestLikeProducts.current).length; i++){
-            if (likeIcon.id == latestLikeProducts.current[i]) {
+        for (let i = 0; i < (latestLikeProducts.current).length; i++) {
+            if (likeIcon.id === latestLikeProducts.current[i]) {
                 check = "success";
-                break
+                break;
             }
         }
         return check;
-    }
+    };
 
     /* coloring products user wants to try */
     const likeState = (element) => {
         let isMounted = true;
         let likeIcon = document.getElementById(element);
         let check;
-        if ( likeIcon && isMounted ) {
+        if (likeIcon && isMounted) {
             check = findLikeProducts(likeIcon);
-            if ( check == "success" ) return true;
-            else if ( check == "fail" ) return false;
+            if (check === "success") return true;
+            else if (check === "fail") return false;
             else { console.log('likeIcon error'); return false; }
         }
-    }
+    };
 
     const likeProduct = (product_id) => {
         $.ajax({
@@ -151,28 +152,28 @@ const View = () =>{
             url: "https://api.odoc-api.com/api/v2/like-product",
             data: { "like_product": product_id },
             dataType: "json",
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + sessionStorage.getItem("access_token")),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: (response) => {
-                const element = document.getElementsByName(product_id)
-                $(element).toggleClass("on")
+                const element = document.getElementsByName(product_id);
+                $(element).toggleClass("on");
                 if (response.message === "Like") {
                     alert("좋아하는 상품 목록에 추가되었습니다.");
-                    if (latestLikeProducts.current.length == 0) {
+                    if (latestLikeProducts.current.length === 0) {
                         setLikeProducts = [];
                         setLikeProducts = setLikeProducts.concat(product_id);
-                        latestLikeProducts.current = setLikeProducts
+                        latestLikeProducts.current = setLikeProducts;
                     }
-                    else latestLikeProducts.current = latestLikeProducts.current.concat(product_id)
+                    else latestLikeProducts.current = latestLikeProducts.current.concat(product_id);
                 }
                 else {
                     alert("좋아하는 상품 목록에서 제거되었습니다.");
-                    latestLikeProducts.current = latestLikeProducts.current.filter( elem => elem !== product_id )
+                    latestLikeProducts.current = latestLikeProducts.current.filter(elem => elem !== product_id);
                 }
-                likeState(product_id)
+                likeState(product_id);
             },
             error: (response) => console.log(response),
         });
-    }
+    };
 
     return (
         <div>
@@ -180,23 +181,23 @@ const View = () =>{
                 <div className="inr-c">
                     <h2 className="hidden">검색</h2>
                     <div className="lft">
-                        <button type="button" className="btn-back c-white" 
+                        <button type="button" className="btn-back c-white"
                             onClick={() => {
-                                navigate(-1 * count)
+                                navigate(-1 * count);
                             }}>
                             <span className="i-aft i_back">뒤로</span>
                         </button>
                     </div>
                     <div className="cen">
                         <input type="text" id="hd_search" className="inp_txt w100p" placeholder="제품을 검색해 보세요"
-                            value={input} onChange={(e) => { setInput(e.target.value) }} onKeyDown={handleKeyPress} />
+                            value={input} onChange={(e) => { setInput(e.target.value); }} onKeyDown={handleKeyPress} />
                     </div>
                     <div className="rgh">
                         <button type="button" className="btn_sch_r" id="search_btn"
                             onClick={() => {
-                                setSearchPressed(!searchPressed)
-                                setCount(count + 1)
-                                search()
+                                setSearchPressed(!searchPressed);
+                                setCount(count + 1);
+                                search();
                             }}>
                             <span className="i-set i_sch_bl">검색</span>
                         </button>
@@ -243,13 +244,13 @@ const View = () =>{
                                                     </Link>
                                                     <button
                                                         type="button" id={v.ID}
-                                                        className={ likeState(v.ID) ? "btn_favorit on" : "btn_favorit" }
+                                                        className={likeState(v.ID) ? "btn_favorit on" : "btn_favorit"}
                                                         name={v.ID} onClick={() => likeProduct(v.ID)}>
                                                         <span className="i-set i_favorit">좋아요</span>
                                                     </button>
                                                 </div>
                                             </li>
-                                        )
+                                        );
                                     })}
                                 </ul>
                             </div>
@@ -258,7 +259,7 @@ const View = () =>{
                             <p className="notx pr-mb2" id="no_result"> 검색 결과가 없습니다.</p>
                             <h2 className="h_tit1">이런 제품은 어떠세요?</h2>
                             <div className="lst_prd">
-                                <ul onClick={()=>setCount(count+1)}>
+                                <ul onClick={() => setCount(count + 1)}>
                                     {recommend.map((v) => {
                                         return (
                                             <li key={v.ID}>
@@ -268,7 +269,7 @@ const View = () =>{
                                                     </Link>
                                                     <button
                                                         type="button" id={v.ID}
-                                                        className={ likeState(v.ID) ? "btn_favorit on" : "btn_favorit" }
+                                                        className={likeState(v.ID) ? "btn_favorit on" : "btn_favorit"}
                                                         name={v.ID} onClick={() => likeProduct(v.ID)}>
                                                         <span className="i-set i_favorit">좋아요</span>
                                                     </button>
@@ -280,7 +281,7 @@ const View = () =>{
                                                     </Link>
                                                 </div>
                                             </li>
-                                        )
+                                        );
                                     })}
                                 </ul>
                             </div>
@@ -292,7 +293,7 @@ const View = () =>{
             <Footer />
 
         </div>
-    )
-}
+    );
+};
 
 export default View;

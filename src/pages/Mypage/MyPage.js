@@ -1,14 +1,16 @@
-import React, { useEffect, useState, useRef } from 'react'
-import { Link, useNavigate } from "react-router-dom"
-import { Modal, Footer } from '../../component'
-import cookies from "react-cookies"
-import $ from "jquery"
+import React, { useEffect, useState, useRef } from 'react';
+import { Link, useNavigate } from "react-router-dom";
+import { Modal, Footer } from '../../component';
+import { useAccessTknRefresh } from "../../hooks";
+import cookies from "react-cookies";
+import $ from "jquery";
 
 const MyPage = () => {
     const navigate = useNavigate();
-    const [FImodal, setFImodal] = useState(false)
-    const [PImodal, setPImodal] = useState(false)
-    const [username, setUsername] = useState("")
+    const accessTknRefresh = useAccessTknRefresh();
+    const [FImodal, setFImodal] = useState(false);
+    const [PImodal, setPImodal] = useState(false);
+    const [username, setUsername] = useState("");
     const linkRef = useRef();
 
     /* findout currently logged in user */
@@ -18,16 +20,17 @@ const MyPage = () => {
             async: false,
             type: 'GET',
             url: `https://api.odoc-api.com/api/v1/members/${user_pk}/`,
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: function (response) {
-                setUsername(response.username)
+                setUsername(response.username);
             },
             error: function (response) {
                 console.log("error", response);
-                alert("login failed.")
-                window.location.replace("/")
+                alert("login failed.");
+                window.location.replace("/");
             },
         });
-    }, [])
+    }, []);
 
     /* Add on ClassName to bottom navigation bar current tab */
     useEffect(() => {
@@ -36,18 +39,18 @@ const MyPage = () => {
         else if (pathname.startsWith("/mykiin")) $("#fmenu2").addClass("on");
         else if (pathname.startsWith("/main")) $("#fmenu3").addClass("on");
         else if (pathname.startsWith("/search")) $("#fmenu4").addClass("on");
-        else if (pathname.startsWith("/mypage")) $("#fmenu5").addClass("on")
-    })
+        else if (pathname.startsWith("/mypage")) $("#fmenu5").addClass("on");
+    });
 
     const copyLink = () => {
         linkRef.current.focus();
         linkRef.current.select();
         navigator.clipboard.writeText(linkRef.current.value)
-            .then(()=>alert("링크가 복사되었습니다."))
-    }
+            .then(() => alert("링크가 복사되었습니다."));
+    };
 
     const logout = () => {
-        var obj = { "refresh": sessionStorage.getItem("refresh_token") }
+        var obj = { "refresh": sessionStorage.getItem("refresh_token") };
         $.ajax({
             async: true,
             type: 'POST',
@@ -61,13 +64,13 @@ const MyPage = () => {
                 sessionStorage.removeItem("user_pk");
                 cookies.remove("access_token");
                 cookies.remove("refresh_token");
-                window.location.href = '/login'
+                navigate('/login');
             },
             error: function (response) {
                 console.log(response);
             },
         });
-    }
+    };
 
     return (
         <div>
@@ -90,7 +93,7 @@ const MyPage = () => {
                                 <span><img src={require("../../assets/images/common/img_nomem.jpg")}></img></span>
                             </div>
                             <div className="txt">
-                                <p className="h1"><strong className="c-blue usernick">{username}</strong>님</p><br/>
+                                <p className="h1"><strong className="c-blue usernick">{username}</strong>님</p><br />
                             </div>
                         </div>
                         {/* <div className="box_point" onClick={()=>navigate("point")}>
@@ -101,20 +104,20 @@ const MyPage = () => {
                 <div className="my_menu">
                     <ul>
                         <li><Link to="event"><span className="i-aft i_my_menu1">이벤트</span></Link></li>
-                        <li><Link to="#" 
-                                onClick={(e)=>{
-                                    e.preventDefault();
-                                    setFImodal(!FImodal)
-                                }}>
-                                <span className="i-aft i_my_menu2">친구초대</span>
-                            </Link>
+                        <li><Link to="#"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                setFImodal(!FImodal);
+                            }}>
+                            <span className="i-aft i_my_menu2">친구초대</span>
+                        </Link>
                             <Modal open={FImodal} className="customOverlay">
                                 <div id="popSns" className="layerPopup pop_sns">
                                     <div className="popup">
                                         <div className="p_head botm">
                                             <h2 className="hidden">친구초대하기</h2>
                                             <button type="button" className="b-close btn_close"
-                                                onClick={()=>setFImodal(!FImodal)}>
+                                                onClick={() => setFImodal(!FImodal)}>
                                                 <span>닫기</span>
                                             </button>
                                         </div>
@@ -144,13 +147,13 @@ const MyPage = () => {
                         <li><Link to="notice"><span className="i-aft i_arr_r1">공지사항</span></Link></li>
                         <li><Link to="faq"><span className="i-aft i_arr_r1">자주묻는질문</span></Link></li>
                         <li><Link to="support"><span className="i-aft i_arr_r1">고객지원</span></Link></li>
-                        <li><Link to="#" 
-                                onClick={(e)=>{
-                                    e.preventDefault();
-                                    setPImodal(!PImodal)
-                                }}>
-                                <span className="i-aft i_arr_r1">제휴문의</span>
-                            </Link>
+                        <li><Link to="#"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                setPImodal(!PImodal);
+                            }}>
+                            <span className="i-aft i_arr_r1">제휴문의</span>
+                        </Link>
                             <Modal open={PImodal} className="customOverlay">
                                 <div id="popPartner" className="layerPopup pop_sns">
                                     <div className="popup">
@@ -184,7 +187,7 @@ const MyPage = () => {
             <Footer />
 
         </div>
-    )
-}
+    );
+};
 
 export default MyPage;
