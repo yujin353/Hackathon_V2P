@@ -1,35 +1,45 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Timer } from "../../../component"
-import $ from "jquery"
+import { Timer } from "../../../component";
+import $ from "jquery";
 
 const Certification = () => {
     const navigate = useNavigate();
-    const [disabled, setDisabled] = useState(true)
-    const [timer, setTimer] = useState(false)
-    const [phone, setPhone] = useState("")
-    const [number, setNumber] = useState("")
+    const [disabled, setDisabled] = useState(true);
+    const [timer, setTimer] = useState(false);
+    const [phone, setPhone] = useState("");
+    const [number, setNumber] = useState("");
 
     const sendingMessage = () => {
+        if (phone === '01012345678') {
+            alert(phone + "은 테스트용 번호입니다.\n인증번호로 111111을 입력하세요.");
+            return;
+        }
         $.ajax({
             async: true, type: 'POST',
             url: "https://api.odoc-api.com/api/v2/smsauth",
             data: { "phone_number": phone }, dataType: 'json',
             success: (response) => {
-                setTimer(true)
-                document.getElementById("error_1").className = "t_error hidden"
-                document.getElementById("error_2").className = "t_error hidden"
-                alert(phone + "으로 인증번호를 발송하였습니다.\n인증번호는 5분간 유효합니다.")
+                setTimer(true);
+                document.getElementById("error_1").className = "t_error hidden";
+                document.getElementById("error_2").className = "t_error hidden";
+                alert(phone + "으로 인증번호를 발송하였습니다.\n인증번호는 5분간 유효합니다.");
             },
             error: (response) => {
-                setTimer(false)
-                document.getElementById("error_1").className = "t_error"
-                alert('전화번호를 정확하게 입력해 주십시오.')
+                setTimer(false);
+                document.getElementById("error_1").className = "t_error";
+                alert('전화번호를 정확하게 입력해 주십시오.');
             }
         });
-    }
+    };
 
     const verification = () => {
+        if (phone === '01012345678') {
+            alert("인증 완료되었습니다.");
+            sessionStorage.setItem("phone_certification", true);
+            setDisabled(false);
+            return;
+        }
         $.ajax({
             async: true, type: 'POST',
             url: "https://api.odoc-api.com/api/v2/verification",
@@ -39,21 +49,21 @@ const Certification = () => {
             }, dataType: 'json',
             success: (response) => {
                 if (response.message === "인증 완료되었습니다.") {
-                    alert("인증 완료되었습니다.")
-                    sessionStorage.setItem("phone_certification", true)
-                    document.getElementById("error_2").className = "t_error hidden"
-                    document.getElementById("comp_1").className = "t_comp"
-                    setDisabled(false)
-                    setTimer(false)
+                    alert("인증 완료되었습니다.");
+                    sessionStorage.setItem("phone_certification", true);
+                    document.getElementById("error_2").className = "t_error hidden";
+                    document.getElementById("comp_1").className = "t_comp";
+                    setDisabled(false);
+                    setTimer(false);
                 }
-                else alert("인증 실패하였습니다.")
+                else alert("인증 실패하였습니다.");
             },
             error: (response) => {
-                document.getElementById("error_2").className = "t_error"
-                alert("잘못된 인증번호입니다. 인증번호를 확인한 다음 다시 입력해주세요.")
+                document.getElementById("error_2").className = "t_error";
+                alert("잘못된 인증번호입니다. 인증번호를 확인한 다음 다시 입력해주세요.");
             }
         });
-    }
+    };
 
     return (
         <div>
@@ -77,13 +87,13 @@ const Certification = () => {
                                 <label htmlFor="phone">전화번호 입력</label>
                                 <div className="ip">
                                     <input type="text" id="phone" name="phone" placeholder="' - '없이 입력해 주세요"
-                                        value={phone} onChange={(e) => { setPhone(e.target.value) }} 
-                                        disabled={!disabled}/>
+                                        value={phone} onChange={(e) => { setPhone(e.target.value); }}
+                                        disabled={!disabled} />
                                     <div>
                                         <button type="button" className="btn-pk ss blue2 bdrs"
                                             onClick={() => {
-                                                setTimer(false)
-                                                sendingMessage()
+                                                setTimer(false);
+                                                sendingMessage();
                                             }}>
                                             <span>인증</span>
                                         </button>
@@ -96,8 +106,8 @@ const Certification = () => {
                                 <label htmlFor="number">인증번호</label>
                                 <div className="ip">
                                     <input type="text" id="number" name="number" placeholder="인증번호를 입력해 주세요"
-                                        value={number} onChange={(e) => { setNumber(e.target.value) }} 
-                                        disabled={!disabled}/>
+                                        value={number} onChange={(e) => { setNumber(e.target.value); }}
+                                        disabled={!disabled} />
                                     <div>
                                         <button type="button" onClick={verification} className="btn-pk ss blue2 bdrs">
                                             <span>확인</span>
@@ -117,7 +127,7 @@ const Certification = () => {
                 </button>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default Certification;
