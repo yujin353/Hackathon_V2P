@@ -1,31 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import $ from "jquery"
+import $ from "jquery";
 
 const SignUp = () => {
     const navigate = useNavigate();
-    const [email1, setEmail1] = useState("")
-    const [email2, setEmail2] = useState("")
-    const [password1, setPassword1] = useState("")
-    const [password2, setPassword2] = useState("")
-    const [gender, setGender] = useState("")
-    const [region, setRegion] = useState("")
-    const [age, setAge] = useState("")
-    const [nickname, setNickname] = useState("")
-    const [disabled, setDisabled] = useState(false)
+    const [email1, setEmail1] = useState("");
+    const [email2, setEmail2] = useState("");
+    const [password1, setPassword1] = useState("");
+    const [password2, setPassword2] = useState("");
+    const [gender, setGender] = useState("");
+    const [region, setRegion] = useState("");
+    const [age, setAge] = useState("");
+    const [nickname, setNickname] = useState("");
+    const [disabled, setDisabled] = useState(false);
     const emailRegex =
         /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/
 
     useEffect(() => {
-        if(email1 !== "" && email2 !== ""){
-            document.getElementById("emailerror1").className = "hidden"
-            document.getElementById("email_in_use").className = "hidden"
+        if (email1 !== "" && email2 !== "") {
+            document.getElementById("emailerror1").className = "hidden";
+            document.getElementById("email_in_use").className = "hidden";
         }
-    }, [email1, email2])
+    }, [email1, email2]);
 
     useEffect(() => {
-        onChangePassword()
-    }, [password1, password2])
+        onChangePassword();
+    }, [password1, password2]);
 
     const onChangePassword = () => {
         document.getElementById('pwderror2').className = "hidden";
@@ -35,7 +35,7 @@ const SignUp = () => {
             document.getElementById('pwdlengtherror').className = "t_error";
             document.getElementById('pwderror5').className = "hidden";
         } else {
-            document.getElementById('pwdlengtherror').className = "hidden"
+            document.getElementById('pwdlengtherror').className = "hidden";
             if (password2.length === 0) {
                 document.getElementById('pwderror5').className = "hidden";
             } else if (password1 !== password2) {
@@ -45,39 +45,42 @@ const SignUp = () => {
                 document.getElementById('pwdok').className = "t_comp";
             }
         }
-    }
+    };
 
     const fieldCheck = () => {
         let flag = false;
         if (email1 === "" || email2 === "") {
-            document.getElementById("emailerror1").className = "t_error"
+            document.getElementById("emailerror1").className = "t_error";
             flag = true;
-        } else if (!emailRegex.test(email1+'@'+email2)) {
-            document.getElementById("emailerror2").className = "t_error"
+        } else if (!emailRegex.test(email1 + '@' + email2)) {
+            document.getElementById("emailerror2").className = "t_error";
             flag = true;
         }
         if (gender === "") {
-            document.getElementById("gendererror1").className = "t_error"
+            document.getElementById("gendererror1").className = "t_error";
             flag = true;
         }
         if (region === "") {
-            document.getElementById("regionerror1").className = "t_error"
+            document.getElementById("regionerror1").className = "t_error";
             flag = true;
         }
         if (age === "") {
-            document.getElementById("ageerror1").className = "t_error"
+            document.getElementById("ageerror1").className = "t_error";
             flag = true;
         } else if (age < 0 || age > 120) {
-            document.getElementById("ageerror2").className = "t_error"
+            document.getElementById("ageerror2").className = "t_error";
             flag = true;
         }
         if (nickname === "") {
-            document.getElementById("nicknameerror1").className = "t_error"
+            document.getElementById("nicknameerror1").className = "t_error";
+            flag = true;
+        } else if (nickname.length > 8) {
+            document.getElementById("nickname_long").className = "t_error";
             flag = true;
         }
-        if(flag) return false;
+        if (flag) return false;
         else return true;
-    }
+    };
 
     const register = () => {
         $.ajax({
@@ -92,18 +95,18 @@ const SignUp = () => {
             success: (response) => {
                 alert("회원가입이 완료되었습니다.");
                 if (response.user.email === email1 + "@" + email2)
-                    navigate("/login")
+                    navigate("/login");
             },
             error: (response) => {
-                if(response.status === 500){
-                    alert("사용중인 이메일 주소입니다.")
-                    document.getElementById("email_in_use").className = "t_error"
+                if (response.status === 500) {
+                    alert("사용중인 이메일 주소입니다.");
+                    document.getElementById("email_in_use").className = "t_error";
                     return;
                 }
-                const text = JSON.parse(response.responseText)
+                const text = JSON.parse(response.responseText);
                 if (text.username) document.getElementById('nickname_in_use').className = "t_error";
                 else document.getElementById('nickname_in_use').className = "hidden";
-                if (text.password1){
+                if (text.password1) {
                     if (text.password1[0] === "비밀번호가 너무 일상적인 단어입니다.") {
                         document.getElementById('pwderror2').className = "t_error";
                         document.getElementById('pwdok').className = "hidden";
@@ -114,9 +117,9 @@ const SignUp = () => {
                 }
             }
         });
-        sessionStorage.removeItem("phone_certification")
-        sessionStorage.removeItem("policy_checked")
-    }
+        sessionStorage.removeItem("phone_certification");
+        sessionStorage.removeItem("policy_checked");
+    };
 
     const autoRecommend = () => {
         $.ajax({
@@ -124,8 +127,8 @@ const SignUp = () => {
             url: "https://api.odoc-api.com/api/v1/makeusername",
             success: (response) => setNickname(response.result),
             error: (error) => console.log(error)
-        })
-    }
+        });
+    };
 
     return (
         <div>
@@ -147,20 +150,20 @@ const SignUp = () => {
                             <div>
                                 <label htmlFor="email">이메일</label>
                                 <div className="inp_email">
-                                    <input type="text" className="inp_txt" value={email1} 
-                                        onChange={(e)=>{
-                                            setEmail1(e.target.value)
-                                        }}/>
+                                    <input type="text" className="inp_txt" value={email1}
+                                        onChange={(e) => {
+                                            setEmail1(e.target.value);
+                                        }} />
                                     <span>@</span>
                                     <input type="text" className="inp_txt" value={email2} disabled={disabled}
-                                        onChange={(e)=>{
-                                            setEmail2(e.target.value)
-                                        }}/>
-                                    <select className="select1" 
-                                        onChange={(e)=>{
-                                            if(e.target.value !== "")setDisabled(true)
-                                            else setDisabled(false)
-                                            setEmail2(e.target.value)
+                                        onChange={(e) => {
+                                            setEmail2(e.target.value);
+                                        }} />
+                                    <select className="select1"
+                                        onChange={(e) => {
+                                            if (e.target.value !== "") setDisabled(true);
+                                            else setDisabled(false);
+                                            setEmail2(e.target.value);
                                         }}>
                                         <option value="">직접입력</option>
                                         <option value="naver.com">네이버</option>
@@ -178,9 +181,9 @@ const SignUp = () => {
                                 <label htmlFor="password">비밀번호</label>
                                 <input type="password" placeholder="10~20자 이내의 영문, 숫자를 입력하세요"
                                     onChange={(e) => {
-                                        document.getElementById("pwderror1").className = "hidden"
-                                        setPassword1(e.target.value)
-                                    }}/>
+                                        document.getElementById("pwderror1").className = "hidden";
+                                        setPassword1(e.target.value);
+                                    }} />
                                 <p id="pwdlengtherror" className="t_error hidden">10~20자 이내의 영문, 숫자를 입력하세요</p>
                                 <p id="pwderror1" className="t_error hidden">비밀번호를 입력해주세요</p>
                                 <p id="pwderror2" className="t_error hidden">비밀번호가 너무 일상적인 단어입니다</p>
@@ -189,9 +192,9 @@ const SignUp = () => {
                             <div>
                                 <input type="password" placeholder="비밀번호를 다시한번 입력하세요"
                                     onChange={(e) => {
-                                        document.getElementById("pwderror4").className = "hidden"
-                                        setPassword2(e.target.value)
-                                    }}/>
+                                        document.getElementById("pwderror4").className = "hidden";
+                                        setPassword2(e.target.value);
+                                    }} />
                                 <p id="pwderror4" className="t_error hidden">비밀번호를 다시한번 입력해주세요</p>
                                 <p id="pwderror5" className="t_error hidden">비밀번호가 일치하지 않습니다</p>
                                 <p id="pwdok" className="t_comp hidden">비밀번호가 일치합니다</p>
@@ -200,11 +203,11 @@ const SignUp = () => {
                             <div className="inp_gender_region">
                                 <div>
                                     <label htmlFor="gender">성별</label>
-                                    <input type="hidden"/>
-                                    <select className="select1" 
-                                        onChange={(e)=>{
-                                            document.getElementById("gendererror1").className = "hidden"
-                                            setGender(e.target.value)
+                                    <input type="hidden" />
+                                    <select className="select1"
+                                        onChange={(e) => {
+                                            document.getElementById("gendererror1").className = "hidden";
+                                            setGender(e.target.value);
                                         }}>
                                         <option value="">선택</option>
                                         <option value="남성">Male</option>
@@ -212,14 +215,14 @@ const SignUp = () => {
                                     </select>
                                     <p id="gendererror1" className="t_error hidden">성별을 선택해주세요</p>
                                 </div>
-                                <span/> {/* margin */}
+                                <span /> {/* margin */}
                                 <div>
                                     <label htmlFor="region">지역</label>
-                                    <input type="hidden"/>
-                                    <select className="select1" 
-                                        onChange={(e)=>{
-                                            document.getElementById("regionerror1").className = "hidden"
-                                            setRegion(e.target.value)
+                                    <input type="hidden" />
+                                    <select className="select1"
+                                        onChange={(e) => {
+                                            document.getElementById("regionerror1").className = "hidden";
+                                            setRegion(e.target.value);
                                         }}>
                                         <option value="">선택</option>
                                         <option value="서울">서울</option>
@@ -244,37 +247,38 @@ const SignUp = () => {
                                 <label htmlFor="age">나이</label>
                                 <div className="ip">
                                     <input type="text" placeholder="나이를 입력하세요" value={age}
-                                        onChange={(e)=>{
-                                            document.getElementById("ageerror1").className = "hidden"
-                                            document.getElementById("ageerror2").className = "hidden"
-                                            setAge(e.target.value)
-                                        }}/>
-                                </div>    
+                                        onChange={(e) => {
+                                            document.getElementById("ageerror1").className = "hidden";
+                                            document.getElementById("ageerror2").className = "hidden";
+                                            setAge(e.target.value);
+                                        }} />
+                                </div>
                                 <p id="ageerror1" className="t_error hidden">나이를 입력해주세요</p>
-                                <p id="ageerror2" className="t_error hidden">나이를 정확하게 입력해주세요</p>                                    
+                                <p id="ageerror2" className="t_error hidden">나이를 정확하게 입력해주세요</p>
                             </div>
 
                             <div>
                                 <label htmlFor="nickname">키인 닉네임</label>
                                 <div className="ip">
                                     <input type="text" placeholder="키인 닉네임을 입력하세요"
-                                        value={nickname} onChange={(e)=>{
-                                            document.getElementById("nicknameerror1").className = "hidden"
+                                        value={nickname} onChange={(e) => {
+                                            document.getElementById("nicknameerror1").className = "hidden";
                                             document.getElementById('nickname_in_use').className = "hidden";
-                                            setNickname(e.target.value)
-                                        }}/>
+                                            setNickname(e.target.value);
+                                        }} />
                                     <div>
-                                        <button type="button" className="btn-pk ss blue2 bdrs" 
-                                            onClick={()=>{
-                                                document.getElementById("nicknameerror1").className = "hidden"
+                                        <button type="button" className="btn-pk ss blue2 bdrs"
+                                            onClick={() => {
+                                                document.getElementById("nicknameerror1").className = "hidden";
                                                 document.getElementById('nickname_in_use').className = "hidden";
-                                                autoRecommend()
+                                                autoRecommend();
                                             }}>
                                             <span>자동추천</span>
                                         </button>
                                     </div>
                                 </div>
                                 <p id="nickname_in_use" className="t_error hidden">사용중인 닉네임 입니다</p>
+                                <p id="nickname_long" className="t_error hidden">8글자 이하로 입력해주세요</p>
                                 <p id="nicknameerror1" className="t_error hidden">닉네임을 입력해주세요</p>
                             </div>
                         </div>
@@ -283,7 +287,7 @@ const SignUp = () => {
                 <div className="fix_botm">
                     <button type="button" className="btn-pk blue n"
                         onClick={() => {
-                            if(fieldCheck()===false)return;
+                            if (fieldCheck() === false) return;
                             register();
                         }}>
                         <span>가입완료</span>
@@ -291,7 +295,7 @@ const SignUp = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default SignUp;
