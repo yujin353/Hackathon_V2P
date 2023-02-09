@@ -6679,24 +6679,24 @@ body.fix {
   position: absolute;
   right: 22vw;
   text-align: center;
-  font-size: 1.5vh;
+  font-size: 3.45vw;
   color: #999999;
 }
 .cnt_followee {
   position: absolute;
   right: 10vw;
   text-align: center;
-  font-size: 1.5vh;
+  font-size: 3.45vw;
   color: #999999;
 }
 .cnt_follower span {
   text-align: center;
-  font-size: 1.8vh;
+  font-size: 4.2vw;
   color: #145cff;
 }
 .cnt_followee span {
   text-align: center;
-  font-size: 1.8vh;
+  font-size: 4.2vw;
   color: #145cff;
 }
 .lst_list1 .b .t3 {
