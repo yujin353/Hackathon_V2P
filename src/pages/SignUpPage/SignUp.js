@@ -238,6 +238,10 @@ const SignUp = () => {
                                         <option value="충남">충남</option>
                                         <option value="전북">전북</option>
                                         <option value="전남">전남</option>
+                                        <option value="경북">경북</option>
+                                        <option value="경남">경남</option>
+                                        <option value="제주">제주</option>
+                                        <option value="세종">세종</option>
                                     </select>
                                     <p id="regionerror1" className="t_error hidden">지역을 선택해주세요</p>
                                 </div>
