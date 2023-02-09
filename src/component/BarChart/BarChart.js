@@ -4,6 +4,8 @@ const BarChart = ({ userPK }) => {
     const [testScore, setTestScore] = useState([]);
     const [myskinType, setMyskinType] = useState(undefined);
     const [myskinTypeName, setMyskinTypeName] = useState("");
+    const [myskinTypeImg, setMyskinTypeImg] = useState("");
+    const [myskinTypetxt, setMyskinTypetxt] = useState("");
     const [D_O,setD_O] = useState([]);
     const [R_S,setR_S] = useState([]);
     const [N_P,setN_P] = useState([]);
@@ -53,52 +55,84 @@ const BarChart = ({ userPK }) => {
     const skinTypeName = (myskinType) => {
         switch (myskinType) {
             case 'DSPW':
-                setMyskinTypeName("건조한 민감성 색소 주름 피부");
+                setMyskinTypeName("예민한 고슴도치");
+                setMyskinTypeImg(require("../../assets/images/animal/DSPW.png"));
+                setMyskinTypetxt("고슴도치처럼 외부 환경에 민감하게 반응하고 보송보송한 피부");
                 break;
             case 'DSPT':
-                setMyskinTypeName("건조한 민감성 색소 탄력 피부");
+                setMyskinTypeName("상냥한 사슴");
+                setMyskinTypeImg(require("../../assets/images/animal/DSPT.png"));
+                setMyskinTypetxt("사슴처럼 외부 환경에 연약하고 보송보송하고 탱탱한 피부");
                 break;
             case 'DSNW':
-                setMyskinTypeName("건조한 민감성 비색소 주름 피부");
+                setMyskinTypeName("눈치 빠른 여우");
+                setMyskinTypeImg(require("../../assets/images/animal/DSNW.png"));
+                setMyskinTypetxt("여우처럼 외부 환경에 민감하게 반응하고 보송보송하고 균일한 피부");
                 break;
             case 'DSNT':
-                setMyskinTypeName("건조한 민감성 비색소 탄력 피부");
+                setMyskinTypeName("작고 소중한 다람쥐");
+                setMyskinTypeImg(require("../../assets/images/animal/DSNT.png"));
+                setMyskinTypetxt("다람쥐처럼 보송보송하고 균일하고 탱탱한 피부");
                 break;
             case 'DRPW':
-                setMyskinTypeName("건조한 저항성 색소 주름 피부");
+                setMyskinTypeName("패션왕 얼룩말");
+                setMyskinTypeImg(require("../../assets/images/animal/DRPW.png"));
+                setMyskinTypetxt("얼룩말처럼 외부 환경에 강하고 보송보송한 피부");
                 break;
             case 'DRPT':
-                setMyskinTypeName("건조한 저항성 색소 탄력 피부");
+                setMyskinTypeName("멋진 무늬의 기린");
+                setMyskinTypeImg(require("../../assets/images/animal/DRPT.png"));
+                setMyskinTypetxt("기린처럼 외부 환경에 강하고 보송보송하고 탱탱한 피부");
                 break;
             case 'DRNW':
-                setMyskinTypeName("건조한 저항성 비색소 주름 피부");
+                setMyskinTypeName("여유로운 거북이");
+                setMyskinTypeImg(require("../../assets/images/animal/DRNW.png"));
+                setMyskinTypetxt("거북이처럼 외부 환경에 강하고 보송보송하고 균일한 피부");
                 break;
             case 'DRNT':
-                setMyskinTypeName("건조한 저항성 비색소 탄력 피부");
+                setMyskinTypeName("안아주고 싶은 코알라");
+                setMyskinTypeImg(require("../../assets/images/animal/DRNT.png"));
+                setMyskinTypetxt("코알라처럼 외부 환경에 강하고 보송보송하고 균일하고 탱탱한 피부");
                 break;
             case 'OSPW':
-                setMyskinTypeName("지성의 민감성 색소 주름 피부");
+                setMyskinTypeName("폴짝폴짝 개구리");
+                setMyskinTypeImg(require("../../assets/images/animal/OSPW.png"));
+                setMyskinTypetxt("개구리처럼 외부 환경에 연약하고 매끄러운 피부");
                 break;
             case 'OSPT':
-                setMyskinTypeName("지성의 민감성 색소 탄력 피부");
+                setMyskinTypeName("연약한 개복치");
+                setMyskinTypeImg(require("../../assets/images/animal/OSPT.png"));
+                setMyskinTypetxt("개복치처럼 외부 환경에 연약하고 매끄럽고 탱탱한 피부");
                 break;
             case 'OSNW':
-                setMyskinTypeName("지성의 민감성 비색소 주름 피부");
+                setMyskinTypeName("왕관을 쓴 해마");
+                setMyskinTypeImg(require("../../assets/images/animal/OSNW.png"));
+                setMyskinTypetxt("해마처럼 외부 환경에 연약하고 매끄럽고 균일한 피부");
                 break;
             case 'OSNT':
-                setMyskinTypeName("지성의 민감성 비색소 탄력 피부");
+                setMyskinTypeName("말랑말랑 해파리");
+                setMyskinTypeImg(require("../../assets/images/animal/OSNT.png"));
+                setMyskinTypetxt("해파리처럼 외부 환경에 연약하고 매끄럽고 균일하고 탱탱한 피부");
                 break;
             case 'ORPW':
-                setMyskinTypeName("지성의 저항성 색소 주름 피부");
+                setMyskinTypeName("춤추는 바다코끼리");
+                setMyskinTypeImg(require("../../assets/images/animal/ORPW.png"));
+                setMyskinTypetxt("바다코끼리처럼 외부 환경에 강하고 매끄러운 피부");
                 break;
             case 'ORPT':
-                setMyskinTypeName("지성의 저항성 색소 탄력 피부");
+                setMyskinTypeName("헤엄치는 해달");
+                setMyskinTypeImg(require("../../assets/images/animal/ORPT.png"));
+                setMyskinTypetxt("해달처럼 외부 환경에 강하고 매끄럽고 탱탱한 피부");
                 break;
             case 'ORNW':
-                setMyskinTypeName("지성의 저항성 비색소 주름 피부");
+                setMyskinTypeName("뒤뚱뒤뚱 펭귄");
+                setMyskinTypeImg(require("../../assets/images/animal/ORNW.png"));
+                setMyskinTypetxt("펭귄처럼 외부 환경에 강하고 매끄럽고 균일한 피부");
                 break;
             case 'ORNT':
-                setMyskinTypeName("지성의 저항성 비색소 탄력 피부");
+                setMyskinTypeName("행복한 고래");
+                setMyskinTypeImg(require("../../assets/images/animal/ORNT.png"));
+                setMyskinTypetxt("고래처럼 외부 환경에 강하고 매끄럽고 균일하고 탱탱한 피부");
                 break;
         }
     }
@@ -107,8 +141,8 @@ const BarChart = ({ userPK }) => {
         <div className="b_chart">
             <p className="skinType">{myskinType ? myskinType : "undefined"}</p>
             <p className="skinTypeName">{myskinTypeName ? myskinTypeName : "undefined"}</p>
-            {/*<img className="skinTypeImg" src={require("../../assets/images/tmp_mem.jpg")} />*/}
-            {/*<img className="skinTypeImg" src={require(`../../assets/images/${myskinType}.jpg`)} />*/}
+            <img className="skinTypeImg" src={myskinTypeImg ? myskinTypeImg : "undefined"} />
+            <p className="skinTypetxt">{myskinTypetxt ? myskinTypetxt : "undefined"}</p>
             <div className="tit">
                 <div className="balancing">
                     {
@@ -153,9 +187,9 @@ const BarChart = ({ userPK }) => {
                     {
                         rs_alpha == 'S' ?
                             <div>
-                                <p className="bar_percent2" style={{color: "rgb(0,113,178)", fontWeight:"bolder"}}>S<br/><span>{R_S ? (100 - R_S) : "undefined"}%</span><br/>민감성</p>
+                                <p className="bar_percent2" style={{color: "rgb(0,113,178)", fontWeight:"bolder"}}>S<br/><span>{R_S ? (100 - R_S) : (R_S == 0) ? 100 : "undefined"}%</span><br/>민감성</p>
                                 <div className="bar_chart" style={{backgroundColor: "rgba(147,181,198,0.62)"}}><span style={{ width: `${(100-R_S)}%`, backgroundColor: "#71a1b6"}}></span></div>
-                                <p className="bar_percent">R<br/><span className="c-gray">{R_S ? R_S : "undefined"}%</span><br/>저항성</p>
+                                <p className="bar_percent">R<br/><span className="c-gray">{R_S ? R_S : (R_S == 0) ? 0 : "undefined"}%</span><br/>저항성</p>
                                 <p className="b_t1">민감성 높은 피부입니다.</p>
                             </div>
                             :
@@ -171,9 +205,9 @@ const BarChart = ({ userPK }) => {
                     {
                         np_alpha == "P" ?
                             <div>
-                                <p className="bar_percent2" style={{color: "rgb(28,140,20)", fontWeight:"bolder"}}>P<br/><span>{N_P ? (100 - N_P) : "undefined"}%</span><br/>색소성</p>
+                                <p className="bar_percent2" style={{color: "rgb(28,140,20)", fontWeight:"bolder"}}>P<br/><span>{N_P ? (100 - N_P) : (N_P == 0) ? 100 : "undefined"}%</span><br/>색소성</p>
                                 <div className="bar_chart" style={{backgroundColor: "rgba(132,169,140,0.62)"}}><span style={{width: `${(100 - N_P)}%`, backgroundColor: "#6ea97b"}}></span></div>
-                                <p className="bar_percent">N<br/><span className="c-gray">{N_P ? N_P : "undefined"}%</span><br/>비색소성</p>
+                                <p className="bar_percent">N<br/><span className="c-gray">{N_P ? N_P : (N_P == 0) ? 0 : "undefined"}%</span><br/>비색소성</p>
                                 <p className="b_t1">색소성 높은 피부입니다.</p>
                             </div>
                             :
@@ -189,16 +223,16 @@ const BarChart = ({ userPK }) => {
                     {
                         tw_alpha == "W" ?
                             <div>
-                                <p className="bar_percent2" style={{color: "rgb(197,174,8)", fontWeight:"bolder"}}>W<br/><span>{T_W ? (100 - T_W) : "undefined"}%</span><br/>주름</p>
+                                <p className="bar_percent2" style={{color: "rgb(197,174,8)", fontWeight:"bolder"}}>W<br/><span>{T_W ? (100 - T_W) : (T_W == 0) ? 100 : "undefined"}%</span><br/>주름</p>
                                 <div className="bar_chart" style={{backgroundColor: "rgba(253,204,110,0.56)"}}><span style={{width: `${(100 - T_W)}%`, backgroundColor: "#fcbf49"}}></span></div>
-                                <p className="bar_percent">T<br/><span className="c-gray">{T_W ? T_W : "undefined"}%</span><br/>탄력</p>
+                                <p className="bar_percent">T<br/><span className="c-gray">{T_W ? T_W : (T_W == 0) ? 0 : "undefined"}%</span><br/>탄력</p>
                                 <p className="b_t1">탄력이 부족한 피부입니다.</p>
                             </div>
                             :
                             <div>
                                 <p className="bar_percent2">W<br/><span className="c-gray">{T_W ? (100 - T_W) : "undefined"}%</span><br/>주름</p>
                                 <div className="bar_chart" style={{backgroundColor: "rgba(253,204,110,0.56)"}}><span style={{left: `${(100 - T_W)}%`, width: `${T_W}%`, backgroundColor: "#fcbf49"}}></span></div>
-                                <p className="bar_percent" style={{color: "rgb(197,174,8)", fontWeight:"bolder"}}>T<br/><span>{T_W ? T_W: "undefined"}%</span><br/>탄력</p>
+                                <p className="bar_percent" style={{color: "rgb(197,174,8)", fontWeight:"bolder"}}>T<br/><span>{T_W ? T_W : "undefined"}%</span><br/>탄력</p>
                                 <p className="b_t1">탄력이 좋은 피부입니다.</p>
                             </div>
                     }
