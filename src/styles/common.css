@@ -5182,10 +5182,10 @@ html {
   height: 1.06666667vw;
 }
 .b_chart .tit .bar_chart {
-  left: 10.5vw;
+  left: 12vw;
   top: 12px;
   margin-bottom: 3%;
-  width: 65vw;
+  width: 62vw;
   height: 4vw;
 }
 .bar_chart {
@@ -5257,9 +5257,16 @@ html {
 .skinTypeImg{
   margin: auto;
   display: block;
-  width: 40%;
-  height: 20%;
-  margin-bottom: -10vw;
+  width: 50%;
+  height: 30%;
+  margin-top: 12vw;
+}
+.skinTypetxt {
+  text-align: center;
+  font-size: 4vw;
+  color: #5e6062;
+  margin-top: 7vw;
+  margin-bottom: -4vw;
 }
 .b_txt1 {
   font-size: 4vw;

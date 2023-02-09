@@ -202,7 +202,7 @@ const Ranking = () => {
         <div>
             <header id="header" className="header">
                 <div className="inr-c">
-                    <h2 className="tit">카페고리별 상품 랭킹</h2>
+                    <h2 className="tit">카테고리별 상품 랭킹</h2>
                     <div className="lft">
                         <button type="button" className="btn-back c-white" onClick={() => navigate(-1)}>
                             <span className="i-aft i_back">뒤로</span>
