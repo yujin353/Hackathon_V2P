@@ -86,9 +86,10 @@ const Graph = ({ userPK }) => {
                 <p className="tit">내 피부 타입은 <strong className="c-blue">{myskinType ? myskinType : "undefined"}</strong> 입니다.</p>
                 <div className="box">
                     <p>부스팅 타겟은 <strong>{bTarget ? bTarget : "undefined"}</strong>입니다.
-                        { <button type="button" className="btn_bmore" ref={btnRef1} onClick={()=>navigate(`/mykiin/detailresult?id=${userPK}`)}>
-                            <span>결과가 더 궁금하다면?</span>
-                        </button> }
+                        { bTarget ?
+                            <button type="button" className="btn_bmore" ref={btnRef1} onClick={()=>navigate(`/mykiin/detailresult?id=${userPK}`)}>
+                            <span>결과가 더 궁금하다면?</span></button>
+                        : null }
                     </p>
                 </div>
             </div>
