@@ -21,6 +21,8 @@ const Product = () => {
     let [likeProducts, setLikeProducts] = useState([]);
     let latestLikeProducts = useRef(likeProducts);
     let stars;
+    const [myskinType, setMyskinType] = useState(0)
+    const [filter, setFilter] = useState(0);
 
     /* loading product info */
     useEffect(() => {
@@ -85,7 +87,35 @@ const Product = () => {
             },
             error: (response) => console.log(response)
         });
+    }, [filter]);
+
+    /* find my skin type */
+    useEffect(() => {
+        $.ajax({
+            async: false, type: "GET",
+            url: "https://api.odoc-api.com/api/v1/myskin/?search=" + sessionStorage.getItem("user_pk") ,
+            success: (response) => setMyskinType(response.results[0].type_id),
+            error: (response) => console.log(response)
+        });
     }, []);
+
+    /* loading product reviews that filters only the same myskintype */
+    const reviewFilter = () => {
+        $.ajax({
+            async: true, type: "GET",
+            url: "https://api.odoc-api.com/api/v1/reviews-product-filter/?search=" + params.id,
+            success: (response) => {
+                const result = [];
+                response.results.map((v) => {
+                    if (v.product != null)
+                        if (v.type_id.type_id === myskinType)
+                            result.push(v);
+                });
+                setReviewList(result);
+            },
+            error: (response) => console.log(response)
+        });
+    };
 
     useEffect(() => {
         $.ajax({
@@ -342,13 +372,21 @@ const Product = () => {
                                 <option value="">피부 유사도 순</option>
                                 <option value="">만족도 순</option>
                             </select> */}
+                            <select className="select1 hd_ty1"
+                                    onChange={(e) => {
+                                        if (e.target.value === "all") setFilter(filter+1);
+                                        else reviewFilter();
+                                    }}>
+                                <option value="all">모든 리뷰</option>
+                                <option value="sameSkin">내 피부타입 리뷰</option>
+                            </select>
                         </div>
                     </div>
 
                     <div className="lst_review">
                         <ul className="prod_reviews">
                             {reviewList.slice(0, count).map((v) => {
-                                const rand_simil = productFit(v.member.member_id, v.product.product_id);
+                                // const rand_simil = productFit(v.member.member_id, v.product.product_id);
                                 const authority = checkAuthority(v.review_id, v.member.member_id);
                                 return (
                                     <li className="col" key={v.review_id}>
