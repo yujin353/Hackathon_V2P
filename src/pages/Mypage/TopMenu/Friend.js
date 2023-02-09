@@ -188,8 +188,9 @@ const Friend = () => {
                                                         <div className="im">
                                                             <img src={require("../../../assets/images/common/img_nomem.jpg")} />
                                                         </div>
-                                                        <p className="t1"><strong>{follower.username}</strong>님</p>
-                                                        <span className="cnt_follow" style={{ fontSize: '1.5vh' }}>팔로워 : {func_cntFollower(follower.member_id)} / 팔로잉 : {func_cntFollowee(follower.member_id)}</span>
+                                                        <p className="t3"><strong>{follower.username}</strong>님</p>
+                                                        <span className="cnt_follower">팔로워 <br /> <span>{func_cntFollower(follower.member_id)}</span></span>
+                                                        <span className="cnt_followee">팔로잉 <br /> <span>{func_cntFollowee(follower.member_id)}</span></span>
                                                     </Link></li>
                                                 );
                                             })
@@ -210,8 +211,9 @@ const Friend = () => {
                                                         <div className="im">
                                                             <img src={require("../../../assets/images/common/img_nomem.jpg")} />
                                                         </div>
-                                                        <p className="t1"><strong>{followee.username}</strong>님</p>
-                                                        <span className="cnt_follow" style={{ fontSize: '1.5vh' }}>팔로워 : {func_cntFollower(followee.member_id)} / 팔로잉 : {func_cntFollowee(followee.member_id)}</span>
+                                                        <p className="t3"><strong>{followee.username}</strong>님</p>
+                                                        <span className="cnt_follower">팔로워 <br /> <span>{func_cntFollower(followee.member_id)}</span></span>
+                                                        <span className="cnt_followee">팔로잉 <br /> <span>{func_cntFollowee(followee.member_id)}</span></span>
                                                     </Link></li>
                                                 );
                                             })
@@ -236,8 +238,10 @@ const Friend = () => {
                                         userId.length !== 0 ?
                                             <div><Link to={`/mykiin/neighbor?id=${userId}`} className="b">
                                                 <div className="im"><img src={require("../../../assets/images/common/img_nomem.jpg")} /></div>
-                                                <p className="t1"><strong>{userName}</strong>님</p></Link>
-                                            </div>
+                                                <p className="t3"><strong>{userName}</strong>님</p>
+                                                <span className="cnt_follower">팔로워 <br /> <span>{func_cntFollower(userId)}</span></span>
+                                                <span className="cnt_followee">팔로잉 <br /> <span>{func_cntFollowee(userId)}</span></span>
+                                            </Link></div>
                                             :
                                             <p className="emptyArea" style={{ color: "#bfc2ca", fontSize: "18px", textAlign: "center", marginTop: "120px" }}>검색어와 일치하는 사용자가 없습니다.</p>
                                     }

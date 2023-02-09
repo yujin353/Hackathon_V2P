@@ -6675,3 +6675,30 @@ body.fix {
   padding-left: 0;
   padding-right: 0;
 }
+.cnt_follower {
+  position: absolute;
+  right: 22vw;
+  text-align: center;
+  font-size: 1.5vh;
+  color: #999999;
+}
+.cnt_followee {
+  position: absolute;
+  right: 10vw;
+  text-align: center;
+  font-size: 1.5vh;
+  color: #999999;
+}
+.cnt_follower span {
+  text-align: center;
+  font-size: 1.8vh;
+  color: #145cff;
+}
+.cnt_followee span {
+  text-align: center;
+  font-size: 1.8vh;
+  color: #145cff;
+}
+.lst_list1 .b .t3 {
+  font-size: 4.26666667vw;
+}
