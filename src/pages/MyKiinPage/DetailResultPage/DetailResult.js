@@ -25,7 +25,7 @@ const DetailResult = ()=> {
             success: (response) => {
                 const results = response.results[0];
                 if (results === undefined) return;
-                setBTarget(results.target_id.target_name);
+                setBTarget(results.target_id.target_name.trim());
                 boost(results.target_id.target_name);
             },
             error: (response) => console.log(response)
@@ -42,6 +42,7 @@ const DetailResult = ()=> {
     }, [])
 
     const boost = (bTarget) => {
+        bTarget = bTarget.trim()
         switch (bTarget) {
             case '극지성':
                 setBTargetType("피지 생성이 매우 많은 피부입니다.");
@@ -68,17 +69,17 @@ const DetailResult = ()=> {
                 setBTargetImprovement("최대한 깨끗한 손 이외에 얼굴에 닿는 것이 적도록 주의합니다. 금속 장신구 선택에 유의합니다.");
                 setBTargetRec("성분이 적게 든 스킨케어 제품, 판테놀, 시카 등 장벽강화 성분이 포함된 제품");
                 break;
-            case '화학적 민감증':
+            case '화학적 민감성':
                 setBTargetType("화학성분에 대한 반응이 큰 피부입니다.");
                 setBTargetImprovement("트러블이 났던 화장품의 성분을 주의깊게 살핍니다. 인공적인 향이 들어있는 제품은 사용하지 않습니다.");
                 setBTargetRec("성분이 적게 든 스킨케어 제품, 판테놀, 시카 등 장벽강화 성분이 포함된 제품, 향료가 포함되지 않은 제품");
                 break;
-            case '주사성 민감증':
+            case '주사성 민감성':
                 setBTargetType("외부 자극에 대한 저항으로 홍조가 잘 나타나는 피부입니다.");
                 setBTargetImprovement("물리적 자극을 최소화합니다. 갑작스러운 온도 변화에 주의합니다.");
                 setBTargetRec("모델링팩, 성분이 적게 든 스킨케어 제품, 판테놀, 시카 등 장벽강화 성분이 포함된 제품");
                 break;
-            case '종합 민감증':
+            case '종합 민감성':
                 setBTargetType("전체적으로 민감한 피부입니다.");
                 setBTargetImprovement("물리적, 화학적 자극에 유의합니다. 청결에 유의합니다. 피부의 온도를 낮게 유지합니다. 깨끗한 손 이외에 얼굴에 닿는 것이 적도록 주의합니다. 인공적인 향이 들어있는 제품은 사용하지 않습니다. 갑작스러운 온도 변화에 주의합니다.");
                 setBTargetRec("모델링팩, 성분이 적게 든 스킨케어 제품, 판테놀, 시카 등 장벽강화 성분이 포함된 제품");
@@ -137,7 +138,7 @@ const DetailResult = ()=> {
 
                         <h2 className="h_tit1" style={{textAlign: "center"}}>부스팅 타겟</h2>
                         <p className="b_txt4">내 피부의 개선을 위하여 우선적으로 공략해야할 목표입니다. 부스팅타겟을 개선하면 내 피부의 전반적인 컨디션이 좋아집니다.</p>
-                        <p className="b_txt2"><strong className="c-blue">{username}</strong>님의 부스팅 타겟은 <strong>{bTarget ? bTarget : "undefined"}</strong>입니다.</p>
+                        <p className="b_txt2"><strong className="c-blue">{username}</strong>님의 부스팅 타겟은 <strong>{bTarget ? bTarget : "undefined"}</strong> 입니다.</p>
                         {
                             bTarget == '없음' ? <p></p>
                             :

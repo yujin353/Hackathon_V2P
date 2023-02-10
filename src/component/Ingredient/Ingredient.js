@@ -12,35 +12,59 @@ const Ingredient = ( {userPK} ) => {
     const [ingredientGoodCount, setIngredientGoodCount] = useState(10)
     const [ingredientBadCount, setIngredientBadCount] = useState(10)
 
-    /* set neighbor's Good, Bad Ingredient */
+    // /* set neighbor's Good, Bad Ingredient */
+    // useEffect(() => {
+    //     let isMounted = true;
+    //     $.ajax({
+    //         async: true, type: "GET",
+    //         url: "https://api.odoc-api.com/api/v1/my-ingredient/?limit=1000000&offset=0&search=" + userPK,
+    //         success: response => {
+    //
+    //             const result = response.results;
+    //
+    //             if(result === undefined)return;
+    //             if(isMounted) {
+    //
+    //                 const results = response.results
+    //                 let good = []
+    //                 let bad = []
+    //                 for(let i=0; i<results.length; i++)
+    //                 {
+    //                     if(results[i].ingred_status == true)
+    //                         good.push(results[i])
+    //                     else
+    //                         bad.push(results[i])
+    //                 }
+    //                 setUserIngredientBad(bad)
+    //                 setUserIngredientGood(good)
+    //
+    //             }
+    //         },
+    //         error: response => console.log(response.results)
+    //     });
+    //     return () => isMounted = false
+    // }, [])
+
+    /* set Good Ingredient */
     useEffect(() => {
         let isMounted = true;
         $.ajax({
             async: true, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/my-ingredient/?limit=1000000&offset=0&search=" + userPK,
-            success: response => {
+            url: "https://api.odoc-api.com/api/v2/memberingredient?member_id=" + userPK +"&status=fit",
+            success: (response) => setUserIngredientGood(response.result),
+            error: response => console.log(response.result)
+        });
+        return () => isMounted = false
+    }, [])
 
-                const result = response.results;
-
-                if(result === undefined)return;
-                if(isMounted) {
-
-                    const results = response.results
-                    let good = []
-                    let bad = []
-                    for(let i=0; i<results.length; i++)
-                    {
-                        if(results[i].ingred_status == true)
-                            good.push(results[i])
-                        else
-                            bad.push(results[i])
-                    }
-                    setUserIngredientBad(bad)
-                    setUserIngredientGood(good)
-
-                }
-            },
-            error: response => console.log(response.results)
+    /* set Bad Ingredient */
+    useEffect(() => {
+        let isMounted = true;
+        $.ajax({
+            async: true, type: "GET",
+            url: "https://api.odoc-api.com/api/v2/memberingredient?member_id=" + userPK +"&status=unfit",
+            success: (response) => setUserIngredientBad(response.result),
+            error: response => console.log(response.result)
         });
         return () => isMounted = false
     }, [])
