@@ -254,7 +254,7 @@ const Product = () => {
     /* used to delete review */
     const checkAuthority = (review_id, member_id) => {
         const value = sessionStorage.getItem("user_pk");
-        if (value === member_id)
+        if (value == member_id)
             return 'Y';
         else return 'N';
     };
