@@ -64,9 +64,23 @@ const Main = () => {
 		return () => isMounted = false;
 	}, []);
 
+	/* checking skin type test */
+	useEffect(() => {
+		$.ajax({
+			async: false, type: "GET",
+			url: "https://dev.odoc-api.com/member/my_skin?member_id=" + sessionStorage.getItem("user_pk") ,
+			success: (response) => {
+				if (response[0]) {
+					recommendProduct()
+				}
+				else setModal1(true);
+			},
+			error: (response) => console.log(response)
+		});
+	}, []);
 
 	/* loading recommended products */
-	useEffect(() => {
+	const recommendProduct = () => {
 		let isMounted = true;
 		$.ajax({
 			async: true, type: 'GET',
@@ -82,7 +96,7 @@ const Main = () => {
 			}
 		});
 		return () => isMounted = false;
-	}, []);
+	};
 
 
 	/* loading ranking products */

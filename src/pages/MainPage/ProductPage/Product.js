@@ -68,7 +68,7 @@ const Product = () => {
     }, []);
 
     /* function to calculate product fit */
-    useEffect(() => {
+    const calcProFit = () => {
         $.ajax({
             async: false, type: "GET",
             url: `https://dev.odoc-api.com/recommendation/product_matching?member_id=${sessionStorage.getItem("user_pk")}&product_id=${params.id}`,
@@ -77,7 +77,7 @@ const Product = () => {
             },
             error: response => console.log(response)
         });
-    }, []);
+    };
 
     /* loading product reviews */
     useEffect(() => {
@@ -101,7 +101,12 @@ const Product = () => {
         $.ajax({
             async: false, type: "GET",
             url: "https://dev.odoc-api.com/member/my_skin?member_id=" + sessionStorage.getItem("user_pk") ,
-            success: (response) => setMyskinType(response[0].type.type_id),
+            success: (response) => {
+                if (response[0]) {
+                    setMyskinType(response[0].type.type_id)
+                    calcProFit()
+                }
+            },
             error: (response) => console.log(response)
         });
     }, []);

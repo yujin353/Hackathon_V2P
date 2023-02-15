@@ -22,21 +22,37 @@ const MyKiin = () => {
         window.scrollTo(0,0);
     },[])
 
-    /* loading same skin type user */
+    /* checking skin type test */
     useEffect(() => {
+        $.ajax({
+            async: false, type: "GET",
+            url: "https://dev.odoc-api.com/member/my_skin?member_id=" + sessionStorage.getItem("user_pk") ,
+            success: (response) => {
+                if (response[0]) {
+                    findSameSkinTypeUser()
+                }
+            },
+            error: (response) => console.log(response)
+        });
+    }, []);
+
+    /* loading same skin type user */
+    const findSameSkinTypeUser = () => {
         let isMounted = true;
         $.ajax({
             async: true, type: "GET",
             url: "https://dev.odoc-api.com/member/skin_type_by_same?member_id=" + sessionStorage.getItem("user_pk"),
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: response => {
-                if (isMounted)
+                if (response.message == "없음")
+                    setUserList([])
+                else if (isMounted)
                     setUserList(JSON.parse(response.message));
             },
             error: response => console.log(response)
         });
         return () => isMounted = false;
-    }, []);
+    };
 
     useEffect(() => {
         let pathname = $(window.location).attr('pathname');
