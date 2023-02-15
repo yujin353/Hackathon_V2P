@@ -17,7 +17,7 @@ const Interest = () => {
             async: true, type: "GET",
             url: "https://dev.odoc-api.com/member_product/review_like_display?member_id=" + sessionStorage.getItem("user_pk"),
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
-            success: (response) => setReviewList(response),
+            success: (response) => setReviewList(response.reverse()),
             error: (response) => {
                 if (response.statusText === "Unauthorized") {
                     sessionStorage.setItem("access_token", accessTknRefresh());

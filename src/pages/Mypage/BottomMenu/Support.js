@@ -56,7 +56,7 @@ const Support = () => {
 
                                         <div className="p_cont">
                                             <p className="h_tit1">이메일 문의</p>
-                                            <center><input type="text" id="copy_text_input2" defaultValue="ask@odoc.co.kr" className="form-control" ref={linkRef}/></center>
+                                            <center><input type="text" id="copy_text_input2" defaultValue="ask@odoc.co.kr" className="form-control" ref={linkRef} style={{width: "100%"}} /></center>
                                             <br/>
                                             <center><button id="copy_btn2" onClick={copyLink}><span className="i-aft i_url">URL 복사</span></button></center>
                                         </div>

@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import $ from "jquery"
+import cookies from "react-cookies";
+import $ from "jquery";
 
 const Intro = () => {
+    const navigate = useNavigate();
     const setting = {
         dots: true, infinite: true, speed: 1500,
         slidesToShow: 1, slidesToScroll: 1,
@@ -13,20 +15,24 @@ const Intro = () => {
         appendDots: (dots) => (
             <div
                 style={{
-                    display: 'flex', position: 'fixed', 
+                    display: 'flex', position: 'fixed',
                     justifyContent: 'center', bottom: 0,
                     lineHeight: "15.6vw"
                 }}>
                 <ul> {dots}</ul>
             </div>
         )
-    }
+    };
+
+    useEffect(() => {
+        if (cookies.load("access_token") && cookies.load("refresh_token")) navigate('/login');
+    });
 
     useEffect(() => {
         setTimeout(function () {
             $(".txt_loading").fadeOut(1500);
-        }, 2000)
-    }, [])
+        }, 2000);
+    }, []);
 
     return (
         <div>
@@ -72,7 +78,7 @@ const Intro = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default Intro;

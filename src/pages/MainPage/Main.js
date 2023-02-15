@@ -59,6 +59,7 @@ const Main = () => {
 			error: (response) => {
 				console.log("error", response);
 				alert("login failed.")
+				window.location.replace("/");
 			},
 		});
 		return () => isMounted = false;

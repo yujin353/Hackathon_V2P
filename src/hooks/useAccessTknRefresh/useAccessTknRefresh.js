@@ -5,24 +5,32 @@ import $ from "jquery";
 
 const Logout = () => {
     const navigate = useNavigate();
-    $.ajax({
-        async: true, type: 'POST',
-        url: "https://api.odoc-api.com/rest_auth/logout/",
-        data: { "refresh": sessionStorage.getItem("refresh_token") },
-        dataType: 'JSON',
-        success: function (response) {
-            sessionStorage.removeItem("access_token");
-            sessionStorage.removeItem("refresh_token");
-            sessionStorage.removeItem("user_pk");
-            cookies.remove("access_token");
-            cookies.remove("refresh_token");
-            navigate("/login");
-        },
-        error: (response) => {
-            console.log(response);
-            navigate("/login");
-        },
-    });
+    // $.ajax({
+    //     async: true, type: 'POST',
+    //     url: "https://api.odoc-api.com/rest_auth/logout/",
+    //     data: { "refresh": sessionStorage.getItem("refresh_token") },
+    //     dataType: 'JSON',
+    //     success: function (response) {
+    //         sessionStorage.removeItem("access_token");
+    //         sessionStorage.removeItem("refresh_token");
+    //         sessionStorage.removeItem("user_pk");
+    //         cookies.remove("access_token");
+    //         cookies.remove("refresh_token");
+    //         localStorage.removeItem("user_pk");
+    //         navigate("/login");
+    //     },
+    //     error: (response) => {
+    //         console.log(response);
+    //         navigate("/login");
+    //     },
+    // });
+    sessionStorage.removeItem("access_token");
+    sessionStorage.removeItem("refresh_token");
+    sessionStorage.removeItem("user_pk");
+    cookies.remove("access_token");
+    cookies.remove("refresh_token");
+    localStorage.removeItem("user_pk");
+    window.location.replace('/login')
 };
 
 const useAccessTknRefresh = () => {
@@ -47,8 +55,8 @@ const useAccessTknRefresh = () => {
                 sessionStorage.setItem("refresh_token", cookies.load("refresh_token"));
                 sessionStorage.setItem("user_pk", localStorage.getItem("user_pk")); //change after
             }
-            else{
-                alert("다시 로그인해 주세요")
+            else {
+                alert("다시 로그인해 주세요");
                 Logout();
             }
         }
