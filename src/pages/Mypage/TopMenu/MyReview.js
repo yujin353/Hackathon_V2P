@@ -27,10 +27,9 @@ const MyReview = () => {
         if (window.confirm("정말 삭제하시겠습니까?") === true) {
             $.ajax({
                 async: true, type: "DELETE",
-                url: "https://dev.odoc-api.com/member_product/member_review_delete/" + `${review_id}`,
-                beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + sessionStorage.getItem("access_token")),
+                url: `https://dev.odoc-api.com/member_product/member_review_delete/${review_id}`,
+                beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
                 success: (response) => {
-                    const element = document.getElementById(review_id)
                     alert("리뷰가 삭제되었습니다.");
                     window.location.reload();
                 },

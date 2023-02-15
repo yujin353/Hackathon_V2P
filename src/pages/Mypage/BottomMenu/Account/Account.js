@@ -1,26 +1,121 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAccessTknRefresh } from "../../../../hooks";
 import cookies from "react-cookies";
 import $ from "jquery";
 
 const Account = () => {
     const navigate = useNavigate();
+    const accessTknRefresh = useAccessTknRefresh();
+    const [username, setUsername] = useState("");
 
     const logout = () => {
+        // $.ajax({
+        //     async: true, type: 'POST',
+        //     url: "https://api.odoc-api.com/rest_auth/logout/",
+        //     data: { "refresh": sessionStorage.getItem("refresh_token") },
+        //     dataType: 'JSON',
+        //     success: function (response) {
+        //         sessionStorage.removeItem("access_token");
+        //         sessionStorage.removeItem("refresh_token");
+        //         sessionStorage.removeItem("user_pk");
+        //         cookies.remove("access_token");
+        //         cookies.remove("refresh_token");
+        //         localStorage.removeItem("user_pk");
+        //         navigate("/login");
+        //     },
+        //     error: (response) => console.log(response),
+        // });
+        sessionStorage.removeItem("access_token");
+        sessionStorage.removeItem("refresh_token");
+        sessionStorage.removeItem("user_pk");
+        cookies.remove("access_token");
+        cookies.remove("refresh_token");
+        localStorage.removeItem("user_pk");
+        window.location.replace('/login');
+    };
+
+    /* findout currently logged in user */
+    useEffect(() => {
+        let isMounted = true;
         $.ajax({
-            async: true, type: 'POST',
-            url: "https://api.odoc-api.com/rest_auth/logout/",
-            data: { "refresh": sessionStorage.getItem("refresh_token") },
-            dataType: 'JSON',
-            success: function (response) {
-                sessionStorage.removeItem("access_token");
-                sessionStorage.removeItem("refresh_token");
-                sessionStorage.removeItem("user_pk");
-                cookies.remove("access_token");
-                cookies.remove("refresh_token");
-                navigate("/login");
+            async: false, type: 'GET',
+            url: "https://dev.odoc-api.com/member/member_display?member_id=" + sessionStorage.getItem("user_pk"),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
+            success: (response) => {
+                if (isMounted)
+                    setUsername(response[0].username);
             },
-            error: (response) => console.log(response),
+            error: (response) => {
+                console.log("error", response);
+                alert("login failed.");
+                window.location.replace("/login");
+            },
+        });
+        return () => isMounted = false;
+    }, []);
+
+    const onEditBtn = () => {
+        document.getElementById('nicknameEditBtnOff').style.display = 'none';
+        document.getElementById('nicknameEditBtnOn').style.display = 'block';
+        document.getElementById('nicknameEditBtnOn').style.margin = 'auto';
+    };
+
+    const offEditBtn = () => {
+        document.getElementById('nicknameEditBtnOn').style.display = 'none';
+        document.getElementById('nicknameEditBtnOff').style.display = 'block';
+        document.getElementById('nicknameEditBtnOff').style.margin = 'auto';
+    };
+
+    const changeInfo = () => {
+        if (document.getElementById('originalNickname').style.display === 'none') {
+            if (document.getElementById('nicknameEditBtnOff').style.display === 'none') {
+                submitInfo(document.getElementById('changeNickname').value);
+            }
+        }
+        else {
+            document.getElementById('originalNickname').style.display = 'none';
+            document.getElementById('changeNickname').style.display = 'block';
+        }
+    };
+
+    const checkingNickname = () => {
+        if (document.getElementById('changeNickname').value !== username) {
+            document.getElementById('nicknameError1').style.display = 'none';
+            document.getElementById('nicknameError2').style.display = 'none';
+            document.getElementById('nicknameError3').style.display = 'none';
+            document.getElementById('nicknameError4').style.display = 'none';
+            document.getElementById('nicknameError5').style.display = 'none';
+            if (document.getElementById('changeNickname').value.length < 3) {
+                document.getElementById('nicknameError1').style.display = 'block';
+                offEditBtn();
+            }
+            else if (document.getElementById('changeNickname').value.length > 8) {
+                document.getElementById('nicknameError2').style.display = 'block';
+                offEditBtn();
+            }
+            else onEditBtn();
+        }
+        else offEditBtn();
+    };
+
+    const submitInfo = (newName) => {
+        $.ajax({
+            async: false, type: 'PUT',
+            url: "https://dev.odoc-api.com/member/username_change/" + sessionStorage.getItem("user_pk"),
+            data: { "username": newName },
+            dataType: 'JSON',
+            // beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
+            success: function (response) {
+                if (response.message == "SUCCESS") alert("닉네임을 변경하였습니다.");
+                else alert("닉네임 변경에 실패하였습니다.");
+            },
+            error: (response) => {
+                if (response.responseJSON.message === "DUPLICATE") document.getElementById('nicknameError3').style.display = 'block';
+                else if (response.responseJSON.message === "NOT SPECIAL CHARACTERS") document.getElementById('nicknameError4').style.display = 'block';
+                else if (response.responseJSON.message === "Wrong length") document.getElementById('nicknameError5').style.display = 'block';
+                console.log(response);
+            },
         });
     };
 
@@ -32,7 +127,7 @@ const Account = () => {
                 data: { "member_id": sessionStorage.getItem("user_pk") },
                 dataType: 'JSON',
                 success: function (response) {
-                    if (response.message === "Withdraw OK") {
+                    if (response.message == "Withdraw OK") {
                         sessionStorage.removeItem("access_token");
                         sessionStorage.removeItem("refresh_token");
                         sessionStorage.removeItem("user_pk");
@@ -68,6 +163,25 @@ const Account = () => {
             <div id="container" className="container sub mypage2">
                 <div className="inr-c">
                     <div className="lst_push">
+
+                        <div style={{ display: 'table', width: '100%', margin: '2vh 0' }}>
+                            <img src={require("../../../../assets/images/common/img_nomem.jpg")} style={{ width: '10vh' }} />
+                            <div style={{ display: 'table-cell', paddingLeft: '3vh' }}>
+                                <p className="h1" id="originalNickname" style={{ fontSize: '6vw' }}><strong className="c-blue usernick">{username}</strong>님 </p>
+                                <input id="changeNickname" placeholder={username} onKeyUp={checkingNickname} />
+                                <p id="nicknameError1" className="t_error hidden">닉네임은 3글자 이상으로 가능합니다.</p>
+                                <p id="nicknameError2" className="t_error hidden">닉네임은 8글자 이하로만 가능합니다.</p>
+                                <p id="nicknameError3" className="t_error hidden">이미 사용중인 닉네임 입니다.</p>
+                                <p id="nicknameError4" className="t_error hidden">닉네임은 한글, 영문, 숫자로만 가능합니다.</p>
+                                <p id="nicknameError5" className="t_error hidden">닉네임은 3글자 이상, 8글자 이하로 가능합니다.</p>
+                            </div>
+                            <div style={{ display: 'table-cell', textAlign: 'center', verticalAlign: 'middle', width: '15%' }} onClick={changeInfo}>
+                                <img id="nicknameEditBtnOn" src={require("../../../../assets/images/common/ico_checkbox2_on.png")} style={{ width: '3vh', display: 'none' }} />
+                                <img id="nicknameEditBtnOff" src={require("../../../../assets/images/common/ico_checkbox2_off.png")} style={{ width: '3vh' }} />
+                                <p className="h1" style={{ fontSize: '4vw' }}>수정</p>
+                            </div>
+                        </div>
+
                         <ul>
                             {/* <li>
                                 <p>푸시 알림 받기</p>

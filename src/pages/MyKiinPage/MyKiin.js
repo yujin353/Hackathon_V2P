@@ -40,7 +40,7 @@ const MyKiin = () => {
     const findSameSkinTypeUser = () => {
         let isMounted = true;
         $.ajax({
-            async: true, type: "GET",
+            async: false, type: "GET",
             url: "https://dev.odoc-api.com/member/skin_type_by_same?member_id=" + sessionStorage.getItem("user_pk"),
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: response => {

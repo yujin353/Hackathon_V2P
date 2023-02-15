@@ -36,22 +36,30 @@ const NewPW = () => {
     };
 
     const logout = () => {
-        $.ajax({
-            async: true, type: 'POST',
-            url: "https://api.odoc-api.com/rest_auth/logout/",
-            data: { "refresh": sessionStorage.getItem("refresh_token") },
-            dataType: 'JSON',
-            success: (response) => {
-                console.log(response);
-                sessionStorage.removeItem("access_token");
-                sessionStorage.removeItem("refresh_token");
-                sessionStorage.removeItem("user_pk");
-                cookies.remove("access_token");
-                cookies.remove("refresh_token");
-                navigate("/login");
-            },
-            error: (response) => console.log(response),
-        });
+        // $.ajax({
+        //     async: true, type: 'POST',
+        //     url: "https://api.odoc-api.com/rest_auth/logout/",
+        //     data: { "refresh": sessionStorage.getItem("refresh_token") },
+        //     dataType: 'JSON',
+        //     success: (response) => {
+        //         console.log(response);
+        //         sessionStorage.removeItem("access_token");
+        //         sessionStorage.removeItem("refresh_token");
+        //         sessionStorage.removeItem("user_pk");
+        //         cookies.remove("access_token");
+        //         cookies.remove("refresh_token");
+        //         localStorage.removeItem("user_pk");
+        //         navigate("/login");
+        //     },
+        //     error: (response) => console.log(response),
+        // });
+        sessionStorage.removeItem("access_token");
+        sessionStorage.removeItem("refresh_token");
+        sessionStorage.removeItem("user_pk");
+        cookies.remove("access_token");
+        cookies.remove("refresh_token");
+        localStorage.removeItem("user_pk");
+        window.location.replace('/login')
     };
 
     const changePassword = () => {

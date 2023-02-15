@@ -12,8 +12,8 @@ const Friend = () => {
     const [searchTab, setSearchTab] = useState(false);
     const [followerList, setFollowerList] = useState([]);
     const [followeeList, setFolloweeList] = useState([]);
-    const [userId, setUserId] = useState("");
-    const [userName, setUserName] = useState("");
+    const [userId, setUserId] = useState([]);
+    const [userName, setUserName] = useState([]);
     const [input, setInput] = useState("");
 
     /* Get a list of friends a user subscribes to */
@@ -71,23 +71,24 @@ const Friend = () => {
 
     /* Get friend name's id */
     const searchUsername = () => {
-        setUserId("");
-        setUserName("");
+        setUserId([]);
+        setUserName([]);
         const textInput = input.trim();
+        let j = 0;
         $.ajax({
-                async: true, type: "GET",
-                url: "https://dev.odoc-api.com/member/member_entire_display",
-                success: (response) => {
-                    response.map(v => {
-                        if (v.username === textInput) {
-                            setUserId(v.member_id);
-                            setUserName(v.username);
-                            return;
-                        }
+            async: true, type: "GET",
+            url: "https://dev.odoc-api.com/member/member_entire_display",
+            success: (response) => {
+                response.map(v => {
+                    if (v.username.includes(textInput)) {
+                        userId[j] = v.member_id;
+                        setUserId(userId);
+                        setUserName(userName => [...userName, v.username]);
+                        j++;
                     }
-                    );
-                },
-                error: (response) => console.log(response)
+                });
+            },
+            error: (response) => console.log(response)
         });
     };
 
@@ -230,12 +231,16 @@ const Friend = () => {
                                 <ul className="search_friend_name">
                                     {
                                         userId.length !== 0 ?
-                                            <div><Link to={`/mykiin/neighbor?id=${userId}`} className="b">
-                                                <div className="im"><img src={require("../../../assets/images/common/img_nomem.jpg")} /></div>
-                                                <p className="t3"><strong>{userName}</strong>님</p>
-                                                <span className="cnt_follower">팔로워 <br /> <span>{func_cntFollowing(userId)}</span></span>
-                                                <span className="cnt_followee">팔로잉 <br /> <span>{func_cntFollower(userId)}</span></span>
-                                            </Link></div>
+                                            userId.map((v, i) => {
+                                                return (
+                                                    <div style={{marginBottom: "1.6vh"}} key={v}><Link to={`/mykiin/neighbor?id=${v}`} className="b">
+                                                        <div className="im"><img src={require("../../../assets/images/common/img_nomem.jpg")} /></div>
+                                                        <p className="t3"><strong>{userName[i]}</strong>님</p>
+                                                        <span className="cnt_follower">팔로워 <br /> <span>{func_cntFollowing(v)}</span></span>
+                                                        <span className="cnt_followee">팔로잉 <br /> <span>{func_cntFollower(v)}</span></span>
+                                                    </Link></div>
+                                                );
+                                            })
                                             :
                                             <p className="emptyArea" style={{ color: "#bfc2ca", fontSize: "18px", textAlign: "center", marginTop: "120px" }}>검색어와 일치하는 사용자가 없습니다.</p>
                                     }
