@@ -19,10 +19,9 @@ const View = () => {
     useEffect(() => {
         $.ajax({
             async: false, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/events/",
+            url: "https://dev.odoc-api.com/event/list",
             success: (response) => {
-                const results = response.results
-                results.map((v) => {
+                response.map((v) => {
                     if(v.event_id.toString() === eventID)
                         setContent(v)
                 })

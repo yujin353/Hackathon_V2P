@@ -6,6 +6,7 @@ const Used_Wanted_Product = ({ userPK }) => {
     const [used, setUsed] = useState([]);
     const [wanted, setWanted] = useState([]);
     let dup = [];
+
     const checkDuplicate = (product_id) => {
         if (dup[product_id] > 0)
             return 'Y';
@@ -15,10 +16,10 @@ const Used_Wanted_Product = ({ userPK }) => {
     useEffect(() => {
         $.ajax({
             async: true, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/reviews-member-filter/?search=" + userPK,
+            url: "https://dev.odoc-api.com/member_product/review_member?member_id=" + userPK,
             success: (response) => {
                 const result = [];
-                response.results.map(v => { if (v.product != null) result.push(v); });
+                response.map(v => { if (v.product != null) result.push(v); });
                 setUsed(result);
             },
             error: (response) => console.log(response.results)
@@ -28,9 +29,9 @@ const Used_Wanted_Product = ({ userPK }) => {
     useEffect(() => {
         $.ajax({
             async: true, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/product-like/?search=" + userPK,
-            success: (response) => setWanted(response.results),
-            error: (response) => console.log(response.results)
+            url: "https://dev.odoc-api.com/member_product/product_like_display?member_id=" + userPK,
+            success: (response) => setWanted(response),
+            error: (response) => console.log(response)
         });
     }, []);
 

@@ -15,9 +15,9 @@ const Interest = () => {
     useEffect(() => {
         $.ajax({
             async: true, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/review-like/?search=" + sessionStorage.getItem("user_pk"),
+            url: "https://dev.odoc-api.com/member_product/review_like_display?member_id=" + sessionStorage.getItem("user_pk"),
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
-            success: (response) => setReviewList(response.results),
+            success: (response) => setReviewList(response),
             error: (response) => {
                 if (response.statusText === "Unauthorized") {
                     sessionStorage.setItem("access_token", accessTknRefresh());
@@ -31,10 +31,10 @@ const Interest = () => {
     useEffect(() => {
         $.ajax({
             async: true, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/review-like/?search=" + sessionStorage.getItem("user_pk"),
+            url: "https://dev.odoc-api.com/member_product/review_like_display?member_id=" + sessionStorage.getItem("user_pk"),
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: (response) => {
-                response.results.map((v) => {
+                response.map((v) => {
                     const review_id = v.like_review.review_id;
                     const element = document.getElementById(review_id);
                     $(element).addClass('on');
@@ -54,8 +54,8 @@ const Interest = () => {
         let result;
         $.ajax({
             async: false, type: "GET",
-            url: `https://api.odoc-api.com/api/v1/matching?member_id=${member_id}&product_id=${product_id}`,
-            success: response => result = response.matching_rate,
+            url: `https://dev.odoc-api.com/recommendation/product_matching?member_id=${member_id}&product_id=${product_id}`,
+            success: response => result = response.result,
             error: response => console.log(response)
         });
         return result;
@@ -66,11 +66,14 @@ const Interest = () => {
         if (window.confirm("정말 신고하시겠습니까?") === true) {
             $.ajax({
                 async: true, type: "POST",
-                url: "https://api.odoc-api.com/api/v2/report",
-                data: { "review_id": review_id }, dataType: "json",
+                url: "https://dev.odoc-api.com/member_product/review_report",
+                data: {
+                    "review_id": review_id,
+                    "member_id": sessionStorage.getItem("user_pk")
+                }, dataType: "json",
                 beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
                 success: (response) => {
-                    if (response.message === "Report") alert("정상적으로 신고 접수 되었습니다.");
+                    if (response.message === "REPORT") alert("정상적으로 신고 접수 되었습니다.");
                     else alert("이미 신고 접수 되었습니다.");
                 },
                 error: (response) => console.log(response),
@@ -83,8 +86,12 @@ const Interest = () => {
         const element = document.getElementById(review_id);
         $.ajax({
             async: true, type: "POST",
-            url: "https://api.odoc-api.com/api/v2/like-review",
-            data: { "like_review": review_id }, dataType: "json",
+            url: "https://dev.odoc-api.com/member_product/review_like",
+            data: {
+                "review_id" : review_id,
+                "member_id" : sessionStorage.getItem("user_pk")
+            },
+            dataType: "json",
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: function (response) {
                 if (response.message === "Like") alert("관심리뷰에 추가되었습니다.");
@@ -149,12 +156,19 @@ const Interest = () => {
                                                 <div className="box">
                                                     <p className="t"><span className={`i-aft ${rating_className[review.rating - 1]} sm`}>{rating_txt[review.rating - 1]}</span></p>
                                                     {
-                                                        review.review_article ?
-                                                            <p>{review.review_article.article_content}</p>
+                                                        review.review_content ?
+                                                            <p>{review.review_content}</p>
                                                             : null
                                                     }
                                                     <button type="button" onClick={() => reportReview(review.review_id)} className="btr"><span className="i-aft i_report">신고하기</span></button>
                                                 </div>
+                                            </div>
+                                            <div className="botm">
+                                                {
+                                                    review.review_date ?
+                                                        <p className="t1">작성일: {(review.review_date).substring(0, 10)}</p>
+                                                        : <p className="t1">작성일: </p>
+                                                }
                                             </div>
                                         </div>
                                     );

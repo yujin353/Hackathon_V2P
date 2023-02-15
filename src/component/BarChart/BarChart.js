@@ -18,9 +18,9 @@ const BarChart = ({ userPK }) => {
     useEffect(() => {
         $.ajax({
             async: false, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/myskin/?search=" + userPK,
+            url: "https://dev.odoc-api.com/member/my_skin?member_id=" + userPK,
             success: (response) => {
-                const results = response.results[0];
+                const results = response[0];
                 if (results === undefined) return;
 
                 setDo_alpha(results.do_alphabet);
@@ -34,11 +34,6 @@ const BarChart = ({ userPK }) => {
                     setR_S(100 - ((results.rs_score - 6) * 100 / 18).toFixed(0));
                     setN_P(100 - ((results.np_score - 4) * 100 / 12).toFixed(0));
                     setT_W(100 - ((results.tw_score - 6) * 100 / 18).toFixed(0));
-                    // setD_O(results.balancing_score.toFixed(0));
-                    // setR_S(results.strong_score.toFixed(0));
-                    // setN_P(results.even_score.toFixed(0));
-                    // setT_W(results.tight_score.toFixed(0));
-                    // setStability(results.target_id.target_score.toFixed(0))
                     result.push(D_O);
                     result.push(R_S);
                     result.push(N_P);

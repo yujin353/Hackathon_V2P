@@ -12,47 +12,14 @@ const Ingredient = ( {userPK} ) => {
     const [ingredientGoodCount, setIngredientGoodCount] = useState(10)
     const [ingredientBadCount, setIngredientBadCount] = useState(10)
 
-    // /* set neighbor's Good, Bad Ingredient */
-    // useEffect(() => {
-    //     let isMounted = true;
-    //     $.ajax({
-    //         async: true, type: "GET",
-    //         url: "https://api.odoc-api.com/api/v1/my-ingredient/?limit=1000000&offset=0&search=" + userPK,
-    //         success: response => {
-    //
-    //             const result = response.results;
-    //
-    //             if(result === undefined)return;
-    //             if(isMounted) {
-    //
-    //                 const results = response.results
-    //                 let good = []
-    //                 let bad = []
-    //                 for(let i=0; i<results.length; i++)
-    //                 {
-    //                     if(results[i].ingred_status == true)
-    //                         good.push(results[i])
-    //                     else
-    //                         bad.push(results[i])
-    //                 }
-    //                 setUserIngredientBad(bad)
-    //                 setUserIngredientGood(good)
-    //
-    //             }
-    //         },
-    //         error: response => console.log(response.results)
-    //     });
-    //     return () => isMounted = false
-    // }, [])
-
     /* set Good Ingredient */
     useEffect(() => {
         let isMounted = true;
         $.ajax({
             async: true, type: "GET",
-            url: "https://api.odoc-api.com/api/v2/memberingredient?member_id=" + userPK +"&status=fit",
-            success: (response) => setUserIngredientGood(response.result),
-            error: response => console.log(response.result)
+            url: "https://dev.odoc-api.com/ingredient/status_member?member_id=" + userPK +"&ingredient_status=1",
+            success: (response) => setUserIngredientGood(response),
+            error: response => console.log(response)
         });
         return () => isMounted = false
     }, [])
@@ -62,9 +29,9 @@ const Ingredient = ( {userPK} ) => {
         let isMounted = true;
         $.ajax({
             async: true, type: "GET",
-            url: "https://api.odoc-api.com/api/v2/memberingredient?member_id=" + userPK +"&status=unfit",
-            success: (response) => setUserIngredientBad(response.result),
-            error: response => console.log(response.result)
+            url: "https://dev.odoc-api.com/ingredient/status_member?member_id=" + userPK +"&ingredient_status=0",
+            success: (response) => setUserIngredientBad(response),
+            error: response => console.log(response)
         });
         return () => isMounted = false
     }, [])
@@ -91,8 +58,8 @@ const Ingredient = ( {userPK} ) => {
                         {
                             userIngredientGood.slice(0,ingredientGoodCount).map((v, index) => {
                                 return (
-                                    <li key={v.ingredient.ingred_kor}>
-                                        <span onClick = {() => handleButtonClick1(v, index)}> {v.ingredient.ingred_kor} </span>
+                                    <li key={v.ingredient.ingredient_id}>
+                                        <span onClick = {() => handleButtonClick1(v, index)}> {v.ingredient.ingredient_kor} </span>
                                     </li>
                                 )
                             })
@@ -127,9 +94,9 @@ const Ingredient = ( {userPK} ) => {
                                         </button>
                                     </div>
                                     <div className="bad_p_cont">
-                                        <p className="h1"> {userIngredientGood[userClick]?.ingredient.ingred_kor} </p>
-                                        <p className="h2">배합목적 : {userIngredientGood[userClick]?.ingredient.ingred_purpose} </p>
-                                        <p className="t1"> {userIngredientGood[userClick]?.ingredient.ingred_text} </p>
+                                        <p className="h1"> {userIngredientGood[userClick]?.ingredient.ingredient_kor} </p>
+                                        <p className="h2">배합목적 : {userIngredientGood[userClick]?.ingredient.ingredient_purpose} </p>
+                                        <p className="t1"> {userIngredientGood[userClick]?.ingredient.ingredient_text} </p>
                                     </div>
                                 </div>
                             </div>
@@ -144,8 +111,8 @@ const Ingredient = ( {userPK} ) => {
                             {
                                 userIngredientBad.slice(0,ingredientBadCount).map((v, index) => {
                                     return (
-                                        <li key={v.ingredient.ingred_kor}>
-                                            <span onClick = {() => handleButtonClick2(v, index)}> {v.ingredient.ingred_kor} </span>
+                                        <li key={v.ingredient.ingredient_id}>
+                                            <span onClick = {() => handleButtonClick2(v, index)}> {v.ingredient.ingredient_kor} </span>
                                         </li>
                                     )
                                 })
@@ -181,9 +148,9 @@ const Ingredient = ( {userPK} ) => {
                                     </div>
 
                                     <div className="bad_p_cont">
-                                        <p className="h1"> {userIngredientBad[userClick]?.ingredient.ingred_kor} </p>
-                                        <p className="h2">배합목적 : {userIngredientBad[userClick]?.ingredient.ingred_purpose} </p>
-                                        <p className="t1"> {userIngredientBad[userClick]?.ingredient.ingred_text} </p>
+                                        <p className="h1"> {userIngredientBad[userClick]?.ingredient.ingredient_kor} </p>
+                                        <p className="h2">배합목적 : {userIngredientBad[userClick]?.ingredient.ingredient_purpose} </p>
+                                        <p className="t1"> {userIngredientBad[userClick]?.ingredient.ingredient_text} </p>
                                     </div>
                                 </div>
                             </div>

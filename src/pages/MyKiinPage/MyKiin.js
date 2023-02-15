@@ -22,17 +22,16 @@ const MyKiin = () => {
         window.scrollTo(0,0);
     },[])
 
+    /* loading same skin type user */
     useEffect(() => {
         let isMounted = true;
         $.ajax({
             async: true, type: "GET",
-            url: "https://api.odoc-api.com/api/v2/getsameskintype?id=" + sessionStorage.getItem("user_pk"),
+            url: "https://dev.odoc-api.com/member/skin_type_by_same?member_id=" + sessionStorage.getItem("user_pk"),
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: response => {
                 if (isMounted)
-                    setUserList(JSON.parse(response.result));
-                // console.log(response)
-                // 잘 뜨면 api를 잘 불러왔다는 의미!
+                    setUserList(JSON.parse(response.message));
             },
             error: response => console.log(response)
         });

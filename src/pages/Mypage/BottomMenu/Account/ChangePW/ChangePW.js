@@ -13,13 +13,15 @@ const ChangePW = () => {
     const sendingMessage = () => {
         $.ajax({
             async: true, type: 'POST',
-            url: "https://api.odoc-api.com/api/v2/smsauth",
+            url: "https://dev.odoc-api.com/sms_auth/send",
             data: { "phone_number": phone }, dataType: 'json',
             success: (response) => {
-                setTimer(true)
-                document.getElementById("error_1").className = "t_error hidden"
-                document.getElementById("error_2").className = "t_error hidden"
-                alert(phone + "으로 인증번호를 발송하였습니다.\n인증번호는 5분간 유효합니다.")
+                if (response.result === "SEND") {
+                    setTimer(true);
+                    document.getElementById("error_1").className = "t_error hidden";
+                    document.getElementById("error_2").className = "t_error hidden";
+                    alert(phone + "으로 인증번호를 발송하였습니다.\n인증번호는 5분간 유효합니다.");
+                }
             },
             error: (response) => {
                 setTimer(false)
@@ -31,14 +33,11 @@ const ChangePW = () => {
 
     const verification = () => {
         $.ajax({
-            async: true, type: 'POST',
-            url: "https://api.odoc-api.com/api/v2/verification",
-            data: {
-                "phone_number": phone,
-                "auth_number": number,
-            }, dataType: 'json',
+            async: true, type: 'GET',
+            url: "https://dev.odoc-api.com/sms_auth/verification?phone_number=" + phone + "&auth_number=" + number,
+            dataType: 'json',
             success: (response) => {
-                if (response.message === "인증 완료되었습니다.") {
+                if (response.result === "SUCCESS") {
                     alert("인증 완료되었습니다.")
                     sessionStorage.setItem("phone_certification", true)
                     document.getElementById("error_2").className = "t_error hidden"
