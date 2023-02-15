@@ -12,7 +12,7 @@ const View = () => {
     useEffect(() => {
         $.ajax({
             async: true, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/notices/" + notice_id + "/",
+            url: "https://api.odoc-api.com/api/v1/notices/" + notice_id + "/",//todo 데이터 받으면 페이지 나누기
             success: (response) => setContent(response),
             error: (response) => console.log(response)
         });

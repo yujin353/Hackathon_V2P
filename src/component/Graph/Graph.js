@@ -54,9 +54,9 @@ const Graph = ({ userPK }) => {
     useEffect(() => {
         $.ajax({
             async: false, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/myskin/?search=" + userPK,
+            url: "https://dev.odoc-api.com/member/my_skin?member_id=" + userPK,
             success: (response) => {
-                const results = response.results[0];
+                const results = response[0];
                 if (results === undefined) return;
                 setMyskinScore(() => {
                     const result = [];
@@ -64,7 +64,7 @@ const Graph = ({ userPK }) => {
                     const robustness = results.strong_score; // 견고성
                     const uniformity = results.even_score; // 균일성
                     const resilience = results.tight_score; // 탄력성
-                    const stability = results.target_id.target_score; // 안정성
+                    const stability = results.target.target_score; // 안정성
                     result.push(balance);
                     result.push(robustness);
                     result.push(uniformity);
@@ -73,7 +73,7 @@ const Graph = ({ userPK }) => {
                     return result;
                 });
                 setMyskinType(results.do_alphabet + results.rs_alphabet + results.np_alphabet + results.tw_alphabet);
-                setBTarget(results.target_id.target_name);
+                setBTarget(results.target.target_name);
             },
             error: (response) => console.log(response)
         });

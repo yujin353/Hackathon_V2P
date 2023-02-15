@@ -60,11 +60,9 @@ const Search = () => {
     useEffect(() => {
         $.ajax({
             async: true, type: 'GET',
-            url: "https://api.odoc-api.com/api/v2/randomrecommend",// + "&member_id=" + sessionStorage.getItem("user_pk"),
+            url: "https://dev.odoc-api.com/product/product_random_display",// + "&member_id=" + sessionStorage.getItem("user_pk"),
             // beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
-            success: (response) => {
-                setRecommend(response.results);
-            },
+            success: (response) => setRecommend(response.results),
             error: (response) => console.log(response)
         });
     }, []);
@@ -95,10 +93,10 @@ const Search = () => {
         let isMounted = true;
         $.ajax({
             async: true, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/product-like/?search=" + sessionStorage.getItem("user_pk"),
+            url: "https://dev.odoc-api.com/member_product/product_like_display?member_id=" + sessionStorage.getItem("user_pk"),
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: (response) => {
-                response.results.map((v) => {
+                response.map((v) => {
                     const product_id = v.like_product.product_id;
                     const element = document.getElementsByName(product_id);
                     $(element).addClass("on");
@@ -118,7 +116,7 @@ const Search = () => {
     const findLikeProducts = (likeIcon) => {
         let check = "fail";
         for (let i = 0; i < (latestLikeProducts.current).length; i++) {
-            if (likeIcon.id === latestLikeProducts.current[i]) {
+            if (likeIcon.id == latestLikeProducts.current[i]) {
                 check = "success";
                 break;
             }
@@ -142,14 +140,17 @@ const Search = () => {
     const likeProduct = (product_id) => {
         $.ajax({
             async: true, type: "POST",
-            url: "https://api.odoc-api.com/api/v2/like-product",
-            data: { "like_product": product_id },
+            url: "https://dev.odoc-api.com/member_product/product_like",
+            data: {
+                "product_id": product_id,
+                "member_id": sessionStorage.getItem("user_pk")
+            },
             dataType: "json",
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: (response) => {
                 const element = document.getElementsByName(product_id);
                 $(element).toggleClass("on");
-                if (response.message === "Like") {
+                if (response.message === "LIKE") {
                     alert("좋아하는 상품 목록에 추가되었습니다.");
                     if (latestLikeProducts.current.length === 0) {
                         setLikeProducts = [];
@@ -263,22 +264,22 @@ const Search = () => {
                             <ul onClick={() => setCount(count + 1)}>
                                 {recommend.map((v) => {
                                     return (
-                                        <li key={v.ID}>
+                                        <li key={v.id}>
                                             <div className="thumb">
-                                                <Link to={`../../main/products/${v.ID}`}>
-                                                    <img className="im" src={v.Image} />
+                                                <Link to={`../../main/products/${v.id}`}>
+                                                    <img className="im" src={v.image} />
                                                 </Link>
                                                 <button
-                                                    type="button" id={v.ID}
-                                                    className={likeState(v.ID) ? "btn_favorit on" : "btn_favorit"}
-                                                    name={v.ID} onClick={() => likeProduct(v.ID)}>
+                                                    type="button" id={v.id}
+                                                    className={likeState(v.id) ? "btn_favorit on" : "btn_favorit"}
+                                                    name={v.id} onClick={() => likeProduct(v.id)}>
                                                     <span className="i-set i_favorit">좋아요</span>
                                                 </button>
                                             </div>
                                             <div className="txt">
-                                                <Link to={`../../main/products/${v.ID}`}>
-                                                    <p className="t1">{v.Brand}</p>
-                                                    <p className="t2">{v.Name}</p>
+                                                <Link to={`../../main/products/${v.id}`}>
+                                                    <p className="t1">{v.brand_name}</p>
+                                                    <p className="t2">{v.name}</p>
                                                 </Link>
                                             </div>
                                         </li>

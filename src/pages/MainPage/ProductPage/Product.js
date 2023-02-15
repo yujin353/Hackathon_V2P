@@ -28,12 +28,12 @@ const Product = () => {
     useEffect(() => {
         $.ajax({
             async: false, type: 'GET',
-            url: "https://api.odoc-api.com/api/v1/products/" + params.id + "/",
-            success: response => setProductInfo(response),
+            url: "https://dev.odoc-api.com/product/product?product_id=" + params.id,
+            success: response => setProductInfo(response[0]),
             error: response => {
                 console.log(response);
                 alert("존재하지 않는 상품입니다.");
-                navigate("/main");
+                //navigate("/main");
             }
         });
     }, []);
@@ -42,9 +42,14 @@ const Product = () => {
     useEffect(() => {
         $.ajax({
             async: true, type: "GET",
-            url: "https://api.odoc-api.com/api/v2/review-average?id=" + params.id,
+            url: "https://dev.odoc-api.com/member_product/review_average?product_id=" + params.id,
             success: (response) => setAverage(response.message),
-            error: (response) => console.log(response)
+            error: (response) => {
+                if (response.responseJSON.message == "ERROR")
+                    setAverage(0)
+                else
+                    console.log(response)
+            }
         });
     }, []);
 
@@ -52,9 +57,9 @@ const Product = () => {
     useEffect(() => {
         $.ajax({
             async: false, type: 'GET',
-            url: "https://api.odoc-api.com/api/v1/members/" + sessionStorage.getItem("user_pk") + "/",
+            url: "https://dev.odoc-api.com/member/member_display?member_id=" + sessionStorage.getItem("user_pk"),
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
-            success: (response) => setUsername(response.username),
+            success: (response) => setUsername(response[0].username),
             error: (response) => {
                 console.log("error", response);
                 alert("login failed.")
@@ -66,8 +71,10 @@ const Product = () => {
     useEffect(() => {
         $.ajax({
             async: false, type: "GET",
-            url: `https://api.odoc-api.com/api/v1/matching?member_id=${sessionStorage.getItem("user_pk")}&product_id=${params.id}`,
-            success: response => setRate(response.matching_rate),
+            url: `https://dev.odoc-api.com/recommendation/product_matching?member_id=${sessionStorage.getItem("user_pk")}&product_id=${params.id}`,
+            success: response => {
+                setRate(response.result)
+            },
             error: response => console.log(response)
         });
     }, []);
@@ -76,14 +83,14 @@ const Product = () => {
     useEffect(() => {
         $.ajax({
             async: true, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/reviews-product-filter/?search=" + params.id,
+            url: "https://dev.odoc-api.com/member_product/review_product?product_id=" + params.id,
             success: (response) => {
                 const result = [];
-                response.results.map((v) => {
+                response.map((v) => {
                     if (v.product != null)
                         result.push(v);
                 });
-                setReviewList(result);
+                setReviewList(result.reverse());
             },
             error: (response) => console.log(response)
         });
@@ -93,8 +100,8 @@ const Product = () => {
     useEffect(() => {
         $.ajax({
             async: false, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/myskin/?search=" + sessionStorage.getItem("user_pk") ,
-            success: (response) => setMyskinType(response.results[0].type_id),
+            url: "https://dev.odoc-api.com/member/my_skin?member_id=" + sessionStorage.getItem("user_pk") ,
+            success: (response) => setMyskinType(response[0].type.type_id),
             error: (response) => console.log(response)
         });
     }, []);
@@ -103,12 +110,12 @@ const Product = () => {
     const reviewFilter = () => {
         $.ajax({
             async: true, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/reviews-product-filter/?search=" + params.id,
+            url: "https://dev.odoc-api.com/member_product/review_product?product_id=" + params.id,
             success: (response) => {
                 const result = [];
-                response.results.map((v) => {
+                response.map((v) => {
                     if (v.product != null)
-                        if (v.type_id.type_id === myskinType)
+                        if (v.type.type_id === myskinType)
                             result.push(v);
                 });
                 setReviewList(result);
@@ -120,10 +127,10 @@ const Product = () => {
     useEffect(() => {
         $.ajax({
             async: true, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/review-like/?search=" + sessionStorage.getItem("user_pk"),
+            url: "https://dev.odoc-api.com/member_product/review_like_display?member_id=" + sessionStorage.getItem("user_pk"),
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: (response) => {
-                response.results.forEach((v) => {
+                response.forEach((v) => {
                     $("button[name=" + v.like_review.review_id + "]").addClass("on");
                 });
             },
@@ -142,10 +149,10 @@ const Product = () => {
         let like_product = [];
         $.ajax({
             async: false, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/product-like/?search=" + sessionStorage.getItem("user_pk"),
+            url: "https://dev.odoc-api.com/member_product/product_like_display?member_id=" + sessionStorage.getItem("user_pk"),
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: (response) => {
-                info = response.results;
+                info = response;
                 for (let i = 0; i < info.length; i++) {
                     like_product = like_product.concat(info[i].like_product.product_id);
                     setLikeProducts = like_product;
@@ -153,7 +160,7 @@ const Product = () => {
                 if (info.length === 0) latestLikeProducts.current = [];
                 else latestLikeProducts.current = setLikeProducts;
             },
-            error: (response) => { console.log(response.results); }
+            error: (response) => { console.log(response); }
         });
     });
 
@@ -161,7 +168,7 @@ const Product = () => {
     const findLikeProducts = (likeIcon) => {
         let check = "fail";
         for (let i = 0; i < (latestLikeProducts.current).length; i++) {
-            if (likeIcon.id === latestLikeProducts.current[i]) {
+            if (likeIcon.id == latestLikeProducts.current[i]) {
                 check = "success";
                 break;
             }
@@ -185,14 +192,17 @@ const Product = () => {
     const likeProduct = (product_id) => {
         $.ajax({
             async: true, type: "POST",
-            url: "https://api.odoc-api.com/api/v2/like-product",
-            data: { "like_product": product_id },
+            url: "https://dev.odoc-api.com/member_product/product_like",
+            data: {
+                "product_id": product_id,
+                "member_id": sessionStorage.getItem("user_pk")
+            },
             dataType: "json",
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: (response) => {
                 const element = document.getElementsByName(product_id);
                 $(element).toggleClass("on");
-                if (response.message === "Like") {
+                if (response.message === "LIKE") {
                     alert("좋아하는 상품 목록에 추가되었습니다.");
                     if (latestLikeProducts.current.length === 0) {
                         setLikeProducts = [];
@@ -211,15 +221,27 @@ const Product = () => {
         });
     };
 
-    const initProductGredient = async () => {
-        const res = await getProductGredients({
-            productId: params.id,
-            memberId: sessionStorage.getItem("user_pk")
-        });
-        setProductIngredients(res?.data?.results);
-    };
+    // const initProductGredient = async () => {
+    //     const res = await getProductGredients({
+    //         productId: params.id,
+    //         memberId: sessionStorage.getItem("user_pk")
+    //     });
+    //     console.log(res)
+    //     setProductIngredients(res?.data?.results);
+    // };
+    // useEffect(() => {
+    //     initProductGredient();
+    // }, [params.id]);
+
     useEffect(() => {
-        initProductGredient();
+        $.ajax({
+            async: true, type: "GET",
+            url: `https://dev.odoc-api.com/product/ingredient_member?product_id=${params.id}&member_id=${sessionStorage.getItem("user_pk")}`,
+            success: response => {
+                setProductIngredients(response.results)
+            },
+            error: response => console.log(response)
+        });
     }, [params.id]);
 
     /* function to calculate product fit */
@@ -227,8 +249,8 @@ const Product = () => {
         let result;
         $.ajax({
             async: false, type: "GET",
-            url: `https://api.odoc-api.com/api/v1/matching?member_id=${member_id}&product_id=${product_id}`,
-            success: response => result = response.matching_rate,
+            url: `https://dev.odoc-api.com/recommendation/product_matching?member_id=${sessionStorage.getItem("user_pk")}&product_id=${params.id}`,
+            success: response => result = response.result,
             error: response => console.log(response)
         });
         return result;
@@ -237,14 +259,17 @@ const Product = () => {
     const likeReview = (review_id) => {
         $.ajax({
             async: true, type: "POST",
-            url: "https://api.odoc-api.com/api/v2/like-review",
-            data: { "like_review": review_id },
+            url: "https://dev.odoc-api.com/member_product/review_like",
+            data: {
+                "review_id" : review_id,
+                "member_id" : sessionStorage.getItem("user_pk")
+            },
             dataType: "json",
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: function (response) {
                 const element = document.getElementById(review_id);
                 $(element).toggleClass("off on");
-                if (response.message === "Like") alert("관심리뷰에 추가되었습니다.");
+                if (response.message === "LIKE") alert("관심리뷰에 추가되었습니다.");
                 else alert("관심리뷰에서 제거되었습니다.");
             },
             error: (response) => console.log(response),
@@ -263,7 +288,7 @@ const Product = () => {
         if (window.confirm("정말 삭제하시겠습니까?") === true) {
             $.ajax({
                 async: true, type: "DELETE",
-                url: `https://api.odoc-api.com/api/v1/reviews-product-filter/${review_id}/`,
+                url: `https://dev.odoc-api.com/member_product/member_review_delete/${review_id}`,
                 beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
                 success: (response) => {
                     alert("리뷰가 삭제되었습니다.");
@@ -278,12 +303,15 @@ const Product = () => {
         if (window.confirm("정말 신고하시겠습니까?") === true) {
             $.ajax({
                 async: true, type: "POST",
-                url: "https://api.odoc-api.com/api/v2/report",
-                data: { "review_id": review_id },
+                url: "https://dev.odoc-api.com/member_product/review_report",
+                data: {
+                    "review_id": review_id,
+                    "member_id": sessionStorage.getItem("user_pk")
+                },
                 dataType: "json",
                 beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
                 success: (response) => {
-                    if (response.message === "Report") alert("정상적으로 신고 접수 되었습니다.");
+                    if (response.message === "REPORT") alert("정상적으로 신고 접수 되었습니다.");
                     else alert("이미 신고 접수 되었습니다.");
                 },
                 error: (response) => console.log(response),
@@ -342,7 +370,7 @@ const Product = () => {
                                     <p>평균 평점</p>
                                     <div className="r">
                                         <div className="i_grade"><span style={{ width: stars + "%" }}></span></div>
-                                        <p>{average ? average : ""}</p>
+                                        <p>{average ? average : "0.00"}</p>
                                     </div>
                                 </li>
                             </ul>
@@ -403,7 +431,7 @@ const Product = () => {
                                         <div className="txt_box1">
                                             <div className="box">
                                                 <p className="t"><span className={`i-aft ${rating_className[v.rating - 1]} sm`}>{rating_txt[v.rating - 1]}</span></p>
-                                                <p>{v.review_article?.article_content}</p>
+                                                <p>{v.review_content ? v.review_content : null}</p>
                                                 <button type="button" onClick={() => reportReview(v.review_id)} className="btr">
                                                     <span className="i-aft i_report">신고하기</span>
                                                 </button>
@@ -418,8 +446,8 @@ const Product = () => {
                                         </div>
                                         <div className="botm">
                                             {
-                                                v.review_article ?
-                                                    <p className="t1">작성일: {(v.review_article.article_date).substring(0, 10)}</p>
+                                                v.rating ?
+                                                    <p className="t1">작성일: {(v.review_date).substring(0, 10)}</p>
                                                     : <p className="t1">작성일: </p>
                                             }
                                         </div>

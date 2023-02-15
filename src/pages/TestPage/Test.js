@@ -10,10 +10,10 @@ const Test = () => {
     const mySkinType = () => {
         $.ajax({
             async: true, type: 'GET',
-            url: "https://api.odoc-api.com/api/v1/myskin/?search=" + sessionStorage.getItem("user_pk"),
+            url: "https://dev.odoc-api.com/member/my_skin?member_id=" + sessionStorage.getItem("user_pk"),
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: (response) => {
-                if (response.count === 1) {
+                if (response.length === 1) {
                     alert("이미 스킨퀴즈가 완료되었습니다.\n메인화면으로 이동합니다.");
                     navigate("/main");
                 } else navigate("question");

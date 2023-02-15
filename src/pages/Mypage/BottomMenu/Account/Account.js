@@ -28,8 +28,8 @@ const Account = () => {
         if (window.confirm('정말 탈퇴하시겠습니까?')) {
             $.ajax({
                 async: true, type: 'POST',
-                url: "https://api.odoc-api.com/api/v2/withdraw",
-                data: { "id": sessionStorage.getItem("user_pk") },
+                url: "https://dev.odoc-api.com/member/inactivate",
+                data: { "member_id": sessionStorage.getItem("user_pk") },
                 dataType: 'JSON',
                 success: function (response) {
                     if (response.message === "Withdraw OK") {

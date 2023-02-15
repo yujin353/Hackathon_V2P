@@ -10,8 +10,8 @@ const Event = () => {
     useEffect(() => {
         $.ajax({
             async: true, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/events/",
-            success: response => setEventList(response.results), 
+            url: "https://dev.odoc-api.com/event/list",
+            success: response => setEventList(response),
             error: response =>console.log(response)
         });
     }, [])

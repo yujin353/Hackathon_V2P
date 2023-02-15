@@ -30,7 +30,7 @@ const useAccessTknRefresh = () => {
     let result;
     $.ajax({
         async: false, type: 'POST',
-        url: "https://api.odoc-api.com/api/token/refresh/",
+        url: "https://dev.odoc-api.com/member/auth/refresh/",
         data: { "refresh": sessionStorage.getItem("refresh_token") },
         dataType: "json",
         success: (response) => result = response.access,
@@ -43,7 +43,7 @@ const useAccessTknRefresh = () => {
                     alert("다시 로그인해 주세요");
                     Logout();
                 }
-                sessionStorage.setItem("access_token", result);
+                sessionStorage.setItem("access_token", response.token.access);
                 sessionStorage.setItem("refresh_token", cookies.load("refresh_token"));
                 sessionStorage.setItem("user_pk", localStorage.getItem("user_pk")); //change after
             }

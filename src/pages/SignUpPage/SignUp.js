@@ -85,10 +85,10 @@ const SignUp = () => {
     const register = () => {
         $.ajax({
             async: true, type: 'POST',
-            url: "https://api.odoc-api.com/rest_auth/registration/",
+            url: "https://dev.odoc-api.com/member/register/",
             data: {
                 "email": email1 + "@" + email2,
-                "password1": password1, "password2": password2,
+                "password": password1,
                 "gender": gender, "region": region, "age": age,
                 "username": nickname
             }, dataType: 'json',
@@ -124,8 +124,8 @@ const SignUp = () => {
     const autoRecommend = () => {
         $.ajax({
             async: true, type: 'GET',
-            url: "https://api.odoc-api.com/api/v1/makeusername",
-            success: (response) => setNickname(response.result),
+            url: "https://dev.odoc-api.com/member/random_username",
+            success: (response) => setNickname(response.message),
             error: (error) => console.log(error)
         });
     };

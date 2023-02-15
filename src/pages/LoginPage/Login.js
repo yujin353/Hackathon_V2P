@@ -34,25 +34,24 @@ const Login = () => {
 
 	const onSignIn = () => {
 		$.ajax({
-			async: false, type: "POST",
-			url: "https://api.odoc-api.com/rest_auth/login/",
+			async: true, type: "POST",
+			url: "https://dev.odoc-api.com/member/auth/",
 			data: {
-				"username": "",
 				"email": email,
 				"password": password,
 			}, dataType: "json",
 			success: (response) => {
-				sessionStorage.setItem("access_token", response.access_token);
-				sessionStorage.setItem("refresh_token", response.refresh_token);
-				sessionStorage.setItem("user_pk", response.user.pk);
+				sessionStorage.setItem("access_token", response.token.access);
+				sessionStorage.setItem("refresh_token", response.token.refresh);
+				sessionStorage.setItem("user_pk", response.user.member_id);
 				if (leftBox) {
 					let day = new Date();
 					let time = new Date();
 					day.setDate(day.getDate() + 7);
 					time.setHours(time.getHours() + 2);
-					cookies.save('access_token', response.access_token, { expires: time });
-					cookies.save('refresh_token', response.refresh_token, { expires: day });
-					localStorage.setItem("user_pk", response.user.pk); // change after
+					cookies.save('access_token', response.token.access, { expires: time });
+					cookies.save('refresh_token', response.token.refresh, { expires: day });
+					localStorage.setItem("user_pk", response.user.member_id); // change after
 				}
 				else {
 					cookies.remove('access_token');

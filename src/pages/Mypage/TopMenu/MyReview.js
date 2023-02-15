@@ -11,12 +11,11 @@ const MyReview = () => {
     useEffect(() => {
         $.ajax({
             async: true,
-            url: "https://api.odoc-api.com/api/v1/reviews-member-filter/?search=" + sessionStorage.getItem("user_pk"),
+            url: "https://dev.odoc-api.com/member_product/review_member?member_id=" + sessionStorage.getItem("user_pk"),
             type: "GET",
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: function (response) {
-                // console.log(response)
-                setReviewList(response.results.reverse());
+                setReviewList(response.reverse());
             },
             error: function (response) {
                 console.log(response);
@@ -28,11 +27,11 @@ const MyReview = () => {
         if (window.confirm("정말 삭제하시겠습니까?") === true) {
             $.ajax({
                 async: true, type: "DELETE",
-                url: "https://api.odoc-api.com/api/v1/reviews-product-filter/" + `${review_id}/`,
+                url: "https://dev.odoc-api.com/member_product/member_review_delete/" + `${review_id}`,
                 beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + sessionStorage.getItem("access_token")),
                 success: (response) => {
                     const element = document.getElementById(review_id)
-                    alert("리뷰가 삭제되었습니다.")
+                    alert("리뷰가 삭제되었습니다.");
                     window.location.reload();
                 },
                 error: (response) => console.log(response),
@@ -77,7 +76,7 @@ const MyReview = () => {
                                                 </div></Link>
                                                 <div className="txt_box3">
                                                     <div className="box">
-                                                        <p>{v.review_article?.article_content}</p>
+                                                        <p>{v.review_content ? v.review_content : null}</p>
                                                         <button type="button" className="btn_del" id={v.review_id}
                                                                 name={`${v.review_id}`} onClick={()=>deleteReview(v.review_id)}>
                                                             <span className="i-set.i_del_b">리뷰삭제</span>
@@ -86,8 +85,8 @@ const MyReview = () => {
                                                 </div>
                                                 <div className="botm2">
                                                     {
-                                                        v.review_article ?
-                                                            <p className="t1">작성일: {(v.review_article.article_date).substring(0, 10)}</p>
+                                                        v.review_date ?
+                                                            <p className="t1">작성일: {(v.review_date).substring(0, 10)}</p>
                                                             : <p className="t1">작성일: </p>
                                                     }
                                                 </div>

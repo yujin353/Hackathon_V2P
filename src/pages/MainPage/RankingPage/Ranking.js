@@ -22,7 +22,7 @@ const Ranking = () => {
     useEffect(() => {
         $.ajax({
             async: true, type: 'GET',
-            url: "https://api.odoc-api.com/api/v2/rankingbycategory?category=1&member_id=" + sessionStorage.getItem("user_pk"),
+            url: "https://dev.odoc-api.com/product/ranking?category_id=1&member_id=" + sessionStorage.getItem("user_pk"),
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: (response) => setRanking1(response.results),
             error: (response) => console.log(response)
@@ -33,7 +33,7 @@ const Ranking = () => {
     useEffect(() => {
         $.ajax({
             async: true, type: 'GET',
-            url: "https://api.odoc-api.com/api/v2/rankingbycategory?category=2&member_id=" + sessionStorage.getItem("user_pk"),
+            url: "https://dev.odoc-api.com/product/ranking?category_id=2&member_id=" + sessionStorage.getItem("user_pk"),
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: (response) => setRanking2(response.results),
             error: (response) => console.log(response)
@@ -44,7 +44,7 @@ const Ranking = () => {
     useEffect(() => {
         $.ajax({
             async: true, type: 'GET',
-            url: "https://api.odoc-api.com/api/v2/rankingbycategory?category=3&member_id=" + sessionStorage.getItem("user_pk"),
+            url: "https://dev.odoc-api.com/product/ranking?category_id=3&member_id=" + sessionStorage.getItem("user_pk"),
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: (response) => setRanking3(response.results),
             error: (response) => console.log(response)
@@ -55,7 +55,7 @@ const Ranking = () => {
     useEffect(() => {
         $.ajax({
             async: true, type: 'GET',
-            url: "https://api.odoc-api.com/api/v2/rankingbycategory?category=4&member_id=" + sessionStorage.getItem("user_pk"),
+            url: "https://dev.odoc-api.com/product/ranking?category_id=4&member_id=" + sessionStorage.getItem("user_pk"),
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: (response) => setRanking4(response.results),
             error: (response) => console.log(response)
@@ -106,10 +106,10 @@ const Ranking = () => {
         let like_product = [];
         $.ajax({
             async: false, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/product-like/?search=" + sessionStorage.getItem("user_pk"),
+            url: "https://dev.odoc-api.com/member_product/product_like_display?member_id=" + sessionStorage.getItem("user_pk"),
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: (response) => {
-                info = response.results;
+                info = response;
                 for (let i = 0; i < info.length; i++) {
                     like_product = like_product.concat(info[i].like_product.product_id);
                     setLikeProducts = like_product;
@@ -117,7 +117,7 @@ const Ranking = () => {
                 if (info.length === 0) latestLikeProducts.current = [];
                 else latestLikeProducts.current = setLikeProducts;
             },
-            error: (response) => { console.log(response.results); }
+            error: (response) => { console.log(response); }
         });
     }, []);
 
@@ -126,10 +126,10 @@ const Ranking = () => {
         let isMounted = true;
         $.ajax({
             async: true, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/product-like/?search=" + sessionStorage.getItem("user_pk"),
+            url: "https://dev.odoc-api.com/member_product/product_like_display?member_id=" + sessionStorage.getItem("user_pk"),
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: (response) => {
-                response.results.map((v) => {
+                response.map((v) => {
                     const product_id = v.like_product.product_id;
                     const element = document.getElementById(product_id);
                     $(element).addClass("on");
@@ -149,7 +149,7 @@ const Ranking = () => {
     const findLikeProducts = (element) => {
         let check = "fail";
         for (let i = 0; i < (latestLikeProducts.current).length; i++) {
-            if (element === latestLikeProducts.current[i]) {
+            if (element == latestLikeProducts.current[i]) {
                 check = "success";
                 break;
             }
@@ -172,14 +172,17 @@ const Ranking = () => {
     const likeProduct = (product_id) => {
         $.ajax({
             async: true, type: "POST",
-            url: "https://api.odoc-api.com/api/v2/like-product",
-            data: { "like_product": product_id },
+            url: "https://dev.odoc-api.com/member_product/product_like",
+            data: {
+                "product_id": product_id,
+                "member_id": sessionStorage.getItem("user_pk")
+            },
             dataType: "json",
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: (response) => {
                 const element = document.getElementById(product_id);
                 $(element).toggleClass("on");
-                if (response.message === "Like") {
+                if (response.message === "LIKE") {
                     alert("좋아하는 상품 목록에 추가되었습니다.");
                     if (latestLikeProducts.current.length === 0) {
                         setLikeProducts = [];
@@ -251,22 +254,22 @@ const Ranking = () => {
                                 <ul className="ranking_skin">
                                     {ranking1.map((v, index) => {
                                         return (
-                                            <li key={v.ID}><Link to={`../../main/products/${v.ID}`}>
+                                            <li key={v.id}><Link to={`../../main/products/${v.id}`}>
                                                 {index === 0 ? <div className="num"><span className="i-set i_rank1">1</span></div>
                                                     : index === 1 ? <div className="num"><span className="i-set i_rank2">2</span></div>
                                                         : index === 2 ? <div className="num"><span className="i-set i_rank3">3</span></div>
                                                             : <div className="num"><span className="i-set i_rank">{index + 1}</span></div>}
-                                                <div className="thumb"><img className="im" src={v.Image} /></div>
+                                                <div className="thumb"><img className="im" src={v.image} /></div>
                                                 <div className="txt">
-                                                    <p className="t1">{v.Brand}</p>
-                                                    <p className="t2">{v.Name}</p>
+                                                    <p className="t1">{v.brand}</p>
+                                                    <p className="t2">{v.name}</p>
                                                     <p className="t1 mt20"><span className="i-aft i_star">{v.rating}</span></p>
                                                 </div>
                                             </Link>
                                                 <button
-                                                    type="button" id={v.ID}
-                                                    className={likeState(v.ID) ? "btn_favorit on" : "btn_favorit"}
-                                                    name={v.ID} onClick={() => likeProduct(v.ID)}>
+                                                    type="button" id={v.id}
+                                                    className={likeState(v.id) ? "btn_favorit on" : "btn_favorit"}
+                                                    name={v.id} onClick={() => likeProduct(v.id)}>
                                                     <span className="i-set i_favorit">좋아요</span>
                                                 </button>
                                             </li>
@@ -279,22 +282,22 @@ const Ranking = () => {
                                     <ul className="ranking_essence">
                                         {ranking2.map((v, index) => {
                                             return (
-                                                <li key={v.ID}><Link to={`../../main/products/${v.ID}`}>
+                                                <li key={v.id}><Link to={`../../main/products/${v.id}`}>
                                                     {index === 0 ? <div className="num"><span className="i-set i_rank1">1</span></div>
                                                         : index === 1 ? <div className="num"><span className="i-set i_rank2">2</span></div>
                                                             : index === 2 ? <div className="num"><span className="i-set i_rank3">3</span></div>
                                                                 : <div className="num"><span className="i-set i_rank">{index + 1}</span></div>}
-                                                    <div className="thumb"><img className="im" src={v.Image} /></div>
+                                                    <div className="thumb"><img className="im" src={v.image} /></div>
                                                     <div className="txt">
-                                                        <p className="t1">{v.Brand}</p>
-                                                        <p className="t2">{v.Name}</p>
+                                                        <p className="t1">{v.brand}</p>
+                                                        <p className="t2">{v.name}</p>
                                                         <p className="t1 mt20"><span className="i-aft i_star">{v.rating}</span></p>
                                                     </div>
                                                 </Link>
                                                     <button
-                                                        type="button" id={v.ID}
-                                                        className={likeState(v.ID) ? "btn_favorit on" : "btn_favorit"}
-                                                        name={v.ID} onClick={() => likeProduct(v.ID)}>
+                                                        type="button" id={v.id}
+                                                        className={likeState(v.id) ? "btn_favorit on" : "btn_favorit"}
+                                                        name={v.id} onClick={() => likeProduct(v.id)}>
                                                         <span className="i-set i_favorit">좋아요</span>
                                                     </button>
                                                 </li>
@@ -307,22 +310,22 @@ const Ranking = () => {
                                         <ul className="ranking_lotion">
                                             {ranking3.map((v, index) => {
                                                 return (
-                                                    <li key={v.ID}><Link to={`../../main/products/${v.ID}`}>
+                                                    <li key={v.id}><Link to={`../../main/products/${v.id}`}>
                                                         {index === 0 ? <div className="num"><span className="i-set i_rank1">1</span></div>
                                                             : index === 1 ? <div className="num"><span className="i-set i_rank2">2</span></div>
                                                                 : index === 2 ? <div className="num"><span className="i-set i_rank3">3</span></div>
                                                                     : <div className="num"><span className="i-set i_rank">{index + 1}</span></div>}
-                                                        <div className="thumb"><img className="im" src={v.Image} /></div>
+                                                        <div className="thumb"><img className="im" src={v.image} /></div>
                                                         <div className="txt">
-                                                            <p className="t1">{v.Brand}</p>
-                                                            <p className="t2">{v.Name}</p>
+                                                            <p className="t1">{v.brand}</p>
+                                                            <p className="t2">{v.name}</p>
                                                             <p className="t1 mt20"><span className="i-aft i_star">{v.rating}</span></p>
                                                         </div>
                                                     </Link>
                                                         <button
-                                                            type="button" id={v.ID}
-                                                            className={likeState(v.ID) ? "btn_favorit on" : "btn_favorit"}
-                                                            name={v.ID} onClick={() => likeProduct(v.ID)}>
+                                                            type="button" id={v.id}
+                                                            className={likeState(v.id) ? "btn_favorit on" : "btn_favorit"}
+                                                            name={v.id} onClick={() => likeProduct(v.id)}>
                                                             <span className="i-set i_favorit">좋아요</span>
                                                         </button>
                                                     </li>
@@ -335,22 +338,22 @@ const Ranking = () => {
                                         <ul className="ranking_cream">
                                             {ranking4.map((v, index) => {
                                                 return (
-                                                    <li key={v.ID}><Link to={`../../main/products/${v.ID}`}>
+                                                    <li key={v.id}><Link to={`../../main/products/${v.id}`}>
                                                         {index === 0 ? <div className="num"><span className="i-set i_rank1">1</span></div>
                                                             : index === 1 ? <div className="num"><span className="i-set i_rank2">2</span></div>
                                                                 : index === 2 ? <div className="num"><span className="i-set i_rank3">3</span></div>
                                                                     : <div className="num"><span className="i-set i_rank">{index + 1}</span></div>}
-                                                        <div className="thumb"><img className="im" src={v.Image} /></div>
+                                                        <div className="thumb"><img className="im" src={v.image} /></div>
                                                         <div className="txt">
-                                                            <p className="t1">{v.Brand}</p>
-                                                            <p className="t2">{v.Name}</p>
+                                                            <p className="t1">{v.brand}</p>
+                                                            <p className="t2">{v.name}</p>
                                                             <p className="t1 mt20"><span className="i-aft i_star">{v.rating}</span></p>
                                                         </div>
                                                     </Link>
                                                         <button
-                                                            type="button" id={v.ID}
-                                                            className={likeState(v.ID) ? "btn_favorit on" : "btn_favorit"}
-                                                            name={v.ID} onClick={() => likeProduct(v.ID)}>
+                                                            type="button" id={v.id}
+                                                            className={likeState(v.id) ? "btn_favorit on" : "btn_favorit"}
+                                                            name={v.id} onClick={() => likeProduct(v.id)}>
                                                             <span className="i-set i_favorit">좋아요</span>
                                                         </button>
                                                     </li>

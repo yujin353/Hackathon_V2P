@@ -15,14 +15,18 @@ const Friend = () => {
     const [userId, setUserId] = useState("");
     const [userName, setUserName] = useState("");
     const [input, setInput] = useState("");
-    const [totalUser, setTotalUser] = useState(0);
 
     /* Get a list of friends a user subscribes to */
     useEffect(() => {
         $.ajax({
             async: true, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/member-follower/?search=" + sessionStorage.getItem("user_pk"),
-            success: (response) => setFollowerList(response.results),
+            url: "https://dev.odoc-api.com/member/follower_display?member_id=" + sessionStorage.getItem("user_pk"),
+            success: (response) => {
+                let follow = []
+                for (let i = 0; i < response.length; i++)
+                    follow.push(response[i])
+                setFollowerList(follow)
+            },
             error: (response) => console.log(response)
         });
     }, []);
@@ -31,42 +35,38 @@ const Friend = () => {
     useEffect(() => {
         $.ajax({
             async: true, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/member-following/?search=" + sessionStorage.getItem("user_pk"),
+            url: "https://dev.odoc-api.com/member/following_display?member_id=" + sessionStorage.getItem("user_pk"),
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
-            success: (response) => setFolloweeList(response.results),
+            success: (response) => {
+                let follow = []
+                for (let i = 0; i < response.length; i++)
+                    follow.push(response[i])
+                setFolloweeList(follow)
+            },
             error: (response) => console.log(response)
         });
     }, []);
 
-    const func_cntFollower = (mem_id) => {
+    const func_cntFollowing = (mem_id) => {
         let follower;
         $.ajax({
             async: false, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/member-following/?search=" + mem_id,
-            success: (response) => follower = response.count,
+            url: "https://dev.odoc-api.com/member/following_display?member_id=" + mem_id,
+            success: (response) => follower = response.length,
             error: (response) => console.log(response)
         });
         return follower;
     };
 
-    const func_cntFollowee = (mem_id) => {
+    const func_cntFollower = (mem_id) => {
         let followee;
         $.ajax({
             async: false, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/member-follower/?search=" + mem_id,
-            success: (response) => followee = response.count,
+            url: "https://dev.odoc-api.com/member/follower_display?member_id=" + mem_id,
+            success: (response) => followee = response.length,
             error: (response) => console.log(response)
         });
         return followee;
-    };
-
-    const cntTotalUser = () => {
-        $.ajax({
-            async: false, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/members/",
-            success: (response) => setTotalUser(response.count),
-            error: (response) => console.log(response)
-        });
     };
 
     /* Get friend name's id */
@@ -74,14 +74,11 @@ const Friend = () => {
         setUserId("");
         setUserName("");
         const textInput = input.trim();
-        let offset = 0;
-        let usercnt = (totalUser / 20).toFixed(0);
-        for (let i = 0; i <= usercnt; i++) {
-            $.ajax({
-                async: false, type: "GET",
-                url: "https://api.odoc-api.com/api/v1/members/?offset=" + offset,
+        $.ajax({
+                async: true, type: "GET",
+                url: "https://dev.odoc-api.com/member/member_entire_display",
                 success: (response) => {
-                    response.results.map(v => {
+                    response.map(v => {
                         if (v.username === textInput) {
                             setUserId(v.member_id);
                             setUserName(v.username);
@@ -91,9 +88,7 @@ const Friend = () => {
                     );
                 },
                 error: (response) => console.log(response)
-            });
-            offset += 20;
-        }
+        });
     };
 
     const onClickTab = (tabNum) => {
@@ -169,7 +164,6 @@ const Friend = () => {
                             <Link to="#tab3" onClick={(e) => {
                                 e.preventDefault();
                                 onClickTab(3);
-                                cntTotalUser();
                             }}><span>검색</span></Link>
                         </li>
                     </ul>
@@ -182,15 +176,15 @@ const Friend = () => {
                                     {
                                         followerList.length !== 0 ?
                                             followerList.map((v, i) => {
-                                                const follower = v.follower_member;
+                                                const follower = v.following_member;
                                                 return (
                                                     <li key={v + i}><Link to={`/mykiin/neighbor?id=${follower.member_id}`} className="b">
                                                         <div className="im">
                                                             <img src={require("../../../assets/images/common/img_nomem.jpg")} />
                                                         </div>
                                                         <p className="t3"><strong>{follower.username}</strong>님</p>
-                                                        <span className="cnt_follower">팔로워 <br /> <span>{func_cntFollower(follower.member_id)}</span></span>
-                                                        <span className="cnt_followee">팔로잉 <br /> <span>{func_cntFollowee(follower.member_id)}</span></span>
+                                                        <span className="cnt_follower">팔로워 <br /> <span>{func_cntFollowing(follower.member_id)}</span></span>
+                                                        <span className="cnt_followee">팔로잉 <br /> <span>{func_cntFollower(follower.member_id)}</span></span>
                                                     </Link></li>
                                                 );
                                             })
@@ -205,15 +199,15 @@ const Friend = () => {
                                     {
                                         followeeList.length !== 0 ?
                                             followeeList.map((v, i) => {
-                                                const followee = v.following_member;
+                                                const followee = v.follower_member;
                                                 return (
                                                     <li key={v + i}><Link to={`/mykiin/neighbor?id=${followee.member_id}`} className="b">
                                                         <div className="im">
                                                             <img src={require("../../../assets/images/common/img_nomem.jpg")} />
                                                         </div>
                                                         <p className="t3"><strong>{followee.username}</strong>님</p>
-                                                        <span className="cnt_follower">팔로워 <br /> <span>{func_cntFollower(followee.member_id)}</span></span>
-                                                        <span className="cnt_followee">팔로잉 <br /> <span>{func_cntFollowee(followee.member_id)}</span></span>
+                                                        <span className="cnt_follower">팔로워 <br /> <span>{func_cntFollowing(followee.member_id)}</span></span>
+                                                        <span className="cnt_followee">팔로잉 <br /> <span>{func_cntFollower(followee.member_id)}</span></span>
                                                     </Link></li>
                                                 );
                                             })
@@ -239,8 +233,8 @@ const Friend = () => {
                                             <div><Link to={`/mykiin/neighbor?id=${userId}`} className="b">
                                                 <div className="im"><img src={require("../../../assets/images/common/img_nomem.jpg")} /></div>
                                                 <p className="t3"><strong>{userName}</strong>님</p>
-                                                <span className="cnt_follower">팔로워 <br /> <span>{func_cntFollower(userId)}</span></span>
-                                                <span className="cnt_followee">팔로잉 <br /> <span>{func_cntFollowee(userId)}</span></span>
+                                                <span className="cnt_follower">팔로워 <br /> <span>{func_cntFollowing(userId)}</span></span>
+                                                <span className="cnt_followee">팔로잉 <br /> <span>{func_cntFollower(userId)}</span></span>
                                             </Link></div>
                                             :
                                             <p className="emptyArea" style={{ color: "#bfc2ca", fontSize: "18px", textAlign: "center", marginTop: "120px" }}>검색어와 일치하는 사용자가 없습니다.</p>

@@ -21,12 +21,12 @@ const DetailResult = ()=> {
     useEffect(() => {
         $.ajax({
             async: false, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/myskin/?search=" + userPK,
+            url: "https://dev.odoc-api.com/member/my_skin?member_id=" + userPK,
             success: (response) => {
-                const results = response.results[0];
+                const results = response[0];
                 if (results === undefined) return;
-                setBTarget(results.target_id.target_name.trim());
-                boost(results.target_id.target_name);
+                setBTarget(results.target.target_name.trim());
+                boost(results.target.target_name.trim());
             },
             error: (response) => console.log(response)
         });
@@ -35,14 +35,13 @@ const DetailResult = ()=> {
     useEffect(() => {
         $.ajax({
             async: false, type: 'GET',
-            url: "https://api.odoc-api.com/api/v1/members/" + userPK + "/",
-            success: (response) => setUsername(response.username),
+            url: "https://dev.odoc-api.com/member/member_display?member_id=" + userPK,
+            success: (response) => setUsername(response[0].username),
             error: (response) => navigate("/mykiin")
         });
     }, [])
 
     const boost = (bTarget) => {
-        bTarget = bTarget.trim()
         switch (bTarget) {
             case '극지성':
                 setBTargetType("피지 생성이 매우 많은 피부입니다.");

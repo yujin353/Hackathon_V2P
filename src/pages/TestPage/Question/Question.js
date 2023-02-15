@@ -13,20 +13,21 @@ const Question = () => {
     const setting = { infinite: false };
     const [disabled, setDisabled] = useState(true);
     const [obj, setObj] = useState({
-        "member": sessionStorage.getItem("user_pk")
+        "member_id": sessionStorage.getItem("user_pk")
     });
 
     const submit = () => {
         console.log(obj);
         $.ajax({
             async: false, type: 'POST',
-            url: "https://api.odoc-api.com/api/v1/testskin/",
+            url: "https://dev.odoc-api.com/member/skin_quiz",
             data: obj, dataType: 'json',
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: response => {
-                console.log(response);
-                alert("스킨퀴즈가 완료되었습니다.\n마이키인 페이지로 이동합니다.");
-                navigate("/mykiin");
+                if (response.message === "SUCCESS") {
+                    alert("스킨퀴즈가 완료되었습니다.\n마이키인 페이지로 이동합니다.");
+                    navigate("/mykiin");
+                }
             },
             error: response => console.log(response)
         });

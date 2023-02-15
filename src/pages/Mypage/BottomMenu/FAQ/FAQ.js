@@ -9,8 +9,8 @@ const FAQ = () => {
     useEffect(() => {
         $.ajax({
             async: true, type: "GET",
-            url: "https://api.odoc-api.com/api/v1/faqs/",
-            success: (response) => setQuestionList(response.results),
+            url: "https://dev.odoc-api.com/faq/list",
+            success: (response) => setQuestionList(response),
             error: (response) => console.log(response),
         });
     }, [])

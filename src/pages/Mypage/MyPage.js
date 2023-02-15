@@ -15,14 +15,13 @@ const MyPage = () => {
 
     /* findout currently logged in user */
     useEffect(() => {
-        const user_pk = sessionStorage.getItem("user_pk");
         $.ajax({
             async: false,
             type: 'GET',
-            url: `https://api.odoc-api.com/api/v1/members/${user_pk}/`,
+            url: "https://dev.odoc-api.com/member/member_display?member_id=" + sessionStorage.getItem("user_pk"),
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: function (response) {
-                setUsername(response.username);
+                setUsername(response[0].username);
             },
             error: function (response) {
                 console.log("error", response);

@@ -5,7 +5,7 @@ const useCookieToRefresh = () => {
     let result;
     $.ajax({
         async: false, type: 'POST',
-        url: "https://api.odoc-api.com/api/token/refresh/",
+        url: "https://dev.odoc-api.com/member/auth/refresh/",
         data: { "refresh": cookies.load("refresh_token") },
         dataType: "json",
         success: (response) => {

@@ -40,20 +40,18 @@ const Review = () => {
     const reviewPost = () => {
         $.ajax({
             async: true, type: "POST",
-            url: "https://api.odoc-api.com/api/v1/reviews-product-filter/",
+            url: "https://dev.odoc-api.com/member_product/member_review_write",
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             data: JSON.stringify({
-                "member": parseInt(sessionStorage.getItem("user_pk")),
-                "review_article": {
-                    "article_content": textInput
-                },
-                "product": parseInt(location.state.product_id),
+                "review_content": textInput,
                 "rating": rating,
-                "heart": false
+                "member_id": parseInt(sessionStorage.getItem("user_pk")),
+                "product_id": parseInt(location.state.product_id)
             }), contentType: "application/json",
             success: (response) => {
                 // setModal(true)
-                navigate(-1);
+                if (response.message === "SUCCESS")
+                    navigate(-1);
             },
             error: (response) => console.log(response)
         });

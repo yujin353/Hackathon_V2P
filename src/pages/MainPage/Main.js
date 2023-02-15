@@ -29,10 +29,10 @@ const Main = () => {
 		let isMounted = true;
 		$.ajax({
 			async: true, type: "GET",
-			url: "https://api.odoc-api.com/api/v1/events/",
+			url: "https://dev.odoc-api.com/event/list",
 			success: response => {
 				if (isMounted)
-					setEventList(response.results);
+					setEventList(response);
 			},
 			error: response => console.log(response)
 		});
@@ -51,10 +51,10 @@ const Main = () => {
 		let isMounted = true;
 		$.ajax({
 			async: false, type: 'GET',
-			url: "https://api.odoc-api.com/api/v1/members/" + sessionStorage.getItem("user_pk") + "/",
+			url: "https://dev.odoc-api.com/member/member_display?member_id=" + sessionStorage.getItem("user_pk"),
 			success: (response) => {
 				if (isMounted)
-					setUsername(response.username);
+					setUsername(response[0].username);
 			},
 			error: (response) => {
 				console.log("error", response);
@@ -70,11 +70,11 @@ const Main = () => {
 		let isMounted = true;
 		$.ajax({
 			async: true, type: 'GET',
-			url: "https://api.odoc-api.com/api/v1/recommendations?member_id=" + sessionStorage.getItem("user_pk"),
+			url: "https://dev.odoc-api.com/recommendation/list?member_id=" + sessionStorage.getItem("user_pk"),
 			beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
 			success: (response) => {
 				if (isMounted)
-					setRecommendedProd(response);
+					setRecommendedProd(response.result);
 			},
 			error: (response) => {
 				console.log(response);
@@ -90,7 +90,7 @@ const Main = () => {
 		let isMounted = true;
 		$.ajax({
 			async: true, type: 'GET',
-			url: "https://api.odoc-api.com/api/v1/ranking/",
+			url: "https://dev.odoc-api.com/product/ranking_on_main_page",
 			success: (response) => {
 				if (isMounted)
 					setRankingProd(response.results);
@@ -106,10 +106,10 @@ const Main = () => {
 		let isMounted = true;
 		$.ajax({
 			async: true, type: "GET",
-			url: "https://api.odoc-api.com/api/v1/product-like/?search=" + sessionStorage.getItem("user_pk"),
+			url: "https://dev.odoc-api.com/member_product/product_like_display?member_id=" + sessionStorage.getItem("user_pk"),
 			beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
 			success: (response) => {
-				response.results.map((v) => {
+				response.map((v) => {
 					const product_id = v.like_product.product_id;
 					const element = document.getElementsByName(product_id);
 					$(element).addClass("on");
@@ -143,10 +143,10 @@ const Main = () => {
 		let like_product = [];
 		$.ajax({
 			async: false, type: "GET",
-			url: "https://api.odoc-api.com/api/v1/product-like/?search=" + sessionStorage.getItem("user_pk"),
+			url: "https://dev.odoc-api.com/member_product/product_like_display?member_id=" + sessionStorage.getItem("user_pk"),
 			beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
 			success: (response) => {
-				info = response.results;
+				info = response;
 				for (let i = 0; i < info.length; i++) {
 					like_product = like_product.concat(info[i].like_product.product_id);
 					setLikeProducts = like_product;
@@ -154,7 +154,7 @@ const Main = () => {
 				if (info.length === 0) latestLikeProducts.current = [];
 				else latestLikeProducts.current = setLikeProducts;
 			},
-			error: (response) => { console.log(response.results); }
+			error: (response) => { console.log(response); }
 		});
 	});
 
@@ -163,7 +163,7 @@ const Main = () => {
 	const findLikeProducts = (likeIcon) => {
 		let check = "fail";
 		for (let i = 0; i < (latestLikeProducts.current).length; i++) {
-			if (likeIcon.id === latestLikeProducts.current[i]) {
+			if (likeIcon.id == latestLikeProducts.current[i]) {
 				check = "success";
 				break;
 			}
@@ -189,14 +189,17 @@ const Main = () => {
 	const likeProduct = (product_id) => {
 		$.ajax({
 			async: true, type: "POST",
-			url: "https://api.odoc-api.com/api/v2/like-product",
-			data: { "like_product": product_id },
+			url: "https://dev.odoc-api.com/member_product/product_like",
+			data: {
+				"product_id": product_id,
+				"member_id": sessionStorage.getItem("user_pk")
+			},
 			dataType: "json",
 			beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
 			success: (response) => {
 				const element = document.getElementsByName(product_id);
 				$(element).toggleClass("on");
-				if (response.message === "Like") {
+				if (response.message === "LIKE") {
 					alert("좋아하는 상품 목록에 추가되었습니다.");
 					if (latestLikeProducts.current.length === 0) {
 						setLikeProducts = [];
@@ -267,7 +270,7 @@ const Main = () => {
 												</div>
 												<div className="txt">
 													<Link to={`products/${v.product_id}`}>
-														<p className="t1">{v.brand.brand_name}</p>
+														<p className="t1">{v.brand_name}</p>
 														<p className="t2">{v.product_name}</p>
 													</Link>
 												</div>
@@ -282,24 +285,23 @@ const Main = () => {
 					<div className="lst_prd pr-mb2">
 						<Slider {...setting} speed={0} autoplay={false}>
 							{rankingProd.map(v => {
-								v = v.product_id;
 								return (
-									<div key={v} className="item">
+									<div key={v.id} className="item">
 										<div className="thumb">
-											<Link to={`products/${v.product_id}`}>
-												<span className="im" style={{ backgroundImage: `url(${v.product_img_path})` }}></span>
+											<Link to={`products/${v.id}`}>
+												<span className="im" style={{ backgroundImage: `url(${v.image})` }}></span>
 											</Link>
 											<button
-												type="button" id={v.product_id}
-												className={likeState(v.product_id) ? "btn_favorit on" : "btn_favorit"}
-												name={v.product_id} onClick={() => likeProduct(v.product_id)}>
+												type="button" id={v.id}
+												className={likeState(v.id) ? "btn_favorit on" : "btn_favorit"}
+												name={v.id} onClick={() => likeProduct(v.id)}>
 												<span className="i-set i_favorit">좋아요</span>
 											</button>
 										</div>
 										<div className="txt">
-											<Link to={`products/${v.product_id}`}>
-												<p className="t1">{v.brand.brand_name}</p>
-												<p className="t2">{v.product_name}</p>
+											<Link to={`products/${v.id}`}>
+												<p className="t1">{v.brand}</p>
+												<p className="t2">{v.name}</p>
 											</Link>
 										</div>
 									</div>
