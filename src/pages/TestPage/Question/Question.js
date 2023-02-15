@@ -17,7 +17,6 @@ const Question = () => {
     });
 
     const submit = () => {
-        console.log(obj);
         $.ajax({
             async: false, type: 'POST',
             url: "https://dev.odoc-api.com/member/skin_quiz",
@@ -104,7 +103,7 @@ const Question = () => {
                             <span>스킨퀴즈 제출</span>
                         </button>
                     </div>
-                </div> :
+                </div>
             </div>
         </div>
     );
