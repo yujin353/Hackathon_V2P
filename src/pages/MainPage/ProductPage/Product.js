@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Wordcloud } from "../../../component";
-import { useAccessTknRefresh } from "../../../hooks";
+import { useAccessTknRefresh, useLogout } from "../../../hooks";
 import { getProductGredients } from "../../../api/product";
-import cookies from "react-cookies";
 import $ from "jquery";
 
 const Product = () => {
@@ -22,7 +21,7 @@ const Product = () => {
     let [likeProducts, setLikeProducts] = useState([]);
     let latestLikeProducts = useRef(likeProducts);
     let stars;
-    const [myskinType, setMyskinType] = useState(0)
+    const [myskinType, setMyskinType] = useState(0);
     const [filter, setFilter] = useState(0);
 
     /* loading product info */
@@ -47,9 +46,9 @@ const Product = () => {
             success: (response) => setAverage(response.message),
             error: (response) => {
                 if (response.responseJSON.message == "ERROR")
-                    setAverage(0)
+                    setAverage(0);
                 else
-                    console.log(response)
+                    console.log(response);
             }
         });
     }, []);
@@ -63,43 +62,13 @@ const Product = () => {
             success: (response) => setUsername(response[0].username),
             error: (response) => {
                 console.log("error", response);
-                alert("login failed.")
+                alert("login failed.");
+                const logout = useLogout;
                 logout();
                 window.location.replace("/");
             },
         });
     }, []);
-
-    const logout = () => {
-        // var obj = { "refresh": sessionStorage.getItem("refresh_token") };
-        // $.ajax({
-        //     async: true,
-        //     type: 'POST',
-        //     url: "https://api.odoc-api.com/rest_auth/logout/",
-        //     data: obj,
-        //     dataType: 'JSON',
-        //     success: function (response) {
-        //         console.log(response);
-        //         sessionStorage.removeItem("access_token");
-        //         sessionStorage.removeItem("refresh_token");
-        //         sessionStorage.removeItem("user_pk");
-        //         cookies.remove("access_token");
-        //         cookies.remove("refresh_token");
-        //         localStorage.removeItem("user_pk");
-        //         navigate('/login');
-        //     },
-        //     error: function (response) {
-        //         console.log(response);
-        //     },
-        // });
-        sessionStorage.removeItem("access_token");
-        sessionStorage.removeItem("refresh_token");
-        sessionStorage.removeItem("user_pk");
-        cookies.remove("access_token");
-        cookies.remove("refresh_token");
-        localStorage.removeItem("user_pk");
-        window.location.replace('/login')
-    };
 
     /* function to calculate product fit */
     const calcProFit = () => {
@@ -107,7 +76,7 @@ const Product = () => {
             async: false, type: "GET",
             url: `https://dev.odoc-api.com/recommendation/product_matching?member_id=${sessionStorage.getItem("user_pk")}&product_id=${params.id}`,
             success: response => {
-                setRate(response.result)
+                setRate(response.result);
             },
             error: response => console.log(response)
         });
@@ -134,11 +103,11 @@ const Product = () => {
     useEffect(() => {
         $.ajax({
             async: false, type: "GET",
-            url: "https://dev.odoc-api.com/member/my_skin?member_id=" + sessionStorage.getItem("user_pk") ,
+            url: "https://dev.odoc-api.com/member/my_skin?member_id=" + sessionStorage.getItem("user_pk"),
             success: (response) => {
                 if (response[0]) {
-                    setMyskinType(response[0].type.type_id)
-                    calcProFit()
+                    setMyskinType(response[0].type.type_id);
+                    calcProFit();
                 }
             },
             error: (response) => console.log(response)
@@ -277,7 +246,7 @@ const Product = () => {
             async: true, type: "GET",
             url: `https://dev.odoc-api.com/product/ingredient_member?product_id=${params.id}&member_id=${sessionStorage.getItem("user_pk")}`,
             success: response => {
-                setProductIngredients(response.results)
+                setProductIngredients(response.results);
             },
             error: response => console.log(response)
         });
@@ -300,8 +269,8 @@ const Product = () => {
             async: true, type: "POST",
             url: "https://dev.odoc-api.com/member_product/review_like",
             data: {
-                "review_id" : review_id,
-                "member_id" : sessionStorage.getItem("user_pk")
+                "review_id": review_id,
+                "member_id": sessionStorage.getItem("user_pk")
             },
             dataType: "json",
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
@@ -440,10 +409,10 @@ const Product = () => {
                                 <option value="">만족도 순</option>
                             </select> */}
                             <select className="select1 hd_ty1"
-                                    onChange={(e) => {
-                                        if (e.target.value === "all") setFilter(filter+1);
-                                        else reviewFilter();
-                                    }}>
+                                onChange={(e) => {
+                                    if (e.target.value === "all") setFilter(filter + 1);
+                                    else reviewFilter();
+                                }}>
                                 <option value="all">모든 리뷰</option>
                                 <option value="sameSkin">내 피부타입 리뷰</option>
                             </select>

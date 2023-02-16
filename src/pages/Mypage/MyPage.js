@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { Modal, Footer } from '../../component';
-import { useAccessTknRefresh } from "../../hooks";
-import cookies from "react-cookies";
+import { useAccessTknRefresh, useLogout } from "../../hooks";
 import $ from "jquery";
 
 const MyPage = () => {
@@ -26,6 +25,7 @@ const MyPage = () => {
             error: function (response) {
                 console.log("error", response);
                 alert("login failed.");
+                const logout = useLogout;
                 logout();
                 window.location.replace("/");
             },
@@ -53,35 +53,9 @@ const MyPage = () => {
             .then(() => alert("링크가 복사되었습니다."));
     };
 
-    const logout = () => {
-        // var obj = { "refresh": sessionStorage.getItem("refresh_token") };
-        // $.ajax({
-        //     async: true,
-        //     type: 'POST',
-        //     url: "https://api.odoc-api.com/rest_auth/logout/",
-        //     data: obj,
-        //     dataType: 'JSON',
-        //     success: function (response) {
-        //         console.log(response);
-        //         sessionStorage.removeItem("access_token");
-        //         sessionStorage.removeItem("refresh_token");
-        //         sessionStorage.removeItem("user_pk");
-        //         cookies.remove("access_token");
-        //         cookies.remove("refresh_token");
-        //         localStorage.removeItem("user_pk");
-        //         navigate('/login');
-        //     },
-        //     error: function (response) {
-        //         console.log(response);
-        //     },
-        // });
-        sessionStorage.removeItem("access_token");
-        sessionStorage.removeItem("refresh_token");
-        sessionStorage.removeItem("user_pk");
-        cookies.remove("access_token");
-        cookies.remove("refresh_token");
-        localStorage.removeItem("user_pk");
-        window.location.replace('/login')
+    const goLogout = () => {
+        const logout = useLogout;
+        logout();
     };
 
     return (
@@ -136,7 +110,7 @@ const MyPage = () => {
 
                                         <div className="p_cont">
                                             <p className="h_tit1">친구초대</p>
-                                            <center><input type="text" id="copy_text_input" ref={linkRef} defaultValue="http://kiinodoc.com" className="form-control" style={{width: "100%"}} /></center>
+                                            <center><input type="text" id="copy_text_input" ref={linkRef} defaultValue="http://kiinodoc.com" className="form-control" style={{ width: "100%" }} /></center>
                                             <br />
                                             <center><button id="copy_btn" onClick={copyLink}>
                                                 <span className="i-aft i_url">URL 복사</span>
@@ -179,7 +153,7 @@ const MyPage = () => {
 
                                         <div className="p_cont">
                                             <p className="h_tit1">제휴문의</p>
-                                            <center><input type="text" id="copy_text_input2" ref={linkRef} defaultValue="ask@odoc.co.kr" className="form-control" style={{width: "100%"}} /></center>
+                                            <center><input type="text" id="copy_text_input2" ref={linkRef} defaultValue="ask@odoc.co.kr" className="form-control" style={{ width: "100%" }} /></center>
                                             <br />
                                             <center><button id="copy_btn2" onClick={copyLink}>
                                                 <span className="i-aft i_url">URL 복사</span>
@@ -191,7 +165,7 @@ const MyPage = () => {
                         </li>
                         <li><Link to="termofservice"><span className="i-aft i_arr_r1">이용약관</span></Link></li>
                         <li><Link to="account"><span className="i-aft i_arr_r1">계정관리</span></Link></li>
-                        <li><Link to="#" onClick={logout} ><span className="i-aft i_arr_r1">로그아웃</span></Link></li>
+                        <li><Link to="#" onClick={goLogout} ><span className="i-aft i_arr_r1">로그아웃</span></Link></li>
                     </ul>
                 </div>
             </div>

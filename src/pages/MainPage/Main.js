@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 // import { useIsMounted } from "../../hooks"
-import { useAccessTknRefresh } from "../../hooks";
+import { useAccessTknRefresh, useLogout } from "../../hooks";
 import { Footer } from "../../component";
 import Slider from "react-slick";
-import cookies from "react-cookies";
 import $ from "jquery";
 
 const Main = () => {
@@ -59,7 +58,8 @@ const Main = () => {
 			},
 			error: (response) => {
 				console.log("error", response);
-				alert("login failed.")
+				alert("login failed.");
+				const logout = useLogout;
 				logout();
 				window.location.replace("/");
 			},
@@ -71,47 +71,16 @@ const Main = () => {
 	useEffect(() => {
 		$.ajax({
 			async: false, type: "GET",
-			url: "https://dev.odoc-api.com/member/my_skin?member_id=" + sessionStorage.getItem("user_pk") ,
+			url: "https://dev.odoc-api.com/member/my_skin?member_id=" + sessionStorage.getItem("user_pk"),
 			success: (response) => {
 				if (response[0]) {
-					recommendProduct()
+					recommendProduct();
 				}
 				else setModal1(true);
 			},
 			error: (response) => console.log(response)
 		});
 	}, []);
-
-	const logout = () => {
-        // var obj = { "refresh": sessionStorage.getItem("refresh_token") };
-        // $.ajax({
-        //     async: true,
-        //     type: 'POST',
-        //     url: "https://api.odoc-api.com/rest_auth/logout/",
-        //     data: obj,
-        //     dataType: 'JSON',
-        //     success: function (response) {
-        //         console.log(response);
-        //         sessionStorage.removeItem("access_token");
-        //         sessionStorage.removeItem("refresh_token");
-        //         sessionStorage.removeItem("user_pk");
-        //         cookies.remove("access_token");
-        //         cookies.remove("refresh_token");
-        //         localStorage.removeItem("user_pk");
-        //         navigate('/login');
-        //     },
-        //     error: function (response) {
-        //         console.log(response);
-        //     },
-        // });
-        sessionStorage.removeItem("access_token");
-        sessionStorage.removeItem("refresh_token");
-        sessionStorage.removeItem("user_pk");
-        cookies.remove("access_token");
-        cookies.remove("refresh_token");
-        localStorage.removeItem("user_pk");
-        window.location.replace('/login')
-    };
 
 	/* loading recommended products */
 	const recommendProduct = () => {
