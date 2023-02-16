@@ -49,11 +49,31 @@ const SignUp = () => {
 
     const fieldCheck = () => {
         let flag = false;
+        document.getElementById("email_in_use").className = "hidden";
+        document.getElementById("emailerror1").className = "hidden";
+        document.getElementById("emailerror2").className = "hidden";
+        document.getElementById("pwdlengtherror").className = "hidden";
+        document.getElementById("pwderror1").className = "hidden";
+        document.getElementById("pwderror2").className = "hidden";
+        document.getElementById("pwderror3").className = "hidden";
+        document.getElementById("pwderror4").className = "hidden";
+        document.getElementById("pwderror5").className = "hidden";
+        document.getElementById("gendererror1").className = "hidden";
+        document.getElementById("regionerror1").className = "hidden";
+        document.getElementById("ageerror1").className = "hidden";
+        document.getElementById("ageerror2").className = "hidden";
+        document.getElementById("nickname_in_use").className = "hidden";
+        document.getElementById("nickname_long").className = "hidden";
+        document.getElementById("nicknameerror1").className = "hidden";
         if (email1 === "" || email2 === "") {
             document.getElementById("emailerror1").className = "t_error";
             flag = true;
         } else if (!emailRegex.test(email1 + '@' + email2)) {
             document.getElementById("emailerror2").className = "t_error";
+            flag = true;
+        }
+        if (password1 !== password2) {
+            document.getElementById("pwderror4").className = "t_error";
             flag = true;
         }
         if (gender === "") {
@@ -291,7 +311,7 @@ const SignUp = () => {
                 <div className="fix_botm">
                     <button type="button" className="btn-pk blue n"
                         onClick={() => {
-                            if (fieldCheck() === false) return;
+                            if (fieldCheck() == false) return;
                             register();
                         }}>
                         <span>가입완료</span>

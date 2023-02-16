@@ -49,6 +49,7 @@ const Account = () => {
             error: (response) => {
                 console.log("error", response);
                 alert("login failed.");
+                logout();
                 window.location.replace("/login");
             },
         });

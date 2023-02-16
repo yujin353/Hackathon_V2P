@@ -2,8 +2,9 @@ import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Wordcloud } from "../../../component";
 import { useAccessTknRefresh } from "../../../hooks";
-import $ from "jquery";
 import { getProductGredients } from "../../../api/product";
+import cookies from "react-cookies";
+import $ from "jquery";
 
 const Product = () => {
     const accessTknRefresh = useAccessTknRefresh();
@@ -63,10 +64,42 @@ const Product = () => {
             error: (response) => {
                 console.log("error", response);
                 alert("login failed.")
+                logout();
                 window.location.replace("/");
             },
         });
     }, []);
+
+    const logout = () => {
+        // var obj = { "refresh": sessionStorage.getItem("refresh_token") };
+        // $.ajax({
+        //     async: true,
+        //     type: 'POST',
+        //     url: "https://api.odoc-api.com/rest_auth/logout/",
+        //     data: obj,
+        //     dataType: 'JSON',
+        //     success: function (response) {
+        //         console.log(response);
+        //         sessionStorage.removeItem("access_token");
+        //         sessionStorage.removeItem("refresh_token");
+        //         sessionStorage.removeItem("user_pk");
+        //         cookies.remove("access_token");
+        //         cookies.remove("refresh_token");
+        //         localStorage.removeItem("user_pk");
+        //         navigate('/login');
+        //     },
+        //     error: function (response) {
+        //         console.log(response);
+        //     },
+        // });
+        sessionStorage.removeItem("access_token");
+        sessionStorage.removeItem("refresh_token");
+        sessionStorage.removeItem("user_pk");
+        cookies.remove("access_token");
+        cookies.remove("refresh_token");
+        localStorage.removeItem("user_pk");
+        window.location.replace('/login')
+    };
 
     /* function to calculate product fit */
     const calcProFit = () => {
