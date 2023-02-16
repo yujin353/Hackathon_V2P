@@ -58,7 +58,11 @@ const Login = () => {
 					cookies.remove('refresh_token');
 					localStorage.removeItem("user_pk"); // change after
 				}
-				if (rightBox) cookies.save("email", email);
+				if (rightBox) {
+					let day = new Date();
+					day.setDate(day.getDate() + 7);
+					cookies.save("email", email, { expires: day });
+				}
 				else cookies.remove("email");
 				navigate("/main");
 			},
