@@ -61,7 +61,6 @@ const Search = () => {
         $.ajax({
             async: true, type: 'GET',
             url: "https://dev.odoc-api.com/product/product_random_display",// + "&member_id=" + sessionStorage.getItem("user_pk"),
-            // beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: (response) => setRecommend(response.results),
             error: (response) => console.log(response)
         });

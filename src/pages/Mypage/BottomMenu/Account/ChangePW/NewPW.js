@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import cookies from "react-cookies";
+import { useLogout } from "../../../../../hooks";
 import $ from "jquery";
 
 const NewPW = () => {
@@ -35,33 +35,6 @@ const NewPW = () => {
         }
     };
 
-    const logout = () => {
-        // $.ajax({
-        //     async: true, type: 'POST',
-        //     url: "https://api.odoc-api.com/rest_auth/logout/",
-        //     data: { "refresh": sessionStorage.getItem("refresh_token") },
-        //     dataType: 'JSON',
-        //     success: (response) => {
-        //         console.log(response);
-        //         sessionStorage.removeItem("access_token");
-        //         sessionStorage.removeItem("refresh_token");
-        //         sessionStorage.removeItem("user_pk");
-        //         cookies.remove("access_token");
-        //         cookies.remove("refresh_token");
-        //         localStorage.removeItem("user_pk");
-        //         navigate("/login");
-        //     },
-        //     error: (response) => console.log(response),
-        // });
-        sessionStorage.removeItem("access_token");
-        sessionStorage.removeItem("refresh_token");
-        sessionStorage.removeItem("user_pk");
-        cookies.remove("access_token");
-        cookies.remove("refresh_token");
-        localStorage.removeItem("user_pk");
-        window.location.replace('/login')
-    };
-
     const changePassword = () => {
         $.ajax({
             async: true, type: 'POST',
@@ -74,6 +47,7 @@ const NewPW = () => {
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + sessionStorage.getItem("access_token")),
             success: (response) => {
                 alert("비밀번호가 변경되었습니다.\n로그인 화면으로 이동합니다.");
+                const logout = useLogout;
                 logout();
             },
             error: (response) => {

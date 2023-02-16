@@ -18,18 +18,19 @@ const MyKiin = () => {
 
     const [count, setCount] = useState(3);
 
-    useEffect(()=>{
-        window.scrollTo(0,0);
-    },[])
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     /* checking skin type test */
     useEffect(() => {
         $.ajax({
             async: false, type: "GET",
-            url: "https://dev.odoc-api.com/member/my_skin?member_id=" + sessionStorage.getItem("user_pk") ,
+            url: "https://dev.odoc-api.com/member/my_skin?member_id=" + sessionStorage.getItem("user_pk"),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: (response) => {
                 if (response[0]) {
-                    findSameSkinTypeUser()
+                    findSameSkinTypeUser();
                 }
             },
             error: (response) => console.log(response)
@@ -45,7 +46,7 @@ const MyKiin = () => {
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: response => {
                 if (response.message == "없음")
-                    setUserList([])
+                    setUserList([]);
                 else if (isMounted)
                     setUserList(JSON.parse(response.message));
             },

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import {Link, useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
     Chart as ChartJS,
     RadialLinearScale,
@@ -16,8 +16,8 @@ const Graph = ({ userPK }) => {
     const [myskinScore, setMyskinScore] = useState([]);
     const [myskinType, setMyskinType] = useState(undefined);
     const [bTarget, setBTarget] = useState(undefined);
-    const btnRef1 = useRef(null)
-    const navigate = useNavigate()
+    const btnRef1 = useRef(null);
+    const navigate = useNavigate();
 
     const data = {
         labels: ['밸런싱', '견고성', '균일성', '탄력성', '안정성'],
@@ -86,10 +86,10 @@ const Graph = ({ userPK }) => {
                 <p className="tit">내 피부 타입은 <strong className="c-blue">{myskinType ? myskinType : "undefined"}</strong> 입니다.</p>
                 <div className="box">
                     <p>부스팅 타겟은 <strong>{bTarget ? bTarget : "undefined"}</strong>입니다.
-                        { bTarget ?
-                            <button type="button" className="btn_bmore" ref={btnRef1} onClick={()=>navigate(`/mykiin/detailresult?id=${userPK}`)}>
-                            <span>결과가 더 궁금하다면?</span></button>
-                        : null }
+                        {bTarget ?
+                            <button type="button" className="btn_bmore" ref={btnRef1} onClick={() => navigate(`/mykiin/detailresult?id=${userPK}`)}>
+                                <span>결과가 더 궁금하다면?</span></button>
+                            : null}
                     </p>
                 </div>
             </div>

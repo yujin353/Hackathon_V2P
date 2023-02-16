@@ -1,49 +1,49 @@
-import React, { useState, useEffect, useRef } from "react"
-import { Modal } from "../"
-import $ from "jquery"
+import React, { useState, useEffect, useRef } from "react";
+import { Modal } from "../";
+import $ from "jquery";
 
-const Ingredient = ( {userPK} ) => {
-    const btnRef2 = useRef(null)
-    const [modal1, setModal1] = useState(false)
-    const [modal2, setModal2] = useState(false)
-    const [userIngredientGood, setUserIngredientGood] = useState([])
-    const [userIngredientBad, setUserIngredientBad] = useState([])
-    const [userClick, setUserClick] = useState(0)
-    const [ingredientGoodCount, setIngredientGoodCount] = useState(10)
-    const [ingredientBadCount, setIngredientBadCount] = useState(10)
+const Ingredient = ({ userPK }) => {
+    const btnRef2 = useRef(null);
+    const [modal1, setModal1] = useState(false);
+    const [modal2, setModal2] = useState(false);
+    const [userIngredientGood, setUserIngredientGood] = useState([]);
+    const [userIngredientBad, setUserIngredientBad] = useState([]);
+    const [userClick, setUserClick] = useState(0);
+    const [ingredientGoodCount, setIngredientGoodCount] = useState(10);
+    const [ingredientBadCount, setIngredientBadCount] = useState(10);
 
     /* set Good Ingredient */
     useEffect(() => {
         let isMounted = true;
         $.ajax({
             async: true, type: "GET",
-            url: "https://dev.odoc-api.com/ingredient/status_member?member_id=" + userPK +"&ingredient_status=1",
+            url: "https://dev.odoc-api.com/ingredient/status_member?member_id=" + userPK + "&ingredient_status=1",
             success: (response) => setUserIngredientGood(response),
             error: response => console.log(response)
         });
-        return () => isMounted = false
-    }, [])
+        return () => isMounted = false;
+    }, []);
 
     /* set Bad Ingredient */
     useEffect(() => {
         let isMounted = true;
         $.ajax({
             async: true, type: "GET",
-            url: "https://dev.odoc-api.com/ingredient/status_member?member_id=" + userPK +"&ingredient_status=0",
+            url: "https://dev.odoc-api.com/ingredient/status_member?member_id=" + userPK + "&ingredient_status=0",
             success: (response) => setUserIngredientBad(response),
             error: response => console.log(response)
         });
-        return () => isMounted = false
-    }, [])
+        return () => isMounted = false;
+    }, []);
 
     function handleButtonClick1(v, index) {
-        setUserClick(index)
-        setModal1(!modal1)
+        setUserClick(index);
+        setModal1(!modal1);
     }
 
     function handleButtonClick2(v, index) {
-        setUserClick(index)
-        setModal2(!modal2)
+        setUserClick(index);
+        setModal2(!modal2);
     }
 
     return (
@@ -54,42 +54,42 @@ const Ingredient = ( {userPK} ) => {
                 <div className="lst_c ty1 pr-mb2">
                     {
                         userIngredientGood.length != 0 ?
-                        <ul>
-                        {
-                            userIngredientGood.slice(0,ingredientGoodCount).map((v, index) => {
-                                return (
-                                    <li key={v.ingredient.ingredient_id}>
-                                        <span onClick = {() => handleButtonClick1(v, index)}> {v.ingredient.ingredient_kor} </span>
-                                    </li>
-                                )
-                            })
-                        }
-                        </ul>
-                        :
-                        <p className="h_tit2-1">나와 맞는 성분이 없습니다.</p>
+                            <ul>
+                                {
+                                    userIngredientGood.slice(0, ingredientGoodCount).map((v, index) => {
+                                        return (
+                                            <li key={v.ingredient.ingredient_id}>
+                                                <span onClick={() => handleButtonClick1(v, index)}> {v.ingredient.ingredient_kor} </span>
+                                            </li>
+                                        );
+                                    })
+                                }
+                            </ul>
+                            :
+                            <p className="h_tit2-1">나와 맞는 성분이 없습니다.</p>
                     }
                     {
                         userIngredientGood.length != 0 ?
-                        <div className="btn-bot">
-                            <button className="btn-pk s blue2 bdrs w50p"
-                                onClick={()=>{
-                                    if(ingredientGoodCount >= userIngredientGood.length)
-                                        alert("모든 성분을 확인했습니다.")
-                                    else setIngredientGoodCount(prev=>prev+10)
-                                }}>
-                                <span>더보기</span>
-                            </button>
-                        </div>
-                        :
-                        null
+                            <div className="btn-bot">
+                                <button className="btn-pk s blue2 bdrs w50p"
+                                    onClick={() => {
+                                        if (ingredientGoodCount >= userIngredientGood.length)
+                                            alert("모든 성분을 확인했습니다.");
+                                        else setIngredientGoodCount(prev => prev + 10);
+                                    }}>
+                                    <span>더보기</span>
+                                </button>
+                            </div>
+                            :
+                            null
                     }
                     <ul>
-                        <Modal open = {modal1} className="customOverlay">
+                        <Modal open={modal1} className="customOverlay">
                             <div id="popIngredient" className="layerPopup pop_ingredient">
                                 <div className="popup">
                                     <div className="p_head botm">
                                         <h2 className="hidden">성분상세</h2>
-                                        <button type="button" className="b-close btn_close" onClick={()=>setModal1()}>
+                                        <button type="button" className="b-close btn_close" onClick={() => setModal1()}>
                                             <span>x</span>
                                         </button>
                                     </div>
@@ -105,44 +105,44 @@ const Ingredient = ( {userPK} ) => {
                 </div>
                 <p className="h_tit2">나와 안 맞는 성분</p>
                 <div className="lst_c ty2 pr-mb2">
-                {
+                    {
                         userIngredientBad.length != 0 ?
-                        <ul>
-                            {
-                                userIngredientBad.slice(0,ingredientBadCount).map((v, index) => {
-                                    return (
-                                        <li key={v.ingredient.ingredient_id}>
-                                            <span onClick = {() => handleButtonClick2(v, index)}> {v.ingredient.ingredient_kor} </span>
-                                        </li>
-                                    )
-                                })
-                            }
-                        </ul>
-                        :
-                        <p className="h_tit2-2">나와 안 맞는 성분이 없습니다.</p>
+                            <ul>
+                                {
+                                    userIngredientBad.slice(0, ingredientBadCount).map((v, index) => {
+                                        return (
+                                            <li key={v.ingredient.ingredient_id}>
+                                                <span onClick={() => handleButtonClick2(v, index)}> {v.ingredient.ingredient_kor} </span>
+                                            </li>
+                                        );
+                                    })
+                                }
+                            </ul>
+                            :
+                            <p className="h_tit2-2">나와 안 맞는 성분이 없습니다.</p>
                     }
                     {
                         userIngredientBad.length != 0 ?
-                        <div className="btn-bot">
-                            <button className="btn-pk s blue2 bdrs w50p"
-                                onClick={()=>{
-                                    if(ingredientBadCount >= userIngredientBad.length)
-                                        alert("모든 성분을 확인했습니다.")
-                                    else setIngredientBadCount(prev=>prev+10)
-                                }}>
-                                <span>더보기</span>
-                            </button>
-                        </div>
-                        :
-                        null
+                            <div className="btn-bot">
+                                <button className="btn-pk s blue2 bdrs w50p"
+                                    onClick={() => {
+                                        if (ingredientBadCount >= userIngredientBad.length)
+                                            alert("모든 성분을 확인했습니다.");
+                                        else setIngredientBadCount(prev => prev + 10);
+                                    }}>
+                                    <span>더보기</span>
+                                </button>
+                            </div>
+                            :
+                            null
                     }
                     <ul>
-                        <Modal open = {modal2} className="customOverlay">
+                        <Modal open={modal2} className="customOverlay">
                             <div id="popIngredient" className="layerPopup pop_ingredient">
                                 <div className="popup">
                                     <div className="p_head botm">
                                         <h2 className="hidden">성분상세</h2>
-                                        <button type="button" className="b-close btn_close" onClick={()=>setModal2()}>
+                                        <button type="button" className="b-close btn_close" onClick={() => setModal2()}>
                                             <span>x</span>
                                         </button>
                                     </div>
@@ -160,19 +160,19 @@ const Ingredient = ( {userPK} ) => {
             </div>
             <button type="button" id="btn_box_more" className="btn-pk s blue2 bdrs w100p" ref={btnRef2}
                 onClick={() => {
-                    $(btnRef2.current).children(".i-aft").toggleClass("i_arr_b1 i_arr_b2")
+                    $(btnRef2.current).children(".i-aft").toggleClass("i_arr_b1 i_arr_b2");
                     if ($(btnRef2.current).children(".i-aft").contents()[0].data === "열기") {
-                        $(btnRef2.current).children(".i-aft").contents()[0].data = "닫기"
-                        $(btnRef2.current).prev().show()
+                        $(btnRef2.current).children(".i-aft").contents()[0].data = "닫기";
+                        $(btnRef2.current).prev().show();
                     } else {
-                        $(btnRef2.current).children(".i-aft").contents()[0].data = "열기"
-                        $(btnRef2.current).prev().hide()
+                        $(btnRef2.current).children(".i-aft").contents()[0].data = "열기";
+                        $(btnRef2.current).prev().hide();
                     }
                 }}>
                 <span className="i-aft i_arr_b1">열기</span>
             </button>
         </div>
-    )
-}
+    );
+};
 
 export default Ingredient;

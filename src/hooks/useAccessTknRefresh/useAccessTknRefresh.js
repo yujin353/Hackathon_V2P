@@ -1,40 +1,8 @@
-import { useNavigate } from "react-router-dom";
 import cookies from "react-cookies";
-import { useCookieToRefresh } from "../";
+import { useCookieToRefresh, useLogout } from "../";
 import $ from "jquery";
 
-const Logout = () => {
-    const navigate = useNavigate();
-    // $.ajax({
-    //     async: true, type: 'POST',
-    //     url: "https://api.odoc-api.com/rest_auth/logout/",
-    //     data: { "refresh": sessionStorage.getItem("refresh_token") },
-    //     dataType: 'JSON',
-    //     success: function (response) {
-    //         sessionStorage.removeItem("access_token");
-    //         sessionStorage.removeItem("refresh_token");
-    //         sessionStorage.removeItem("user_pk");
-    //         cookies.remove("access_token");
-    //         cookies.remove("refresh_token");
-    //         localStorage.removeItem("user_pk");
-    //         navigate("/login");
-    //     },
-    //     error: (response) => {
-    //         console.log(response);
-    //         navigate("/login");
-    //     },
-    // });
-    sessionStorage.removeItem("access_token");
-    sessionStorage.removeItem("refresh_token");
-    sessionStorage.removeItem("user_pk");
-    cookies.remove("access_token");
-    cookies.remove("refresh_token");
-    localStorage.removeItem("user_pk");
-    window.location.replace('/login')
-};
-
 const useAccessTknRefresh = () => {
-    const navigate = useNavigate();
     let result;
     $.ajax({
         async: false, type: 'POST',
@@ -48,8 +16,9 @@ const useAccessTknRefresh = () => {
                 const cookieToRefresh = useCookieToRefresh;
                 result = cookieToRefresh();
                 if (result === "error") {
-                    alert("다시 로그인해 주세요");
-                    Logout();
+                    alert("다시 로그인해주세요");
+                    const logout = useLogout;
+                    logout();
                 }
                 sessionStorage.setItem("access_token", response.token.access);
                 sessionStorage.setItem("refresh_token", cookies.load("refresh_token"));
@@ -57,7 +26,8 @@ const useAccessTknRefresh = () => {
             }
             else {
                 alert("다시 로그인해 주세요");
-                Logout();
+                const logout = useLogout;
+                logout();
             }
         }
     });

@@ -1,39 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAccessTknRefresh } from "../../../../hooks";
-import cookies from "react-cookies";
+import { useAccessTknRefresh, useLogout } from "../../../../hooks";
 import $ from "jquery";
 
 const Account = () => {
     const navigate = useNavigate();
     const accessTknRefresh = useAccessTknRefresh();
     const [username, setUsername] = useState("");
-
-    const logout = () => {
-        // $.ajax({
-        //     async: true, type: 'POST',
-        //     url: "https://api.odoc-api.com/rest_auth/logout/",
-        //     data: { "refresh": sessionStorage.getItem("refresh_token") },
-        //     dataType: 'JSON',
-        //     success: function (response) {
-        //         sessionStorage.removeItem("access_token");
-        //         sessionStorage.removeItem("refresh_token");
-        //         sessionStorage.removeItem("user_pk");
-        //         cookies.remove("access_token");
-        //         cookies.remove("refresh_token");
-        //         localStorage.removeItem("user_pk");
-        //         navigate("/login");
-        //     },
-        //     error: (response) => console.log(response),
-        // });
-        sessionStorage.removeItem("access_token");
-        sessionStorage.removeItem("refresh_token");
-        sessionStorage.removeItem("user_pk");
-        cookies.remove("access_token");
-        cookies.remove("refresh_token");
-        localStorage.removeItem("user_pk");
-        window.location.replace('/login');
-    };
 
     /* findout currently logged in user */
     useEffect(() => {
@@ -49,6 +22,7 @@ const Account = () => {
             error: (response) => {
                 console.log("error", response);
                 alert("login failed.");
+                const logout = useLogout;
                 logout();
                 window.location.replace("/login");
             },
@@ -106,9 +80,12 @@ const Account = () => {
             url: "https://dev.odoc-api.com/member/username_change/" + sessionStorage.getItem("user_pk"),
             data: { "username": newName },
             dataType: 'JSON',
-            // beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: function (response) {
-                if (response.message == "SUCCESS") alert("닉네임을 변경하였습니다.");
+                if (response.message == "SUCCESS") {
+                    alert("닉네임을 변경하였습니다.");
+                    navigate(0);
+                }
                 else alert("닉네임 변경에 실패하였습니다.");
             },
             error: (response) => {
@@ -127,6 +104,7 @@ const Account = () => {
                 url: "https://dev.odoc-api.com/member/inactivate",
                 data: { "member_id": sessionStorage.getItem("user_pk") },
                 dataType: 'JSON',
+                beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
                 success: function (response) {
                     if (response.message == "Withdraw OK") {
                         sessionStorage.removeItem("access_token");
@@ -194,7 +172,7 @@ const Account = () => {
                                     <span>알림</span>
                                 </button>
                             </li> */}
-                            {/*<li><Link to="#" onClick={logout}>로그아웃</Link></li>*/}
+                            {/*<li><Link to="#" onClick={goLogout}>로그아웃</Link></li>*/}
                             <li><Link to="#" onClick={withdraw}>회원탈퇴</Link></li>
                             {/* <li><Link to="changepw">비밀번호 변경</Link></li> */}
                         </ul>
