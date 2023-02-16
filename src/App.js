@@ -16,7 +16,7 @@ import {
   Notification,
   Event, View_1, MyReview, Friend, Interest, Point, Change, Refund,
   Notice, View_2, FAQ, View_3, Support, Account, TOS, ChangePW, NewPW,
-  NotFound, DetailResult,
+  NotFound, DetailResult, ChangeNickname,
 } from './pages'
 import { PublicRoute, PrivateRoute, Certificated, PolicyChecked } from "./router"
 
@@ -95,6 +95,7 @@ export default function App() {
               <Route path="" element={<PrivateRoute><Account /></PrivateRoute>} />
               <Route path="changepw" element={<PrivateRoute><ChangePW /></PrivateRoute>} />
               <Route path="newpw" element={<PrivateRoute><Certificated><NewPW /></Certificated></PrivateRoute>} />
+              <Route path="changeNickname" element={<PrivateRoute><ChangeNickname /></PrivateRoute>} />
             </Route>
             <Route path="notification" element={<PrivateRoute><Notification /></PrivateRoute>}/>
           </Route>
