@@ -150,6 +150,14 @@ const SignUp = () => {
         });
     };
 
+    // const checkInt = (age) => {
+    //     console.log(typeof(age))
+    //     if (typeof(age) == 'number')
+    //         setAge(age)
+    //     else
+    //         alert('숫자를 입력해주세요')
+    // };
+
     return (
         <div>
             <header id="header" className="header">
@@ -230,8 +238,8 @@ const SignUp = () => {
                                             setGender(e.target.value);
                                         }}>
                                         <option value="">선택</option>
-                                        <option value="남성">Male</option>
-                                        <option value="여성">Female</option>
+                                        <option value="남성">남성</option>
+                                        <option value="여성">여성</option>
                                     </select>
                                     <p id="gendererror1" className="t_error hidden">성별을 선택해주세요</p>
                                 </div>
