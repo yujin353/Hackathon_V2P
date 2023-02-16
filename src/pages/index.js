@@ -42,6 +42,7 @@ export { default as TOS } from './Mypage/BottomMenu/TOS'
 export { default as Account } from './Mypage/BottomMenu/Account'
 export { default as ChangePW } from './Mypage/BottomMenu/Account/ChangePW/ChangePW'
 export { default as NewPW } from './Mypage/BottomMenu/Account/ChangePW/NewPW'
+export { default as ChangeNickname } from './Mypage/BottomMenu/Account/ChangeNickname/ChangeNickname'
 export { default as Notification } from './Mypage/Notification'
 
 export { default as NotFound } from './ErrorPage'
