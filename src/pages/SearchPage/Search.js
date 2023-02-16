@@ -77,8 +77,10 @@ const Search = () => {
         if (textInput === "")
             alert("제품명을 입력해주세요.");
         else {
+            let day = new Date();
+            day.setDate(day.getDate() + 7);
             const result = keywords.filter((element) => element !== input);
-            cookies.save('keywords', JSON.stringify([input, ...result]));
+            cookies.save('keywords', JSON.stringify([input, ...result]), { expires: day });
             navigate(`view?input=${input}`);
         }
     };
@@ -218,8 +220,10 @@ const Search = () => {
                                             }}>
                                             <span onClick={() => {
                                                 setKeywords(prev => {
+                                                    let day = new Date();
+                                                    day.setDate(day.getDate() + 7);
                                                     const result = prev.filter((element) => element !== v);
-                                                    cookies.save('keywords', JSON.stringify([v, ...result]));
+                                                    cookies.save('keywords', JSON.stringify([v, ...result]), { expires: day });
                                                     setAfter(v);
                                                     return [v, ...result];
                                                 });
@@ -233,8 +237,10 @@ const Search = () => {
                                             <button type="button" className="btn_del_comm"
                                                 onClick={() => {
                                                     setKeywords(prev => {
+                                                        let day = new Date();
+                                                        day.setDate(day.getDate() + 7);
                                                         const result = prev.filter((element) => element !== v);
-                                                        cookies.save('keywords', JSON.stringify(result));
+                                                        cookies.save('keywords', JSON.stringify(result), { expires: day });
                                                         return result;
                                                     });
                                                 }}>

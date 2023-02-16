@@ -27,7 +27,7 @@ const View = () => {
             url: "https://dev.odoc-api.com/product/search?word=" + input,
             success: (response) => {
                 if (response.result.length === 0) setEmpty(true);
-                setResults(response.result)
+                setResults(response.result);
             },
             error: (response) => console.log(response)
         });
@@ -79,8 +79,10 @@ const View = () => {
             setEmpty(true);
         } else {
             setEmpty(false);
+            let day = new Date();
+            day.setDate(day.getDate() + 7);
             const result = keywords.filter((element) => element !== input);
-            cookies.save('keywords', JSON.stringify([input, ...result]));
+            cookies.save('keywords', JSON.stringify([input, ...result]), { expires: day });
         }
     };
 
