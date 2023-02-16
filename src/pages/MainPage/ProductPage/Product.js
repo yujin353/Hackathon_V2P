@@ -65,7 +65,6 @@ const Product = () => {
                 alert("login failed.");
                 const logout = useLogout;
                 logout();
-                window.location.replace("/");
             },
         });
     }, []);
