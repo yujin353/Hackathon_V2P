@@ -81,11 +81,11 @@ const View = () => {
                 <div className="inr-c" id="event_content">
                     <div className="box_event">
                         <img src={content.event_image_path}></img>
-                        <p className="t1" style={{ color: "#972c1d" }}>이벤트 게시일: {content.event_posting_date}</p>
+                        {/* <p className="t1" style={{ color: "#972c1d" }}>이벤트 게시일: {content.event_posting_date}</p>
                         <p className="t2"><strong>이벤트 제목: {content.event_title}</strong></p>
-                        <p className="t1">이벤트 내용: {content.event_content}</p>
+                        <p className="t1">이벤트 내용: {content.event_content}</p> */}
                     </div>
-                    <h2 className="h_tit1">더 둘러보기</h2>
+                    {/* <h2 className="h_tit1">더 둘러보기</h2>
                     <div className="area_ad">
                         <div className="col">
                             <div className="img"><img src={require("../../../../../assets/images/common/img_ad2.jpg")}></img></div>
@@ -101,7 +101,7 @@ const View = () => {
                                 <p className="t2">지금 핫한 제품! <br /><strong>나한테도 잘 맞을까?</strong></p>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
  
