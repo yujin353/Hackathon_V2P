@@ -31,7 +31,7 @@ const SignUp = () => {
         document.getElementById('pwderror2').className = "hidden";
         document.getElementById('pwderror3').className = "hidden";
         document.getElementById('pwdok').className = "hidden";
-        if (password1.length && (password1.length > 20 || password1.length < 10)) {
+        if (password1.length && (password1.length > 20 || password1.length < 8)) {
             document.getElementById('pwdlengtherror').className = "t_error";
             document.getElementById('pwderror5').className = "hidden";
         } else {
@@ -212,7 +212,7 @@ const SignUp = () => {
                                         document.getElementById("pwderror1").className = "hidden";
                                         setPassword1(e.target.value);
                                     }} />
-                                <p id="pwdlengtherror" className="t_error hidden">10~20자 이내의 영문, 숫자를 입력하세요</p>
+                                <p id="pwdlengtherror" className="t_error hidden">8~20자 이내의 영문, 숫자를 입력하세요</p>
                                 <p id="pwderror1" className="t_error hidden">비밀번호를 입력해주세요</p>
                                 <p id="pwderror2" className="t_error hidden">비밀번호가 너무 일상적인 단어입니다</p>
                                 <p id="pwderror3" className="t_error hidden">비밀번호가 전부 숫자로 되어 있습니다</p>

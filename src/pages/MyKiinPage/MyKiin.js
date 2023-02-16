@@ -43,7 +43,6 @@ const MyKiin = () => {
         $.ajax({
             async: false, type: "GET",
             url: "https://dev.odoc-api.com/member/skin_type_by_same?member_id=" + sessionStorage.getItem("user_pk"),
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: response => {
                 if (response.message == "없음")
                     setUserList([]);
