@@ -58,7 +58,8 @@ const Intro = () => {
                                 나에게 딱! 맞는 성분과<br />
                                 화장품을 추천받으세요.
                             </p>
-                            <img className="img_1" src={require("../../assets/images/graph_example.png")} />
+                            {/* <img className="img_1" src={require("../../assets/images/graph_example.png")} /> */}
+                            <img className="img_1" src={require("../../assets/images/polar_graph.jpg")} />
                         </div>
                         <div className="item">
                             <img className="img_2" src={require("../../assets/images/kiinlogo.JPG")} />
