@@ -333,15 +333,34 @@ const Main = () => {
 						</Link>
 					</h2>
 					<div className="area_ad">
-						{eventList.reverse().slice(0, 2).map((v) => {
-							return (
-								<div key={v.event_posting_date} className="main">
-									<Link to={`/mypage/event/view?event_id=${v.event_id}`}>
-										<div className="img"><img src={v.event_image_path}></img></div>
-									</Link>
+						<Link to={`/mypage/event/guide`}>
+							<div className="col">
+								<img src={require('../../assets/images/common/img_ad2.jpg')} />
+								<div className="txt">
+									<p className="t1" style={{color: "#0d47ca"}}>키인 사용 설명서</p>
+									<p className="t2">손쉬운 키인 사용법 <br /><strong>배워보아요!</strong></p>
 								</div>
-							);
-						})}
+							</div>
+						</Link>
+						{/*<Link to={`/mypage/event/view?event_id=2`}>*/}
+						<div className="col">
+							<img src={require('../../assets/images/common/img_ad1.jpg')} />
+							<div className="txt">
+								<p className="t1" style={{color: "#972c1d"}}>나한테 딱 맞는 제품 찾기</p>
+								<p className="t2"><strong>{username}</strong>님을 위한 <br />봄철 수분관리 팁! (Coming Soon)</p>
+							</div>
+						</div>
+						{/*</Link>*/}
+
+						{/*{eventList.reverse().slice(0, 2).map((v) => {*/}
+						{/*	return (*/}
+						{/*		<div key={v.event_posting_date} className="main">*/}
+						{/*			<Link to={`/mypage/event/view?event_id=${v.event_id}`}>*/}
+						{/*				<div className="img"><img src={v.event_image_path}></img></div>*/}
+						{/*			</Link>*/}
+						{/*		</div>*/}
+						{/*	);*/}
+						{/*})}*/}
 					</div>
 
 				</div>

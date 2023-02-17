@@ -16,7 +16,7 @@ import {
   Notification,
   Event, View_1, MyReview, Friend, Interest, Point, Change, Refund,
   Notice, View_2, FAQ, View_3, Support, Account, TOS, ChangePW, NewPW,
-  NotFound, DetailResult, ChangeNickname,
+  NotFound, DetailResult, ChangeNickname, Guide,
 } from './pages'
 import { PublicRoute, PrivateRoute, Certificated, PolicyChecked } from "./router"
 
@@ -72,6 +72,7 @@ export default function App() {
             <Route path="event" element={<PrivateRoute><Outlet /></PrivateRoute>}>
               <Route path="" element={<PrivateRoute><Event /></PrivateRoute>} />
               <Route path="view" element={<PrivateRoute><View_1 /></PrivateRoute>} />
+              <Route path="guide" element={<PrivateRoute><Guide /></PrivateRoute>} />
             </Route>
             <Route path="point" element={<PrivateRoute><Outlet /></PrivateRoute>}>
               <Route path="" element={<PrivateRoute><Point /></PrivateRoute>}/>
