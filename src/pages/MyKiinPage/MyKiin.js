@@ -44,10 +44,10 @@ const MyKiin = () => {
             async: false, type: "GET",
             url: "https://dev.odoc-api.com/member/skin_type_by_same?member_id=" + sessionStorage.getItem("user_pk"),
             success: response => {
-                if (response.message == "없음")
+                if (response.message == [])
                     setUserList([]);
                 else if (isMounted)
-                    setUserList(JSON.parse(response.message));
+                    setUserList(response.message);
             },
             error: response => console.log(response)
         });
@@ -89,9 +89,9 @@ const MyKiin = () => {
                         <ul>
                             {userList.slice(0, count).map((v) => {
                                 return (
-                                    <li key={v.member.member_id}><Link to={`/mykiin/neighbor?id=${v.member.member_id}`} className="b">
+                                    <li key={v.member_id}><Link to={`/mykiin/neighbor?id=${v.member_id}`} className="b">
                                         <div className="im"><img src={require("../../assets/images/common/img_nomem.jpg")}></img></div>
-                                        <p className="t1"><strong>{v.member.username}</strong>님</p>
+                                        <p className="t1"><strong>{v.username}</strong>님</p>
                                         <p className="t2"><span className="i-aft i_arr1">키인</span></p>
                                     </Link></li>
                                 );

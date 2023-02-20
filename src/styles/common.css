@@ -5628,6 +5628,11 @@ html {
   text-align: left;
   color: #6c89cd;
 }
+#reviewLength {
+  padding-left: 4vw;
+  font-size: 3.73333333vw;
+  color: red;
+}
 .area_review .box_rang {
   width: 314px;
   width: 41.86666667vw;

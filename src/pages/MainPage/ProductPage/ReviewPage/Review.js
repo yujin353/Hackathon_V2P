@@ -26,16 +26,17 @@ const Review = () => {
     }, [modal]);
 
     useEffect(() => {
-        if (getByte(textInput) >= 20) setDisabled(false);
-        else setDisabled(true);
+        if (getLength(textInput) >= 10) {
+            setDisabled(false);
+            document.getElementById('reviewLength').className = "hidden";
+        }
+        else {
+            setDisabled(true);
+            document.getElementById('reviewLength').className = "t_error";
+        }
     });
 
-    const getByte = (str) => {
-        return str
-            .split('')
-            .map(s => s.charCodeAt(0))
-            .reduce((prev, c) => (prev + ((c === 10) ? 2 : ((c >> 7) ? 2 : 1))), 0);
-    };
+    const getLength = (str) => { return str.length; };
 
     const reviewPost = () => {
         $.ajax({
@@ -65,7 +66,7 @@ const Review = () => {
                     <div className="lft">
                         <button type="button" className="btn-back c-white"
                             onClick={() => {
-                                if (getByte(textInput)) {
+                                if (getLength(textInput) > 0) {
                                     if (window.confirm("이전 페이지로 이동하시겠습니까?\n작성 중인 내용이 저장되지 않고 사라집니다."))
                                         navigate(-1);
                                 } else {
@@ -111,6 +112,7 @@ const Review = () => {
                                 value={textInput} onChange={(e) => setTextInput(e.target.value)}>
                             </textarea>
                             <p className="p_text">솔직하고 자세한 평가로 참여해주세요.<br />참여도가 우수할수록 높은 포인트를 모을 수 있는 평가에 참여할 수 있어요.</p>
+                            <p id="reviewLength" className="t_error hidden">10글자 이상 작성해주세요</p>
                         </div>
                         {/* <Modal open={modal} className="customOverlay">
                             <div id="popAssess" className="layerPopup pop_assess">
