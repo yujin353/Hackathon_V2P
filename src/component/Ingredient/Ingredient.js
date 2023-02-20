@@ -18,7 +18,7 @@ const Ingredient = ({ userPK }) => {
         $.ajax({
             async: true, type: "GET",
             url: "https://dev.odoc-api.com/ingredient/status_member?member_id=" + userPK + "&ingredient_status=1",
-            success: (response) => setUserIngredientGood(response),
+            success: (response) => setUserIngredientGood(response.message),
             error: response => console.log(response)
         });
         return () => isMounted = false;
@@ -30,7 +30,7 @@ const Ingredient = ({ userPK }) => {
         $.ajax({
             async: true, type: "GET",
             url: "https://dev.odoc-api.com/ingredient/status_member?member_id=" + userPK + "&ingredient_status=0",
-            success: (response) => setUserIngredientBad(response),
+            success: (response) => setUserIngredientBad(response.message),
             error: response => console.log(response)
         });
         return () => isMounted = false;

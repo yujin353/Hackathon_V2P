@@ -24,7 +24,6 @@ const ChangeNickname = () => {
                 alert("login failed.");
                 const logout = useLogout;
                 logout();
-                window.location.replace("/login");
             },
         });
         return () => isMounted = false;
@@ -104,7 +103,7 @@ const ChangeNickname = () => {
                     <h2 className="tit">닉네임 변경</h2>
                     <div className="lft">
                         <button type="button" className="btn-back c-white"
-                                onClick={() => navigate(-1)}>
+                            onClick={() => navigate(-1)}>
                             <span className="i-aft i_back">뒤로</span>
                         </button>
                     </div>
