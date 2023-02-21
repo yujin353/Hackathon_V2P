@@ -2318,8 +2318,7 @@ input.inp_txt {
   width: 100%;
   height: auto;
   line-height: normal;
-  padding: 20px 30px;
-  padding: 2.66666667vw 4vw;
+  align-items : center;
   border: 0;
   border-bottom: 1px solid #e3e5ee;
   border-radius: 0;
@@ -2332,7 +2331,6 @@ input.inp_txt {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  font-size: 32px;
   font-size: 4.26666667vw;
   font-family: inherit;
 }
@@ -6726,4 +6724,8 @@ body.fix {
 }
 .lst_list1 .b .t3 {
   font-size: 4.26666667vw;
+}
+.ls2 {
+  line-height: normal;
+  word-break: break-all;
 }
