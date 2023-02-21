@@ -13,7 +13,7 @@ const Guide = () => {
         centerPadding: '0px',
         slidesToShow: 1,
         slidesToScroll: 1, swipeToSlide: true,
-        speed: 1500,
+        speed: 100,
         autoplay: true,
         autoplaySpeed: 4000,
     };
