@@ -7,7 +7,6 @@ import $ from "jquery";
 const Review = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const accessTknRefresh = useAccessTknRefresh();
     const [rating, setRating] = useState(3);
     const [textInput, setTextInput] = useState("");
     const [disabled, setDisabled] = useState(true);
@@ -34,15 +33,16 @@ const Review = () => {
             setDisabled(true);
             document.getElementById('reviewLength').className = "t_error";
         }
-    });
+    }, [textInput]);
 
     const getLength = (str) => { return str.length; };
 
     const reviewPost = () => {
+        const accessTknRefresh = useAccessTknRefresh;
         $.ajax({
             async: true, type: "POST",
             url: "https://dev.odoc-api.com/member_product/member_review_write",
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh()),
             data: JSON.stringify({
                 "review_content": textInput,
                 "rating": rating,

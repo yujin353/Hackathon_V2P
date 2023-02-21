@@ -118,7 +118,7 @@ const Neighbor = () => {
             url: "https://dev.odoc-api.com/member/follow",
             data: {
                 "member_id": userID,
-                "follow_member_id" : sessionStorage.getItem("user_pk")
+                "follow_member_id": sessionStorage.getItem("user_pk")
             },
             dataType: "json",
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
@@ -144,8 +144,8 @@ const Neighbor = () => {
             type: "POST",
             url: "https://dev.odoc-api.com/member_product/review_like",
             data: {
-                "review_id" : review_id,
-                "member_id" : sessionStorage.getItem("user_pk")
+                "review_id": review_id,
+                "member_id": sessionStorage.getItem("user_pk")
             },
             dataType: "json",
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
@@ -253,7 +253,7 @@ const Neighbor = () => {
                                         <div className="txt_box1">
                                             <div className="box">
                                                 <p className="t"><span className={`i-aft ${rating_className[v.rating - 1]} sm`}>{rating_txt[v.rating - 1]}</span></p>
-                                                <p>{v.review_content ? v.review_content : null}</p>
+                                                <p style={{ wordWrap: 'break-word' }}>{v.review_content ? v.review_content : null}</p>
                                                 <button type="button" onClick={() => reportReview(v.review_id)} className="btr"><span className="i-aft i_report">신고하기</span></button>
                                             </div>
                                         </div>

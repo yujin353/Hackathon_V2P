@@ -36,7 +36,7 @@ const MyReview = () => {
                 error: (response) => console.log(response),
             });
         } else return;
-    }
+    };
 
     return (
         <div>
@@ -61,12 +61,12 @@ const MyReview = () => {
                     <div className="lst_prd2 line">
                         <ul className="review_list">
                             {
-                                reviewList.length!=0?
-                                    reviewList.map((v)=>{
-                                        return(
+                                reviewList.length != 0 ?
+                                    reviewList.map((v) => {
+                                        return (
                                             <li className="col" key={v.review_id}><Link to={`/main/products/${v.product.product_id}`}>
                                                 <div className="thumb">
-                                                    <span className="im" style={{backgroundImage: `url(${v.product.product_img_path})`}}></span>
+                                                    <span className="im" style={{ backgroundImage: `url(${v.product.product_img_path})` }}></span>
                                                 </div>
                                                 <div className="txt">
                                                     <p className="t1">{v.product.brand.brand_name}</p>
@@ -75,9 +75,9 @@ const MyReview = () => {
                                                 </div></Link>
                                                 <div className="txt_box3">
                                                     <div className="box">
-                                                        <p>{v.review_content ? v.review_content : null}</p>
+                                                        <p style={{ wordWrap: 'break-word' }}>{v.review_content ? v.review_content : null}</p>
                                                         <button type="button" className="btn_del" id={v.review_id}
-                                                                name={`${v.review_id}`} onClick={()=>deleteReview(v.review_id)}>
+                                                            name={`${v.review_id}`} onClick={() => deleteReview(v.review_id)}>
                                                             <span className="i-set.i_del_b">리뷰삭제</span>
                                                         </button>
                                                     </div>
@@ -93,10 +93,10 @@ const MyReview = () => {
                                             <p>+100P</p>
                                         </div> */}
                                             </li>
-                                        )
+                                        );
                                     })
                                     :
-                                    <p className="emptyArea" style={{color:"#bfc2ca", fontSize:"18px", textAlign:"center", marginTop:"120px"}}>내가 쓴 리뷰가 없습니다.</p>
+                                    <p className="emptyArea" style={{ color: "#bfc2ca", fontSize: "18px", textAlign: "center", marginTop: "120px" }}>내가 쓴 리뷰가 없습니다.</p>
                             }
                         </ul>
                     </div>
