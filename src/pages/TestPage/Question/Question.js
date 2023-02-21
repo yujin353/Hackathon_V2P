@@ -4,27 +4,6 @@ import Slider from "react-slick";
 import { SkinQuiz } from "./SkinQuiz";
 import { useAccessTknRefresh } from "../../../hooks";
 import $ from "jquery";
-import skinImg1 from "../../../assets/images/skinquiz/Q01.png";
-import skinImg2 from "../../../assets/images/skinquiz/Q02.png";
-import skinImg3 from "../../../assets/images/skinquiz/Q03.png";
-import skinImg4 from "../../../assets/images/skinquiz/Q04.png";
-import skinImg5 from "../../../assets/images/skinquiz/Q05.png";
-import skinImg6 from "../../../assets/images/skinquiz/Q06.png";
-import skinImg7 from "../../../assets/images/skinquiz/Q07.png";
-import skinImg8 from "../../../assets/images/skinquiz/Q08.png";
-import skinImg9 from "../../../assets/images/skinquiz/Q09.png";
-import skinImg10 from "../../../assets/images/skinquiz/Q10.png";
-import skinImg11 from "../../../assets/images/skinquiz/Q11.png";
-import skinImg12 from "../../../assets/images/skinquiz/Q12.png";
-import skinImg13 from "../../../assets/images/skinquiz/Q13.png";
-import skinImg14 from "../../../assets/images/skinquiz/Q14.png";
-import skinImg15 from "../../../assets/images/skinquiz/Q15.png";
-import skinImg16 from "../../../assets/images/skinquiz/Q16.png";
-import skinImg17 from "../../../assets/images/skinquiz/Q17.png";
-import skinImg18 from "../../../assets/images/skinquiz/Q18.png";
-import skinImg19 from "../../../assets/images/skinquiz/Q19.png";
-import skinImg20 from "../../../assets/images/skinquiz/Q20.png";
-
 
 const Question = () => {
     const navigate = useNavigate();
@@ -109,11 +88,27 @@ const Question = () => {
                                             </div>
                                             <div className="test_img">
                                                 {/*<img src={require(`../../../assets/images/skinquiz/Q${v.id < 10 ? "0" + v.id : v.id}.png`).default} />*/}
-                                                { index === 0 ? <img src={skinImg1} alt={'skinImg1'} /> : index === 1 ? <img src={skinImg2} alt={'skinImg2'} /> : index === 2 ? <img src={skinImg3} alt={'skinImg3'} />: index === 3 ? <img src={skinImg4} alt={'skinImg4'} />: index === 4 ? <img src={skinImg5} alt={'skinImg5'} />
-                                                : index === 5 ? <img src={skinImg6} alt={'skinImg6'} /> : index === 6 ? <img src={skinImg7} alt={'skinImg7'} /> : index === 7 ? <img src={skinImg8} alt={'skinImg8'} />: index === 8 ? <img src={skinImg9} alt={'skinImg9'} />: index === 9 ? <img src={skinImg10} alt={'skinImg9'} />
-                                                : index === 10 ? <img src={skinImg11} alt={'skinImg11'} /> : index === 11 ? <img src={skinImg12} alt={'skinImg12'} /> : index === 12 ? <img src={skinImg13} alt={'skinImg13'} />: index === 13 ? <img src={skinImg14} alt={'skinImg14'} />: index === 14 ? <img src={skinImg15} alt={'skinImg15'} />
-                                                : index === 15 ? <img src={skinImg16} alt={'skinImg16'} /> : index === 16 ? <img src={skinImg17} alt={'skinImg17'} /> : index === 17 ? <img src={skinImg18} alt={'skinImg18'} />: index === 18 ? <img src={skinImg19} alt={'skinImg19'} />: <img src={skinImg20} alt={'skinImg20'} />
-                                                }
+                                                { index === 0 ? <img className="skinQuiz1" alt="SkinQuizImg" src="https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/Q01.png" />
+                                                    : index === 1 ? <img className="skinQuiz2" alt="SkinQuizImg" src="https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/Q02.png" />
+                                                        : index === 2 ? <img className="skinQuiz3" alt="SkinQuizImg" src="https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/Q03.png" />
+                                                            : index === 3 ? <img className="skinQuiz4" alt="SkinQuizImg" src="https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/Q04.png" />
+                                                                : index === 4 ? <img className="skinQuiz5" alt="SkinQuizImg" src="https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/Q05.png" />
+                                                                    : index === 5 ? <img className="skinQuiz6" alt="SkinQuizImg" src="https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/Q06.png" />
+                                                                        : index === 6 ? <img className="skinQuiz7" alt="SkinQuizImg" src="https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/Q07.png" />
+                                                                            : index === 7 ? <img className="skinQuiz8" alt="SkinQuizImg" src="https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/Q08.png" />
+                                                                                : index === 8 ? <img className="skinQuiz9" alt="SkinQuizImg" src="https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/Q09.png" />
+                                                                                    : index === 9 ? <img className="skinQuiz10" alt="SkinQuizImg" src="https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/Q10.png" />
+                                                                                        : index === 10 ? <img className="skinQuiz11" alt="SkinQuizImg" src="https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/Q11.png" />
+                                                                                            : index === 11 ? <img className="skinQuiz12" alt="SkinQuizImg" src="https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/Q12.png" />
+                                                                                                : index === 12 ? <img className="skinQuiz13" alt="SkinQuizImg" src="https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/Q13.png" />
+                                                                                                    : index === 13 ? <img className="skinQuiz14" alt="SkinQuizImg" src="https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/Q14.png" />
+                                                                                                        : index === 14 ? <img className="skinQuiz15" alt="SkinQuizImg" src="https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/Q15.png" />
+                                                                                                            : index === 15 ? <img className="skinQuiz16" alt="SkinQuizImg" src="https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/Q16.png" />
+                                                                                                                : index === 16 ? <img className="skinQuiz17" alt="SkinQuizImg" src="https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/Q17.png" />
+                                                                                                                    : index === 17 ? <img className="skinQuiz18" alt="SkinQuizImg" src="https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/Q18.png" />
+                                                                                                                        : index === 18 ? <img className="skinQuiz19" alt="SkinQuizImg" src="https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/Q19.png" />
+                                                                                                                            : <img className="skinQuiz20" alt="SkinQuizImg" src="https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/Q20.png" />
+                                                    }
                                             </div>
                                             <p className="tit_q">Question {v.id}</p>
                                             <p className="tit"> {v.question} </p>

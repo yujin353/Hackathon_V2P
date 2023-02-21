@@ -2589,9 +2589,7 @@ html {
 }
 .header .cen .inp_txt {
   border-bottom: 0;
-  vertical-align: top;
-  margin-top: 5px;
-  margin-top: 0.66666667vw;
+  align-items: center;
   padding-left: 0;
   padding-right: 0;
 }
