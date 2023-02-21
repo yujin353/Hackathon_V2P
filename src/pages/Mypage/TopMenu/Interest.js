@@ -88,8 +88,8 @@ const Interest = () => {
             async: true, type: "POST",
             url: "https://dev.odoc-api.com/member_product/review_like",
             data: {
-                "review_id" : review_id,
-                "member_id" : sessionStorage.getItem("user_pk")
+                "review_id": review_id,
+                "member_id": sessionStorage.getItem("user_pk")
             },
             dataType: "json",
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
@@ -157,7 +157,7 @@ const Interest = () => {
                                                     <p className="t"><span className={`i-aft ${rating_className[review.rating - 1]} sm`}>{rating_txt[review.rating - 1]}</span></p>
                                                     {
                                                         review.review_content ?
-                                                            <p>{review.review_content}</p>
+                                                            <p style={{ wordWrap: 'break-word' }}>{review.review_content}</p>
                                                             : null
                                                     }
                                                     <button type="button" onClick={() => reportReview(review.review_id)} className="btr"><span className="i-aft i_report">신고하기</span></button>

@@ -1161,6 +1161,7 @@ input[type='tel']:hover::-webkit-outer-spin-button {
   min-width: 17.33333333vw;
   padding: 30px 30px;
   padding: 4vw 4vw;
+  padding-bottom: 7vw;
   font-size: 40px;
   font-size: 5.33333333vw;
   line-height: 40px;
@@ -2805,6 +2806,7 @@ html {
   height: 100px;
   height: 13.33333333vw;
   background-color: #fff;
+  padding-bottom: 3vw;
 }
 .footer ul {
   display: flex;

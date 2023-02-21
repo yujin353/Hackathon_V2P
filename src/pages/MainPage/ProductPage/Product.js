@@ -438,7 +438,7 @@ const Product = () => {
                                         <div className="txt_box1">
                                             <div className="box">
                                                 <p className="t"><span className={`i-aft ${rating_className[v.rating - 1]} sm`}>{rating_txt[v.rating - 1]}</span></p>
-                                                <p>{v.review_content ? v.review_content : null}</p>
+                                                <p style={{ wordWrap: 'break-word' }}>{v.review_content ? v.review_content : null}</p>
                                                 <button type="button" onClick={() => reportReview(v.review_id)} className="btr">
                                                     <span className="i-aft i_report">신고하기</span>
                                                 </button>
