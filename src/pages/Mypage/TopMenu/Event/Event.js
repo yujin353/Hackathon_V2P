@@ -53,7 +53,7 @@ const Event = () => {
                             </div>
                         </div> */}
 
-                        {eventList.map((v)=>{
+                        {eventList.map((v, index)=>{
                             return (
                                 <div key={v.event_posting_date}>
                                     <div className="txt">
@@ -62,11 +62,17 @@ const Event = () => {
                                         </p>
                                         {/* <p className="t2"></p> */}
                                     </div>
-                                    <div className="col">
-                                        <Link to={`view?event_id=${v.event_id}`}>
+                                    { index == 0 ?
+                                        <div className="col">
+                                            <Link to={`/mypage/event/guide`}>
+                                                <div className="img"><img src={v.event_image_path}></img></div>
+                                            </Link>
+                                        </div>
+                                        :
+                                        <div className="col">
                                             <div className="img"><img src={v.event_image_path}></img></div>
-                                        </Link>
-                                    </div>
+                                        </div>
+                                    }
                                 </div>
                             )
                         })}

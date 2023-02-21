@@ -69,28 +69,28 @@ const Friend = () => {
         return followee;
     };
 
-    /* Get friend name's id */
-    const searchUsername = () => {
-        setUserId([]);
-        setUserName([]);
-        const textInput = input.trim();
-        let j = 0;
-        $.ajax({
-            async: true, type: "GET",
-            url: "https://dev.odoc-api.com/member/member_entire_display",
-            success: (response) => {
-                response.map(v => {
-                    if (v.username.includes(textInput)) {
-                        userId[j] = v.member_id;
-                        setUserId(userId);
-                        setUserName(userName => [...userName, v.username]);
-                        j++;
-                    }
-                });
-            },
-            error: (response) => console.log(response)
-        });
-    };
+    // /* Get friend name's id */
+    // const searchUsername = () => {
+    //     setUserId([]);
+    //     setUserName([]);
+    //     const textInput = input.trim();
+    //     let j = 0;
+    //     $.ajax({
+    //         async: true, type: "GET",
+    //         url: "https://dev.odoc-api.com/member/member_entire_display",
+    //         success: (response) => {
+    //             response.map(v => {
+    //                 if (v.username.includes(textInput)) {
+    //                     userId[j] = v.member_id;
+    //                     setUserId(userId);
+    //                     setUserName(userName => [...userName, v.username]);
+    //                     j++;
+    //                 }
+    //             });
+    //         },
+    //         error: (response) => console.log(response)
+    //     });
+    // };
 
     const onClickTab = (tabNum) => {
         if (prevTabNum === tabNum) return;
@@ -103,10 +103,10 @@ const Friend = () => {
             $(document.getElementById("righttab")).toggleClass("off on");
             setRightTab(!rightTab);
         }
-        else if (prevTabNum === 3) {
-            $(document.getElementById("searchtab")).toggleClass("off on");
-            setSearchTab(!searchTab);
-        }
+        // else if (prevTabNum === 3) {
+        //     $(document.getElementById("searchtab")).toggleClass("off on");
+        //     setSearchTab(!searchTab);
+        // }
 
         if (tabNum === 1) {
             $(document.getElementById("lefttab")).toggleClass("off on");
@@ -118,16 +118,16 @@ const Friend = () => {
             setRightTab(!rightTab);
             setPrevTabNum(2);
         }
-        else if (tabNum === 3) {
-            $(document.getElementById("searchtab")).toggleClass("off on");
-            setSearchTab(!searchTab);
-            setPrevTabNum(3);
-        }
+        // else if (tabNum === 3) {
+        //     $(document.getElementById("searchtab")).toggleClass("off on");
+        //     setSearchTab(!searchTab);
+        //     setPrevTabNum(3);
+        // }
     };
 
-    const handleKeyPress = (e) => {
-        if (e.key === 'Enter') searchUsername();
-    };
+    // const handleKeyPress = (e) => {
+    //     if (e.key === 'Enter') searchUsername();
+    // };
 
     return (
         <div>
@@ -161,12 +161,12 @@ const Friend = () => {
                                 onClickTab(2);
                             }}><span>나를 구독한</span></Link>
                         </li>
-                        <li id="searchtab" className="off">
-                            <Link to="#tab3" onClick={(e) => {
-                                e.preventDefault();
-                                onClickTab(3);
-                            }}><span>검색</span></Link>
-                        </li>
+                        {/*<li id="searchtab" className="off">*/}
+                        {/*    <Link to="#tab3" onClick={(e) => {*/}
+                        {/*        e.preventDefault();*/}
+                        {/*        onClickTab(3);*/}
+                        {/*    }}><span>검색</span></Link>*/}
+                        {/*</li>*/}
                     </ul>
                 </div>
                 <div className="inr-c">
@@ -194,7 +194,8 @@ const Friend = () => {
                                     }
                                 </ul>
                             </div>
-                        ) : rightTab ? (
+                        ) : (
+                        // ) : rightTab ? (
                             <div id="tab2" className="lst_list1">
                                 <ul className="they_following_me">
                                     {
@@ -217,36 +218,37 @@ const Friend = () => {
                                     }
                                 </ul>
                             </div>
-                        ) : (
-                            <div id="tab3" className="lst_list1">
-                                <div className="cen">
-                                    <input type="text" id="hd_search" className="inp_txt w100p" placeholder="닉네임을 입력하세요"
-                                        value={input} onChange={(e) => { setInput(e.target.value); }} onKeyDown={handleKeyPress} style={{ width: "95%" }} />
-                                </div>
-                                <div className="rgh">
-                                    <button type="button" className="btn_sch_r" id="search_btn" onClick={() => searchUsername()}>
-                                        <span className="i-set i_sch_bl" style={{ left: "80vw", top: "-8vw" }}>검색</span>
-                                    </button>
-                                </div>
-                                <ul className="search_friend_name">
-                                    {
-                                        userId.length !== 0 ?
-                                            userId.map((v, i) => {
-                                                return (
-                                                    <div style={{marginBottom: "1.6vh"}} key={v}><Link to={`/mykiin/neighbor?id=${v}`} className="b">
-                                                        <div className="im"><img src={require("../../../assets/images/common/img_nomem.jpg")} /></div>
-                                                        <p className="t3"><strong>{userName[i]}</strong>님</p>
-                                                        <span className="cnt_follower">팔로워 <br /> <span>{func_cntFollowing(v)}</span></span>
-                                                        <span className="cnt_followee">팔로잉 <br /> <span>{func_cntFollower(v)}</span></span>
-                                                    </Link></div>
-                                                );
-                                            })
-                                            :
-                                            <p className="emptyArea" style={{ color: "#bfc2ca", fontSize: "18px", textAlign: "center", marginTop: "120px" }}>검색어와 일치하는 사용자가 없습니다.</p>
-                                    }
-                                </ul>
-                            </div>
                         )
+                        // ) : (
+                        //     <div id="tab3" className="lst_list1">
+                        //         <div className="cen">
+                        //             <input type="text" id="hd_search" className="inp_txt w100p" placeholder="닉네임을 입력하세요"
+                        //                 value={input} onChange={(e) => { setInput(e.target.value); }} onKeyDown={handleKeyPress} style={{ width: "95%" }} />
+                        //         </div>
+                        //         <div className="rgh">
+                        //             <button type="button" className="btn_sch_r" id="search_btn" onClick={() => searchUsername()}>
+                        //                 <span className="i-set i_sch_bl" style={{ left: "80vw", top: "-8vw" }}>검색</span>
+                        //             </button>
+                        //         </div>
+                        //         <ul className="search_friend_name">
+                        //             {
+                        //                 userId.length !== 0 ?
+                        //                     userId.map((v, i) => {
+                        //                         return (
+                        //                             <div style={{marginBottom: "1.6vh"}} key={v}><Link to={`/mykiin/neighbor?id=${v}`} className="b">
+                        //                                 <div className="im"><img src={require("../../../assets/images/common/img_nomem.jpg")} /></div>
+                        //                                 <p className="t3"><strong>{userName[i]}</strong>님</p>
+                        //                                 <span className="cnt_follower">팔로워 <br /> <span>{func_cntFollowing(v)}</span></span>
+                        //                                 <span className="cnt_followee">팔로잉 <br /> <span>{func_cntFollower(v)}</span></span>
+                        //                             </Link></div>
+                        //                         );
+                        //                     })
+                        //                     :
+                        //                     <p className="emptyArea" style={{ color: "#bfc2ca", fontSize: "18px", textAlign: "center", marginTop: "120px" }}>검색어와 일치하는 사용자가 없습니다.</p>
+                        //             }
+                        //         </ul>
+                        //     </div>
+                        // )
                     }
                 </div>
             </div>

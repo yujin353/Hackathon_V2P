@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
 
-const Guide = () => {
+const Guide3 = () => {
     const navigate = useNavigate();
     const sliderRef = useRef(null);
     const btnRef = useRef(null);
@@ -24,7 +24,7 @@ const Guide = () => {
                 <div className="inr-c">
                     <h2 className="tit">키인 사용 설명서</h2>
                     <div className="lft">
-                        <button type="button" onClick={() => navigate(-1)}>
+                        <button type="button" onClick={() => navigate(-3)}>
                             <span className="i-aft i_back"></span>
                         </button>
                     </div>
@@ -37,35 +37,28 @@ const Guide = () => {
                             <div className="item">
                                 <div className="area_test">
                                     <div className="guide_img">
-                                        <img src={require("../../../../../assets/images/guideimg/guideimage0.png")} />
+                                        <img src={require("../../../../../assets/images/guideimg/guideimage10.png")} />
                                     </div>
                                 </div>
                             </div>
                             <div className="item">
                                 <div className="area_test">
                                     <div className="guide_img">
-                                        <img src={require("../../../../../assets/images/guideimg/guideimage1.png")} />
+                                        <img src={require("../../../../../assets/images/guideimg/guideimage11.png")} />
                                     </div>
                                 </div>
                             </div>
                             <div className="item">
                                 <div className="area_test">
                                     <div className="guide_img">
-                                        <img src={require("../../../../../assets/images/guideimg/guideimage2.png")} />
+                                        <img src={require("../../../../../assets/images/guideimg/guideimage12.png")} />
                                     </div>
                                 </div>
                             </div>
                             <div className="item">
                                 <div className="area_test">
                                     <div className="guide_img">
-                                        <img src={require("../../../../../assets/images/guideimg/guideimage3.png")} />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="item">
-                                <div className="area_test">
-                                    <div className="guide_img" onClick={() => navigate("../guide2")}>
-                                        <img src={require("../../../../../assets/images/guideimg/guideimage4.png")} />
+                                        <img src={require("../../../../../assets/images/guideimg/guideimage13.png")} />
                                     </div>
                                 </div>
                             </div>
@@ -77,4 +70,4 @@ const Guide = () => {
     );
 };
 
-export default Guide;
+export default Guide3;
