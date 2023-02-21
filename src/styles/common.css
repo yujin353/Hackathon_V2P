@@ -2942,8 +2942,10 @@ html {
 }
 .guide_img > img {
   display: block;
-  width: 100%;
-  height: 100%;
+  width: 90%;
+  height: 90%;
+  margin: auto;
+  margin-bottom: 4vh;
 }
 .area_test {
   text-align: center;
