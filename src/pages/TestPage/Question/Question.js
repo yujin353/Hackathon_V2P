@@ -43,7 +43,6 @@ const Question = () => {
     });
 
     const submit = () => {
-        console.log(obj)
         $.ajax({
             async: false, type: 'POST',
             url: "https://dev.odoc-api.com/member/skin_quiz",
@@ -109,10 +108,11 @@ const Question = () => {
                                                 <div className="rgh" style={{paddingRight: "2.5vw"}}> {v.id} / {SkinQuiz.length} </div>
                                             </div>
                                             <div className="test_img">
-                                                { index == 0 ? <img src={skinImg1} /> : index == 1 ? <img src={skinImg2} /> : index == 2 ? <img src={skinImg3} />: index == 3 ? <img src={skinImg4} />: index == 4 ? <img src={skinImg5} />
-                                                : index == 5 ? <img src={skinImg6} /> : index == 6 ? <img src={skinImg7} /> : index == 7 ? <img src={skinImg8} />: index == 8 ? <img src={skinImg9} />: index == 9 ? <img src={skinImg10} />
-                                                : index == 10 ? <img src={skinImg11} /> : index == 11 ? <img src={skinImg12} /> : index == 12 ? <img src={skinImg13} />: index == 13 ? <img src={skinImg14} />: index == 14 ? <img src={skinImg15} />
-                                                : index == 15 ? <img src={skinImg16} /> : index == 16 ? <img src={skinImg17} /> : index == 17 ? <img src={skinImg18} />: index == 18 ? <img src={skinImg19} />: <img src={skinImg20} />
+                                                {/*<img src={require(`../../../assets/images/skinquiz/Q${v.id < 10 ? "0" + v.id : v.id}.png`).default} />*/}
+                                                { index === 0 ? <img src={skinImg1} alt={'skinImg1'} /> : index === 1 ? <img src={skinImg2} alt={'skinImg2'} /> : index === 2 ? <img src={skinImg3} alt={'skinImg3'} />: index === 3 ? <img src={skinImg4} alt={'skinImg4'} />: index === 4 ? <img src={skinImg5} alt={'skinImg5'} />
+                                                : index === 5 ? <img src={skinImg6} alt={'skinImg6'} /> : index === 6 ? <img src={skinImg7} alt={'skinImg7'} /> : index === 7 ? <img src={skinImg8} alt={'skinImg8'} />: index === 8 ? <img src={skinImg9} alt={'skinImg9'} />: index === 9 ? <img src={skinImg10} alt={'skinImg9'} />
+                                                : index === 10 ? <img src={skinImg11} alt={'skinImg11'} /> : index === 11 ? <img src={skinImg12} alt={'skinImg12'} /> : index === 12 ? <img src={skinImg13} alt={'skinImg13'} />: index === 13 ? <img src={skinImg14} alt={'skinImg14'} />: index === 14 ? <img src={skinImg15} alt={'skinImg15'} />
+                                                : index === 15 ? <img src={skinImg16} alt={'skinImg16'} /> : index === 16 ? <img src={skinImg17} alt={'skinImg17'} /> : index === 17 ? <img src={skinImg18} alt={'skinImg18'} />: index === 18 ? <img src={skinImg19} alt={'skinImg19'} />: <img src={skinImg20} alt={'skinImg20'} />
                                                 }
                                             </div>
                                             <p className="tit_q">Question {v.id}</p>
@@ -130,7 +130,7 @@ const Question = () => {
                                                                     });
                                                                     Object.keys(obj).length === 21 ? setDisabled(false) : setDisabled(true);
                                                                     const size = $(".area_test")[`${v.id - 1}`].children[4].children.length;
-                                                                    for (let k = 0; k < size; k++) $(`#Q${v.id}_${k}`).removeClass("on");
+                                                                    for (let k = 1; k < size + 1; k++) $(`#Q${v.id}_${k}`).removeClass("on");
                                                                     $(`#Q${v.id}_${i + 1}`).addClass("on");
                                                                     sliderRef.current.slickNext();
                                                                 }}>
