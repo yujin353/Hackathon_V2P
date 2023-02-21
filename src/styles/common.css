@@ -2590,8 +2590,7 @@ html {
 .header .cen .inp_txt {
   border-bottom: 0;
   align-items: center;
-  padding-left: 0;
-  padding-right: 0;
+  padding: 0;
 }
 .header .btn-gnb {
   position: absolute;
