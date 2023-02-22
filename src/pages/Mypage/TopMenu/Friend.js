@@ -12,9 +12,8 @@ const Friend = () => {
     const [searchTab, setSearchTab] = useState(false);
     const [followerList, setFollowerList] = useState([]);
     const [followeeList, setFolloweeList] = useState([]);
-    const [userId, setUserId] = useState([]);
-    const [userName, setUserName] = useState([]);
     const [input, setInput] = useState("");
+    const [findList, setFindList] = useState([]);
 
     /* Get a list of friends a user subscribes to */
     useEffect(() => {
@@ -71,22 +70,16 @@ const Friend = () => {
 
     /* Get friend name's id */
     const searchUsername = () => {
-        setUserId([]);
-        setUserName([]);
         const textInput = input.trim();
         let j = 0;
         $.ajax({
             async: true, type: "GET",
-            url: "https://dev.odoc-api.com/member/member_entire_display",
+            url: "https://dev.odoc-api.com/member/follow_search?username=" + textInput,
             success: (response) => {
-                response.map(v => {
-                    if (v.username.includes(textInput)) {
-                        userId[j] = v.member_id;
-                        setUserId(userId);
-                        setUserName(userName => [...userName, v.username]);
-                        j++;
-                    }
-                });
+                let find = [];
+                for (let i = 0; i < response.result.length; i++)
+                    find.push(response.result[i]);
+                setFindList(find);
             },
             error: (response) => console.log(response)
         });
@@ -221,7 +214,7 @@ const Friend = () => {
                             <div id="tab3" className="lst_list1">
                                 <div className="cen">
                                     <input type="text" id="hd_search" className="inp_txt w100p" placeholder="닉네임을 입력하세요"
-                                        value={input} onChange={(e) => { setInput(e.target.value); }} onKeyDown={handleKeyPress} style={{ width: "95%" }} />
+                                           value={input} onChange={(e) => { setInput(e.target.value); }} onKeyDown={handleKeyPress} style={{ width: "95%" }} />
                                 </div>
                                 <div className="rgh">
                                     <button type="button" className="btn_sch_r" id="search_btn" onClick={() => searchUsername()}>
@@ -230,15 +223,17 @@ const Friend = () => {
                                 </div>
                                 <ul className="search_friend_name">
                                     {
-                                        userId.length !== 0 ?
-                                            userId.map((v, i) => {
+                                        findList.length !== 0 ?
+                                            findList.map((v, i) => {
                                                 return (
-                                                    <div style={{ marginBottom: "1.6vh" }} key={v}><Link to={`/mykiin/neighbor?id=${v}`} className="b">
-                                                        <div className="im"><img src={require("../../../assets/images/common/img_nomem.jpg")} /></div>
-                                                        <p className="t3"><strong>{userName[i]}</strong>님</p>
-                                                        <span className="cnt_follower">팔로워 <br /> <span>{func_cntFollowing(v)}</span></span>
-                                                        <span className="cnt_followee">팔로잉 <br /> <span>{func_cntFollower(v)}</span></span>
-                                                    </Link></div>
+                                                    <li key={v + i}><Link to={`/mykiin/neighbor?id=${v.id}`} className="b">
+                                                        <div className="im">
+                                                            <img src={require("../../../assets/images/common/img_nomem.jpg")} />
+                                                        </div>
+                                                        <p className="t3"><strong>{v.name}</strong>님</p>
+                                                        <span className="cnt_follower">팔로워 <br /> <span>{v.following}</span></span>
+                                                        <span className="cnt_followee">팔로잉 <br /> <span>{v.follower}</span></span>
+                                                    </Link></li>
                                                 );
                                             })
                                             :
