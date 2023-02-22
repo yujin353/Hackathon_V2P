@@ -1,22 +1,23 @@
-import React, { useState, useEffect, useRef } from "react"
-import {  useNavigate, useSearchParams} from "react-router-dom";
-import $ from "jquery"
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import BarChart from "../../../component/BarChart";
 import Description_Test_Result_Item from "../../../component/Description_Test_Result_Item";
+import html2canvas from 'html2canvas';
+import $ from "jquery";
 
-const DetailResult = ()=> {
+const DetailResult = () => {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    const userPK = searchParams.get("id")
-    const [username, setUsername] = useState()
+    const userPK = searchParams.get("id");
+    const [username, setUsername] = useState();
     const [bTarget, setBTarget] = useState(undefined);
     const [bTargetType, setBTargetType] = useState("");
     const [bTargetImprovement, setBTargetImprovement] = useState("");
     const [bTargetRec, setBTargetRec] = useState("");
 
-    useEffect(()=>{
-        window.scrollTo(0,0);
-    },[])
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     useEffect(() => {
         $.ajax({
@@ -39,7 +40,7 @@ const DetailResult = ()=> {
             success: (response) => setUsername(response[0].username),
             error: (response) => navigate("/mykiin")
         });
-    }, [])
+    }, []);
 
     const boost = (bTarget) => {
         switch (bTarget) {
@@ -109,7 +110,27 @@ const DetailResult = ()=> {
                 setBTargetRec("피부 장벽강화성분이 포함된 스킨케어 제품, 수분증발을 억제하는 성분이 포함된 제품, 자외선 차단 기능성 화장품, 주름개선 기능성화장품");
                 break;
         }
-    }
+    };
+
+    const onSaveAs = (uri, filename) => {
+        const link = document.createElement('a');
+        document.body.appendChild(link);
+        link.href = uri;
+        link.download = filename;
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    const downloadImg = () => {
+        if (document.getElementById("imgDownload").classList.contains("blue2")) {
+            $(document.getElementById("imgDownload")).toggleClass("blue");
+            $(document.getElementById("imgDownload")).toggleClass("blue2");
+        }
+        html2canvas(document.getElementById('kiinResult'))
+            .then(canvas => {
+                onSaveAs(canvas.toDataURL('image/png'), `KiiN_${username}.png`);
+            });
+    };
 
     return (
         <div>
@@ -131,29 +152,34 @@ const DetailResult = ()=> {
 
             <div id="container" className="container sub myk">
                 <div className="inr-c">
-                    <div className="hd_tit"><h2 className="h_tit1">상세 분석결과</h2></div>
-                    <div className="d_R_box">
-                        <BarChart userPK={userPK}/>
+                    <div className="hd_tit" style={{ margin: '0.5vh 0' }}>
+                        <h2 className="h_tit1" style={{ display: 'inline-block' }}>상세 분석결과</h2>
+                        <button id="imgDownload" type="button" className="btn-pk ss blue2 bdrs" style={{ float: 'right' }} onClick={downloadImg}>
+                            <span>이미지로 저장</span>
+                        </button>
+                    </div>
+                    <div className="d_R_box" id="kiinResult">
+                        <BarChart userPK={userPK} />
 
-                        <h2 className="h_tit1" style={{textAlign: "center"}}>부스팅 타겟</h2>
+                        <h2 className="h_tit1" style={{ textAlign: "center" }}>부스팅 타겟</h2>
                         <p className="b_txt4">내 피부의 개선을 위하여 우선적으로 공략해야할 목표입니다. 부스팅타겟을 개선하면 내 피부의 전반적인 컨디션이 좋아집니다.</p>
                         <p className="b_txt2"><strong className="c-blue">{username}</strong>님의 부스팅 타겟은 <strong>{bTarget ? bTarget : "undefined"}</strong> 입니다.</p>
                         {
                             bTarget == '없음' ? <p></p>
-                            :
-                            <div>
-                                <p className="b_txt3"><strong>{bTarget ? bTarget : "undefined"} 피부 특징 | </strong> {bTargetType ? bTargetType : "undefined"}</p>
-                                <p className="b_txt3"><strong>개선방안 | </strong> {bTargetImprovement ? bTargetImprovement : "undefined"}</p>
-                                <p className="b_txt3"><strong>제품추천 | </strong> {bTargetRec ? bTargetRec : "undefined"}</p>
-                            </div>
+                                :
+                                <div>
+                                    <p className="b_txt3"><strong>{bTarget ? bTarget : "undefined"} 피부 특징 | </strong> {bTargetType ? bTargetType : "undefined"}</p>
+                                    <p className="b_txt3"><strong>개선방안 | </strong> {bTargetImprovement ? bTargetImprovement : "undefined"}</p>
+                                    <p className="b_txt3"><strong>제품추천 | </strong> {bTargetRec ? bTargetRec : "undefined"}</p>
+                                </div>
                         }
                     </div>
                     <Description_Test_Result_Item />
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 
 export default DetailResult;

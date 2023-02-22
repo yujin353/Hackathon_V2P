@@ -7,7 +7,6 @@ import $ from "jquery";
 
 const Question = () => {
     const navigate = useNavigate();
-    const accessTknRefresh = useAccessTknRefresh();
     const sliderRef = useRef(null);
     const btnRef = useRef(null);
     const setting = {
@@ -22,11 +21,12 @@ const Question = () => {
     });
 
     const submit = () => {
+        const accessTknRefresh = useAccessTknRefresh;
         $.ajax({
             async: false, type: 'POST',
             url: "https://dev.odoc-api.com/member/skin_quiz",
             data: obj, dataType: 'json',
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh()),
             success: response => {
                 if (response.message === "SUCCESS") {
                     alert("스킨퀴즈가 완료되었습니다.\n마이키인 페이지로 이동합니다.");
@@ -43,14 +43,14 @@ const Question = () => {
         for (let i = 1; i < 21; i++) {
             Object.keys(obj).map((v, index) => {
                 if (("Q0" + i) == v) {
-                    list.splice(i-count,1)
-                    count++
+                    list.splice(i - count, 1);
+                    count++;
                 }
-                else if(("Q" + i) == v) {
-                    list.splice(i-count, 1)
-                    count++
+                else if (("Q" + i) == v) {
+                    list.splice(i - count, 1);
+                    count++;
                 }
-            })
+            });
         }
         alert(list + "번 문제를 풀지 않았습니다.");
     };
@@ -75,7 +75,7 @@ const Question = () => {
                                     <div className="item" key={v}>
                                         <div className="area_test">
                                             <div className="area_test_tit">
-                                                <div className="lft" style={{paddingLeft: "2.5vw"}}>
+                                                <div className="lft" style={{ paddingLeft: "2.5vw" }}>
                                                     <h2 className="h1">
                                                         <span className="c-blue">{v.type1.split(" ")[0][0]}</span>
                                                         {v.type1.split(" ")[0].substring(1) + " or "}
@@ -84,11 +84,11 @@ const Question = () => {
                                                     </h2>
                                                     <p>{v.type2}</p>
                                                 </div>
-                                                <div className="rgh" style={{paddingRight: "2.5vw"}}> {v.id} / {SkinQuiz.length} </div>
+                                                <div className="rgh" style={{ paddingRight: "2.5vw" }}> {v.id} / {SkinQuiz.length} </div>
                                             </div>
                                             <div className="test_img">
                                                 {/*<img src={require(`../../../assets/images/skinquiz/Q${v.id < 10 ? "0" + v.id : v.id}.png`).default} />*/}
-                                                { index === 0 ? <img className="skinQuiz1" alt="SkinQuizImg" src="https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/Q01.png" />
+                                                {index === 0 ? <img className="skinQuiz1" alt="SkinQuizImg" src="https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/Q01.png" />
                                                     : index === 1 ? <img className="skinQuiz2" alt="SkinQuizImg" src="https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/Q02.png" />
                                                         : index === 2 ? <img className="skinQuiz3" alt="SkinQuizImg" src="https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/Q03.png" />
                                                             : index === 3 ? <img className="skinQuiz4" alt="SkinQuizImg" src="https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/Q04.png" />
@@ -108,7 +108,7 @@ const Question = () => {
                                                                                                                     : index === 17 ? <img className="skinQuiz18" alt="SkinQuizImg" src="https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/Q18.png" />
                                                                                                                         : index === 18 ? <img className="skinQuiz19" alt="SkinQuizImg" src="https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/Q19.png" />
                                                                                                                             : <img className="skinQuiz20" alt="SkinQuizImg" src="https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/Q20.png" />
-                                                    }
+                                                }
                                             </div>
                                             <p className="tit_q">Question {v.id}</p>
                                             <p className="tit"> {v.question} </p>
@@ -116,7 +116,7 @@ const Question = () => {
                                                 {v.option.map((x, i) => {
                                                     return (
                                                         <li key={x + i}>
-                                                            <button id={`Q${v.id}_${i + 1}`} type="button" className="btn" ref={btnRef} style={{width: "95%"}}
+                                                            <button id={`Q${v.id}_${i + 1}`} type="button" className="btn" ref={btnRef} style={{ width: "95%" }}
                                                                 onClick={() => {
                                                                     setObj(prev => {
                                                                         const result = prev;
@@ -144,15 +144,15 @@ const Question = () => {
                 </div>
                 <div>
                     <div className="fix_botm">
-                        { Object.keys(obj).length === 21 ?
+                        {Object.keys(obj).length === 21 ?
                             <button type="button" className="btn-pk blue n" disabled={disabled}
                                 onClick={() => submit()}>
                                 <span>스킨퀴즈 제출</span>
                             </button>
                             :
-                            <button type="button" className="btn-pk blue n" style = {{color: "rgba(255,255,255,0.48)"}} onClick={() => findUnanswered()}>
+                            <button type="button" className="btn-pk blue n" style={{ color: "rgba(255,255,255,0.48)" }} onClick={() => findUnanswered()}>
                                 <span>스킨퀴즈 제출</span>
-                            </button> }
+                            </button>}
                     </div>
                 </div>
             </div>

@@ -5,7 +5,6 @@ import $ from "jquery";
 
 const Friend = () => {
     const navigate = useNavigate();
-    const accessTknRefresh = useAccessTknRefresh();
     const [prevTabNum, setPrevTabNum] = useState(1);
     const [leftTab, setLeftTab] = useState(true);
     const [rightTab, setRightTab] = useState(false);
@@ -17,9 +16,11 @@ const Friend = () => {
 
     /* Get a list of friends a user subscribes to */
     useEffect(() => {
+        const accessTknRefresh = useAccessTknRefresh;
         $.ajax({
             async: true, type: "GET",
             url: "https://dev.odoc-api.com/member/follower_display?member_id=" + sessionStorage.getItem("user_pk"),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh()),
             success: (response) => {
                 let follow = [];
                 for (let i = 0; i < response.length; i++)
@@ -35,7 +36,6 @@ const Friend = () => {
         $.ajax({
             async: true, type: "GET",
             url: "https://dev.odoc-api.com/member/following_display?member_id=" + sessionStorage.getItem("user_pk"),
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: (response) => {
                 let follow = [];
                 for (let i = 0; i < response.length; i++)

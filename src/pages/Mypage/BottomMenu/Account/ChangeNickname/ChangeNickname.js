@@ -5,23 +5,23 @@ import $ from "jquery";
 
 const ChangeNickname = () => {
     const navigate = useNavigate();
-    const accessTknRefresh = useAccessTknRefresh();
     const [username, setUsername] = useState("");
 
     /* findout currently logged in user */
     useEffect(() => {
         let isMounted = true;
+        const accessTknRefresh = useAccessTknRefresh;
         $.ajax({
             async: false, type: 'GET',
             url: "https://dev.odoc-api.com/member/member_display?member_id=" + sessionStorage.getItem("user_pk"),
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh()),
             success: (response) => {
                 if (isMounted)
                     setUsername(response[0].username);
             },
             error: (response) => {
                 console.log("error", response);
-                alert("login failed.");
+                alert("다시 로그인 해주세요.");
                 const logout = useLogout;
                 logout();
             },
@@ -74,12 +74,13 @@ const ChangeNickname = () => {
     };
 
     const submitInfo = (newName) => {
+        const accessTknRefresh = useAccessTknRefresh;
         $.ajax({
             async: false, type: 'PUT',
             url: "https://dev.odoc-api.com/member/username_change/" + sessionStorage.getItem("user_pk"),
             data: { "username": newName },
             dataType: 'JSON',
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh()),
             success: function (response) {
                 if (response.message == "SUCCESS") {
                     alert("닉네임을 변경하였습니다.");

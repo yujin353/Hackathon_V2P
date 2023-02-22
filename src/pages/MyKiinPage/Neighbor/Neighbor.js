@@ -5,7 +5,6 @@ import { useAccessTknRefresh } from "../../../hooks";
 import $ from "jquery";
 
 const Neighbor = () => {
-    const accessTknRefresh = useAccessTknRefresh();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const [username, setUsername] = useState();
@@ -41,10 +40,11 @@ const Neighbor = () => {
     }, []);
 
     useEffect(() => {
+        const accessTknRefresh = useAccessTknRefresh;
         $.ajax({
             async: false, type: "GET",
             url: "https://dev.odoc-api.com/member/follower_display?member_id=" + sessionStorage.getItem("user_pk"),
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh()),
             success: (response) => {
                 let subscribing = false;
                 response.map((v) => {
@@ -85,17 +85,13 @@ const Neighbor = () => {
         $.ajax({
             async: true, type: "GET",
             url: "https://dev.odoc-api.com/member_product/review_like_display?member_id=" + sessionStorage.getItem("user_pk"),
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: (response) => {
                 response.forEach((v) => {
                     $("button[name=" + v.like_review.review_id + "]").addClass("on");
                 });
             },
             error: (response) => {
-                if (response.statusText === "Unauthorized") {
-                    sessionStorage.setItem("access_token", accessTknRefresh());
-                    navigate(0);
-                }
+                console.log(response);
             },
         });
     });
@@ -113,6 +109,7 @@ const Neighbor = () => {
     };
 
     const follow = () => {
+        const accessTknRefresh = useAccessTknRefresh;
         $.ajax({
             async: true, type: "POST",
             url: "https://dev.odoc-api.com/member/follow",
@@ -121,7 +118,7 @@ const Neighbor = () => {
                 "follow_member_id": sessionStorage.getItem("user_pk")
             },
             dataType: "json",
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh()),
             success: (response) => {
                 if (response.message === "follow")
                     alert('내가 구독한 친구에 추가되었습니다.');
@@ -130,15 +127,13 @@ const Neighbor = () => {
             },
             error: (response) => {
                 console.log(response);
-                if (response.statusText == "Unauthorized") {
-                    sessionStorage.setItem("access_token", accessTknRefresh());
-                }
             },
         });
     };
 
     const likeReview = (review_id) => {
         const element = document.getElementById(review_id);
+        const accessTknRefresh = useAccessTknRefresh;
         $.ajax({
             async: true,
             type: "POST",
@@ -148,7 +143,7 @@ const Neighbor = () => {
                 "member_id": sessionStorage.getItem("user_pk")
             },
             dataType: "json",
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh()),
             success: function (response) {
                 if (response.message == "LIKE") alert("관심리뷰에 추가되었습니다.");
                 else alert("관심리뷰에서 제거되었습니다.");
@@ -159,6 +154,7 @@ const Neighbor = () => {
     };
 
     const reportReview = (review_id) => {
+        const accessTknRefresh = useAccessTknRefresh;
         if (window.confirm("정말 신고하시겠습니까?") === true) {
             $.ajax({
                 async: true, type: "POST",
@@ -168,7 +164,7 @@ const Neighbor = () => {
                     "member_id": sessionStorage.getItem("user_pk")
                 },
                 dataType: "json",
-                beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
+                beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh()),
                 success: (response) => {
                     if (response.message === "REPORT") alert("정상적으로 신고 접수 되었습니다.");
                     else alert("이미 신고 접수 되었습니다.");

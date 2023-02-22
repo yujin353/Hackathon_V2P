@@ -5,16 +5,16 @@ import $ from "jquery";
 
 const Account = () => {
     const navigate = useNavigate();
-    const accessTknRefresh = useAccessTknRefresh();
 
     const withdraw = () => {
+        const accessTknRefresh = useAccessTknRefresh;
         if (window.confirm('정말 탈퇴하시겠습니까?')) {
             $.ajax({
                 async: true, type: 'POST',
                 url: "https://dev.odoc-api.com/member/inactivate",
                 data: { "member_id": sessionStorage.getItem("user_pk") },
                 dataType: 'JSON',
-                beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
+                beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh()),
                 success: function (response) {
                     if (response.message == "Withdraw OK") {
                         sessionStorage.removeItem("access_token");

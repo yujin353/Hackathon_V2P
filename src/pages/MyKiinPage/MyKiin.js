@@ -5,7 +5,6 @@ import { useAccessTknRefresh } from "../../hooks";
 import $ from "jquery";
 
 const MyKiin = () => {
-    const accessTknRefresh = useAccessTknRefresh();
     const btnRef1 = useRef(null);
     const btnRef2 = useRef(null);
     const btnRef3 = useRef(null);
@@ -25,10 +24,11 @@ const MyKiin = () => {
 
     /* checking skin type test */
     useEffect(() => {
+        const accessTknRefresh = useAccessTknRefresh;
         $.ajax({
             async: false, type: "GET",
             url: "https://dev.odoc-api.com/member/my_skin?member_id=" + sessionStorage.getItem("user_pk"),
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh()),
             success: (response) => {
                 if (response[0]) {
                     findSameSkinTypeUser();
@@ -53,9 +53,11 @@ const MyKiin = () => {
     /* loading same skin type user */
     const findSameSkinTypeUser = () => {
         let isMounted = true;
+        const accessTknRefresh = useAccessTknRefresh;
         $.ajax({
             async: false, type: "GET",
             url: "https://dev.odoc-api.com/member/skin_type_by_same?member_id=" + sessionStorage.getItem("user_pk"),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh()),
             success: response => {
                 if (response.message == [])
                     setUserList([]);

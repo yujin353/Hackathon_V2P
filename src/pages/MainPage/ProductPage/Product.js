@@ -6,7 +6,6 @@ import { getProductGredients } from "../../../api/product";
 import $ from "jquery";
 
 const Product = () => {
-    const accessTknRefresh = useAccessTknRefresh();
     const params = useParams();
     const navigate = useNavigate();
     const [productInfo, setProductInfo] = useState({});
@@ -55,14 +54,15 @@ const Product = () => {
 
     /* findout currently logged in user */
     useEffect(() => {
+        const accessTknRefresh = useAccessTknRefresh;
         $.ajax({
             async: false, type: 'GET',
             url: "https://dev.odoc-api.com/member/member_display?member_id=" + sessionStorage.getItem("user_pk"),
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh()),
             success: (response) => setUsername(response[0].username),
             error: (response) => {
                 console.log("error", response);
-                alert("login failed.");
+                alert("다시 로그인 해주세요.");
                 const logout = useLogout;
                 logout();
             },
@@ -135,17 +135,13 @@ const Product = () => {
         $.ajax({
             async: true, type: "GET",
             url: "https://dev.odoc-api.com/member_product/review_like_display?member_id=" + sessionStorage.getItem("user_pk"),
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: (response) => {
                 response.forEach((v) => {
                     $("button[name=" + v.like_review.review_id + "]").addClass("on");
                 });
             },
             error: (response) => {
-                if (response.statusText === "Unauthorized") {
-                    sessionStorage.setItem("access_token", accessTknRefresh());
-                    navigate(0);
-                }
+                console.log(response);
             },
         });
     }, []);
@@ -157,7 +153,6 @@ const Product = () => {
         $.ajax({
             async: false, type: "GET",
             url: "https://dev.odoc-api.com/member_product/product_like_display?member_id=" + sessionStorage.getItem("user_pk"),
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: (response) => {
                 info = response;
                 for (let i = 0; i < info.length; i++) {
@@ -197,6 +192,7 @@ const Product = () => {
     };
 
     const likeProduct = (product_id) => {
+        const accessTknRefresh = useAccessTknRefresh;
         $.ajax({
             async: true, type: "POST",
             url: "https://dev.odoc-api.com/member_product/product_like",
@@ -205,7 +201,7 @@ const Product = () => {
                 "member_id": sessionStorage.getItem("user_pk")
             },
             dataType: "json",
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh()),
             success: (response) => {
                 const element = document.getElementsByName(product_id);
                 $(element).toggleClass("on");
@@ -264,6 +260,7 @@ const Product = () => {
     };
 
     const likeReview = (review_id) => {
+        const accessTknRefresh = useAccessTknRefresh;
         $.ajax({
             async: true, type: "POST",
             url: "https://dev.odoc-api.com/member_product/review_like",
@@ -272,7 +269,7 @@ const Product = () => {
                 "member_id": sessionStorage.getItem("user_pk")
             },
             dataType: "json",
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh()),
             success: function (response) {
                 const element = document.getElementById(review_id);
                 $(element).toggleClass("off on");
@@ -292,11 +289,12 @@ const Product = () => {
     };
 
     const deleteReview = (review_id) => {
+        const accessTknRefresh = useAccessTknRefresh;
         if (window.confirm("정말 삭제하시겠습니까?") === true) {
             $.ajax({
                 async: true, type: "DELETE",
                 url: `https://dev.odoc-api.com/member_product/member_review_delete/${review_id}`,
-                beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
+                beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh()),
                 success: (response) => {
                     alert("리뷰가 삭제되었습니다.");
                     window.location.reload();
@@ -307,6 +305,7 @@ const Product = () => {
     };
 
     const reportReview = (review_id) => {
+        const accessTknRefresh = useAccessTknRefresh;
         if (window.confirm("정말 신고하시겠습니까?") === true) {
             $.ajax({
                 async: true, type: "POST",
@@ -316,7 +315,7 @@ const Product = () => {
                     "member_id": sessionStorage.getItem("user_pk")
                 },
                 dataType: "json",
-                beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
+                beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh()),
                 success: (response) => {
                     if (response.message === "REPORT") alert("정상적으로 신고 접수 되었습니다.");
                     else alert("이미 신고 접수 되었습니다.");
@@ -358,7 +357,7 @@ const Product = () => {
                     <div className="txt_box2 mb20">
                         <p className="t1">
                             써보신 제품이라면 비슷한 피부의 이웃들을 위해 리뷰를 남겨주세요.<br />
-                            포인트는 물론, 신제품 테스터의 기회는 덤!
+                            {/* 포인트는 물론, 신제품 테스터의 기회는 덤! */}
                         </p>
                     </div>
                     <div className="area_product1">
