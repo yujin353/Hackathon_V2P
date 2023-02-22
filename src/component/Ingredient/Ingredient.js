@@ -77,7 +77,10 @@ const Ingredient = ({ userPK }) => {
                                             alert("모든 성분을 확인했습니다.");
                                         else setIngredientGoodCount(prev => prev + 10);
                                     }}>
-                                    <span>더보기</span>
+                                    {
+                                        ingredientGoodCount < userIngredientGood.length ? <span>더보기</span>
+                                            : null
+                                    }
                                 </button>
                             </div>
                             :
@@ -130,7 +133,10 @@ const Ingredient = ({ userPK }) => {
                                             alert("모든 성분을 확인했습니다.");
                                         else setIngredientBadCount(prev => prev + 10);
                                     }}>
-                                    <span>더보기</span>
+                                    {
+                                        ingredientBadCount < userIngredientBad.length ? <span>더보기</span>
+                                            : null
+                                    }
                                 </button>
                             </div>
                             :

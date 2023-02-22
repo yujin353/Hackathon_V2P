@@ -8,6 +8,7 @@ const Guide = () => {
     const btnRef = useRef(null);
     const setting = {
         dots: true,
+        dotsClass: "dots_custom",
         infinite: false,
         centerMode: true,
         centerPadding: '0px',

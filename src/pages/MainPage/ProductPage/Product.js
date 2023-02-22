@@ -471,7 +471,10 @@ const Product = () => {
                                     alert("모든 리뷰를 확인했습니다.");
                                 else setCount(prev => prev + 5);
                             }}>
-                            <span>더보기</span>
+                            {
+                                count < reviewList.length ? <span>더보기</span>
+                                    : null
+                            }
                         </button>
                     </div>
 

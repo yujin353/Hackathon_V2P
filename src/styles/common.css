@@ -2939,8 +2939,8 @@ html {
 }
 .guide_img > img {
   display: block;
-  width: 90%;
-  height: 90%;
+  width: 95%;
+  height: 95%;
   margin: auto;
   margin-bottom: 4vh;
 }
@@ -6727,4 +6727,54 @@ body.fix {
 .ls2 {
   line-height: normal;
   word-break: break-all;
+}
+.dots_custom {
+  display: inline-block;
+  align-items: center;
+  vertical-align: middle;
+  margin: auto 0;
+  padding: 0;
+}
+.dots_custom li {
+  list-style: none;
+  cursor: pointer;
+  display: inline-block;
+  margin: 0 2.45vw;
+  padding: 0;
+}
+.dots_custom li button {
+  border: none;
+  background: #999999;
+  color: transparent;
+  cursor: pointer;
+  display: block;
+  height: 1.6vw;
+  width: 1.6vw;
+  border-radius: 100%;
+  padding: 0;
+}
+.dots_custom li.slick-active button {
+  background-color: #145cff;
+}
+.select1.hd_ty2 {
+  position: absolute;
+  right: 1vw;
+  margin-top: -8vw;
+  font-size: 3.2vw;
+  color: #595a62;
+  border: 0;
+  height: 5.33333333vw;
+}
+.type_id {
+  position: absolute;
+  padding-left: 4vw;
+  color: #145cff;
+}
+@keyframes blink-effect {
+  50% {
+    opacity: 0;
+  }
+}
+.blink {
+  animation: blink-effect 1s step-end 7;
 }

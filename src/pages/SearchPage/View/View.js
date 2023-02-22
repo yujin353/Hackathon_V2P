@@ -33,6 +33,10 @@ const View = () => {
         });
     }, [searchPressed]);
 
+    const matching = () => {
+
+    };
+
     // /* autoSearchResults */
     // useEffect(() => {
     //     setSearchPressed(false)
@@ -222,6 +226,15 @@ const View = () => {
                         <div className="area_search1">
                             <div className="lst_prd2">
                                 <h2 className="h_tit2"><span className="c-blue">{results.length}개</span>의 검색결과가 있습니다.</h2>
+                                {/*<select className="select1 hd_ty2"*/}
+                                {/*        onChange={(e) => {*/}
+                                {/*            if (e.target.value == "abc") matching();*/}
+                                {/*            else setSearchPressed(!searchPressed);*/}
+                                {/*        }}>*/}
+                                {/*    <option value="">정렬</option>*/}
+                                {/*    <option value="abc">가나다 순</option>*/}
+                                {/*    <option value="matching">피부매칭율 순</option>*/}
+                                {/*</select>*/}
                                 <ul id="prod_list">
                                     {results.map((v) => {
                                         return (

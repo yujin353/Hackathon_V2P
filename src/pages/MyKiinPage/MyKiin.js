@@ -14,6 +14,7 @@ const MyKiin = () => {
     const btnRef6 = useRef(null);
     const [modal1, setModal1] = useState(false);
     const [modal2, setModal2] = useState(false);
+    const [tested, setTested] = useState(false);
     const [userList, setUserList] = useState([]);
 
     const [count, setCount] = useState(3);
@@ -32,6 +33,18 @@ const MyKiin = () => {
                 if (response[0]) {
                     findSameSkinTypeUser();
                 }
+            },
+            error: (response) => console.log(response)
+        });
+    }, []);
+
+    /* checking skin type test */
+    useEffect(() => {
+        $.ajax({
+            async: false, type: "GET",
+            url: "https://dev.odoc-api.com/member/my_skin?member_id=" + sessionStorage.getItem("user_pk"),
+            success: (response) => {
+                if (response[0]) setTested(true);
             },
             error: (response) => console.log(response)
         });
@@ -78,9 +91,19 @@ const MyKiin = () => {
 
             <div id="container" className="container sub myk">
                 <div className="inr-c">
-                    <div className="hd_tit"><h2 className="h_tit1">내 피부타입 분석결과</h2></div>
-
-                    <Graph userPK={sessionStorage.getItem("user_pk")} />
+                    {
+                        tested ?
+                            <>
+                                <div className="hd_tit"><h2 className="h_tit1">내 피부타입 분석결과</h2></div>
+                                <Graph userPK={sessionStorage.getItem("user_pk")} />
+                            </>
+                            : <>
+                                <Link to="/test">
+                                    <img src={require("../../assets/images/graph_example_new.png")} />
+                                </Link>
+                                <br/><br/>
+                            </>
+                    }
                     <Ingredient userPK={sessionStorage.getItem("user_pk")} />
                     <Used_Wanted_Product userPK={sessionStorage.getItem("user_pk")} />
 
@@ -99,9 +122,13 @@ const MyKiin = () => {
                         </ul>
                     </div>
                 </div>
-                <div className="btn-bot ta-c pr-mb2">
-                    <span className="btn-pk s blue2 bdrs wid1" onClick={() => setCount(prev => prev + 3)}>더보기</span>
-                </div>
+                {
+                    userList.length > count ?
+                        <div className="btn-bot ta-c pr-mb2">
+                            <span className="btn-pk s blue2 bdrs wid1" onClick={() => setCount(prev => prev + 3)}>더보기</span>
+                        </div>
+                        : null
+                }
             </div>
 
             <Footer />

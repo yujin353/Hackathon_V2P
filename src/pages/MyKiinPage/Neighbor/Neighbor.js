@@ -150,7 +150,7 @@ const Neighbor = () => {
             dataType: "json",
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: function (response) {
-                if (response.message == "Like") alert("관심리뷰에 추가되었습니다.");
+                if (response.message == "LIKE") alert("관심리뷰에 추가되었습니다.");
                 else alert("관심리뷰에서 제거되었습니다.");
             },
             error: (response) => console.log(response),
@@ -233,23 +233,29 @@ const Neighbor = () => {
                                         <div className="lst_prd2">
                                             <Link to={`/main/products/${v.product.product_id}`} className="b">
                                                 <div className="thumb"><span className="im" style={{ backgroundImage: `url(${v.product.product_img_path})` }}></span></div>
-                                                <div className="txt">
-                                                    <p className="t1">{v.product.brand.brand_name}</p>
-                                                    <p className="t2">{v.product.product_name}</p>
-                                                </div>
                                             </Link>
+                                                <div className="txt">
+                                                    <Link to={`/main/products/${v.product.product_id}`} className="b">
+                                                        <p className="t1">{v.product.brand.brand_name}</p>
+                                                        <p className="t2">{v.product.product_name}</p>
+                                                    </Link>
+                                                    <button type="button" className="btn_favorit" id={v.review_id}
+                                                            name={v.review_id} onClick={() => likeReview(v.review_id)}>
+                                                        <span className="i-set i_favorit">좋아요</span>
+                                                    </button>
+                                                </div>
                                         </div>
-                                        <br />
-                                        <div className="tit">
-                                            <div className="thumb"><span><img src={require("../../../assets/images/common/img_nomem.jpg")}></img></span></div>
-                                            <p className="h1">{v.member.username}</p>
-                                            <p className="t1">피부 유사도 <span className="c-blue">{rand_simil}</span></p>
-                                            <div className="bar_b"><span style={{ width: rand_simil }}></span></div>
-                                            <button type="button" className="btn_favorit" id={v.review_id}
-                                                name={v.review_id} onClick={() => likeReview(v.review_id)}>
-                                                <span className="i-set i_favorit">좋아요</span>
-                                            </button>
-                                        </div>
+                                        {/*<br />*/}
+                                        {/*<div className="tit">*/}
+                                            {/*<div className="thumb"><span><img src={require("../../../assets/images/common/img_nomem.jpg")}></img></span></div>*/}
+                                            {/*<p className="h1">{v.member.username}</p>*/}
+                                            {/*<p className="t1">피부 유사도 <span className="c-blue">{rand_simil}</span></p>*/}
+                                            {/*<div className="bar_b"><span style={{ width: rand_simil }}></span></div>*/}
+                                            {/*<button type="button" className="btn_favorit" id={v.review_id}*/}
+                                            {/*    name={v.review_id} onClick={() => likeReview(v.review_id)}>*/}
+                                            {/*    <span className="i-set i_favorit">좋아요</span>*/}
+                                            {/*</button>*/}
+                                        {/*</div>*/}
                                         <div className="txt_box1">
                                             <div className="box">
                                                 <p className="t"><span className={`i-aft ${rating_className[v.rating - 1]} sm`}>{rating_txt[v.rating - 1]}</span></p>
