@@ -5,13 +5,13 @@ import $ from 'jquery';
 
 const Test = () => {
     const navigate = useNavigate();
-    const accessTknRefresh = useAccessTknRefresh();
 
     const mySkinType = () => {
+        const accessTknRefresh = useAccessTknRefresh;
         $.ajax({
             async: true, type: 'GET',
             url: "https://dev.odoc-api.com/member/my_skin?member_id=" + sessionStorage.getItem("user_pk"),
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh()),
             success: (response) => {
                 if (response.length === 1) {
                     alert("이미 스킨퀴즈가 완료되었습니다.\n메인화면으로 이동합니다.");

@@ -6,25 +6,28 @@ import $ from "jquery";
 
 const MyPage = () => {
     const navigate = useNavigate();
-    const accessTknRefresh = useAccessTknRefresh();
     const [FImodal, setFImodal] = useState(false);
     const [PImodal, setPImodal] = useState(false);
     const [username, setUsername] = useState("");
     const linkRef = useRef();
+    const android = useRef();
+    const apple = useRef();
+    const web = useRef();
 
     /* findout currently logged in user */
     useEffect(() => {
+        const accessTknRefresh = useAccessTknRefresh;
         $.ajax({
             async: false,
             type: 'GET',
             url: "https://dev.odoc-api.com/member/member_display?member_id=" + sessionStorage.getItem("user_pk"),
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh()),
             success: function (response) {
                 setUsername(response[0].username);
             },
             error: function (response) {
                 console.log("error", response);
-                alert("login failed.");
+                alert("다시 로그인 해주세요.");
                 const logout = useLogout;
                 logout();
             },
@@ -45,11 +48,39 @@ const MyPage = () => {
         navigate("account");
     };
 
-    const copyLink = () => {
-        linkRef.current.focus();
-        linkRef.current.select();
-        navigator.clipboard.writeText(linkRef.current.value)
-            .then(() => alert("링크가 복사되었습니다."));
+    const copyLink = (ref) => {
+        if (ref.current) {
+            ref.current.focus();
+            ref.current.select();
+            navigator.clipboard.writeText(ref.current.value)
+                .then(() => alert("링크가 복사되었습니다."))
+                .catch(() => {
+                    const textArea = document.createElement('textarea');
+                    document.body.appendChild(textArea);
+                    textArea.value = ref.current.value;
+                    textArea.focus();
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    alert('URL 복사가 완료되었습니다.');
+                });
+        }
+        else {
+            linkRef.current.focus();
+            linkRef.current.select();
+            navigator.clipboard.writeText(linkRef.current.value)
+                .then(() => alert("링크가 복사되었습니다."))
+                .catch(() => {
+                    const textArea = document.createElement('textarea');
+                    document.body.appendChild(textArea);
+                    textArea.value = linkRef.current.value;
+                    textArea.focus();
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    alert('URL 복사가 완료되었습니다.');
+                });
+        }
     };
 
     const goLogout = () => {
@@ -109,11 +140,19 @@ const MyPage = () => {
 
                                         <div className="p_cont">
                                             <p className="h_tit1">친구초대</p>
-                                            <center><input type="text" id="copy_text_input" ref={linkRef} defaultValue="http://kiinodoc.com" className="form-control" style={{ width: "100%" }} /></center>
+                                            <input type="text" id="copy_text_input" ref={android} defaultValue="https://play.google.com/store/apps/details?id=com.kiin_android" className="form-control" style={{ width: "70%", marginTop: '-4vh' }} />
+                                            <button id="copy_btn" onClick={() => copyLink(android)} style={{ width: "30%", paddingBottom: '2vh' }}>
+                                                <span className="i-aft i_url">Android</span>
+                                            </button>
+                                            <input type="text" id="copy_text_input" ref={apple} defaultValue="https://apps.apple.com/kr/app/%ED%82%A4%EC%9D%B8-kiin-%ED%99%94%EC%9E%A5%ED%92%88-%ED%8D%BC%EC%8A%A4%EB%84%90-%EC%87%BC%ED%8D%BC/id1670252245" className="form-control" style={{ width: "70%", marginTop: '-4vh' }} />
+                                            <button id="copy_btn" onClick={() => copyLink(apple)} style={{ width: "30%", paddingBottom: '2vh' }}>
+                                                <span className="i-aft i_url">Apple</span>
+                                            </button>
+                                            <input type="text" id="copy_text_input" ref={web} defaultValue="https://kiin.odoc-api.com" className="form-control" style={{ width: "70%", marginTop: '-4vh' }} />
+                                            <button id="copy_btn" onClick={() => copyLink(web)} style={{ width: "30%", paddingBottom: '2vh' }}>
+                                                <span className="i-aft i_url">Web</span>
+                                            </button>
                                             <br />
-                                            <center><button id="copy_btn" onClick={copyLink}>
-                                                <span className="i-aft i_url">URL 복사</span>
-                                            </button></center>
                                         </div>
                                     </div>
                                 </div>

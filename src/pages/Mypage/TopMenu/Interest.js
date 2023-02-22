@@ -2,10 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAccessTknRefresh } from "../../../hooks";
 import $ from "jquery";
-//import $, { removeData } from "jquery"
 
 const Interest = () => {
-    const accessTknRefresh = useAccessTknRefresh();
     const navigate = useNavigate();
     const [reviewList, setReviewList] = useState([]);
     const rating_className = ["i_review_bad", "i_review_normal", "i_review_normal", "i_review_normal", "i_review_good"];
@@ -13,16 +11,14 @@ const Interest = () => {
 
     /* loading reviews that users are interested in */
     useEffect(() => {
+        const accessTknRefresh = useAccessTknRefresh;
         $.ajax({
             async: true, type: "GET",
             url: "https://dev.odoc-api.com/member_product/review_like_display?member_id=" + sessionStorage.getItem("user_pk"),
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh()),
             success: (response) => setReviewList(response.reverse()),
             error: (response) => {
-                if (response.statusText === "Unauthorized") {
-                    sessionStorage.setItem("access_token", accessTknRefresh());
-                    navigate(0);
-                }
+                console.log(response);
             },
         });
     }, []);
@@ -32,7 +28,6 @@ const Interest = () => {
         $.ajax({
             async: true, type: "GET",
             url: "https://dev.odoc-api.com/member_product/review_like_display?member_id=" + sessionStorage.getItem("user_pk"),
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: (response) => {
                 response.map((v) => {
                     const review_id = v.like_review.review_id;
@@ -41,10 +36,7 @@ const Interest = () => {
                 });
             },
             error: (response) => {
-                if (response.statusText === "Unauthorized") {
-                    sessionStorage.setItem("access_token", accessTknRefresh());
-                    navigate(0);
-                }
+                console.log(response);
             },
         });
     }, []);
@@ -63,6 +55,7 @@ const Interest = () => {
 
     /* report a review function */
     const reportReview = (review_id) => {
+        const accessTknRefresh = useAccessTknRefresh;
         if (window.confirm("정말 신고하시겠습니까?") === true) {
             $.ajax({
                 async: true, type: "POST",
@@ -71,7 +64,7 @@ const Interest = () => {
                     "review_id": review_id,
                     "member_id": sessionStorage.getItem("user_pk")
                 }, dataType: "json",
-                beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
+                beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh()),
                 success: (response) => {
                     if (response.message === "REPORT") alert("정상적으로 신고 접수 되었습니다.");
                     else alert("이미 신고 접수 되었습니다.");
@@ -84,6 +77,7 @@ const Interest = () => {
     /* functions to add and remove from interesting reviews */
     const likeReview = (review_id) => {
         const element = document.getElementById(review_id);
+        const accessTknRefresh = useAccessTknRefresh;
         $.ajax({
             async: true, type: "POST",
             url: "https://dev.odoc-api.com/member_product/review_like",
@@ -92,7 +86,7 @@ const Interest = () => {
                 "member_id": sessionStorage.getItem("user_pk")
             },
             dataType: "json",
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh()),
             success: function (response) {
                 if (response.message === "LIKE") alert("관심리뷰에 추가되었습니다.");
                 else alert("관심리뷰에서 제거되었습니다.");

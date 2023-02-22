@@ -15,6 +15,7 @@ const Login = () => {
 	const errorRef = useRef(null);
 
 	useEffect(() => {
+		document.getElementById('NotLoading').style.display = "none";
 		if (cookies.load("email")) {
 			setEmail(cookies.load("email"));
 			setRightBox(true);
@@ -27,6 +28,10 @@ const Login = () => {
 			else {
 				navigate("/main");
 			}
+		}
+		else {
+			document.getElementById('loading').style.display = "none";
+			document.getElementById('NotLoading').style.display = "block";
 		}
 		sessionStorage.removeItem("phone_certification");
 		sessionStorage.removeItem("policy_checked");
@@ -71,20 +76,30 @@ const Login = () => {
 				errorRef.current.className = "mb10";
 				$($(errorRef.current).next()[0]).removeClass("hidden");
 
-				const message = JSON.parse(response.responseText);
-				for (const msg in message) {
-					if (email === "") {
-						alert("이메일 주소를 입력해 주세요."); return;
-					} else if (msg === "non_field_errors") {
-						alert("비밀번호가 틀렸습니다."); return;
-					} else if (msg === "email") {
-						alert('유효한 이메일 주소를 입력하십시오.'); return;
-					} else if (msg === "password") {
-						alert('비밀번호를 입력해 주십시오.'); return;
-					}
-				}
+				// const message = JSON.parse(response.responseText);
+				// for (const msg in message) {
+				// 	if (email === "") {
+				// 		alert("이메일 주소를 입력해 주세요."); return;
+				// 	} else if (msg === "non_field_errors") {
+				// 		alert("비밀번호가 틀렸습니다."); return;
+				// 	} else if (msg === "email") {
+				// 		alert('유효한 이메일 주소를 입력하십시오.'); return;
+				// 	} else if (msg === "password") {
+				// 		alert('비밀번호를 입력해 주십시오.'); return;
+				// 	}
+				// }
 			},
 		});
+	};
+
+	const emailChange = () => {
+		setEmail(document.getElementById('email').value);
+		$($(errorRef.current).next()[0]).addClass("hidden");
+	};
+
+	const passwordChange = () => {
+		setPassword(document.getElementById('password').value);
+		$($(errorRef.current).next()[0]).addClass("hidden");
 	};
 
 	const handleKeyPress = (e) => {
@@ -92,60 +107,65 @@ const Login = () => {
 	};
 
 	return (
-		<div>
-			<header id="header" className="header">
-				<div className="inr-c">
-					<h2 className="tit">로그인</h2>
-					<div className="lft">
-						<button type="button" className="btn-back c-white" onClick={() => navigate(-1)}>
-							<span className="i-aft i_back">뒤로</span>
-						</button>
+		<>
+			<div id="loading">
+				<img src={require("../../assets/images/kiinLoading.png")} style={{ width: '100%' }} />
+			</div>
+			<div id="NotLoading">
+				<header id="header" className="header">
+					<div className="inr-c">
+						<h2 className="tit">로그인</h2>
+						<div className="lft">
+							<button type="button" className="btn-back c-white" onClick={() => navigate(-1)}>
+								<span className="i-aft i_back">뒤로</span>
+							</button>
+						</div>
 					</div>
-				</div>
-			</header>
+				</header>
 
-			<div id="container" className="container sub member">
-				<div className="inr-c">
-					<div className="area_member login">
+				<div id="container" className="container sub member">
+					<div className="inr-c">
+						<div className="area_member login">
 
-						<div className="mb20">
-							<span className="ico"><i className="i-set i_id"></i></span>
-							<input type="text" id="email" className="inp_txt w100p" placeholder="이메일 주소를 입력해 주세요"
-								value={email} onChange={(e) => { setEmail(e.target.value); }} />
+							<div className="mb20">
+								<span className="ico"><i className="i-set i_id"></i></span>
+								<input type="text" id="email" className="inp_txt w100p" placeholder="이메일 주소를 입력해 주세요"
+									value={email} onChange={emailChange} />
+							</div>
+							<div className="mb30" ref={errorRef}>
+								<span className="ico"><i className="i-set i_pw"></i></span>
+								<input type="password" id="password" className="inp_txt w100p" placeholder="비밀번호를 입력해 주세요"
+									value={password} onChange={passwordChange} onKeyDown={handleKeyPress} />
+							</div>
+							<p className="t_error mb30 hidden">아이디와 비밀번호를 정확하게 입력해주세요.</p>
+							<div className="mb10">
+								<label className="inp_checkbox2 mr60 va-t">
+									<input type="checkbox" checked={leftBox} onChange={onChangeLeftBox} />
+									<span>로그인 유지하기</span>
+								</label>
+								<label className="inp_checkbox2 va-t">
+									<input type="checkbox" checked={rightBox} onChange={onChangeRightBox} />
+									<span>아이디 기억하기</span>
+								</label>
+							</div>
+							<button type="button" onClick={onSignIn} className="btn-pk s blue w100p bdrs"><span>로그인</span></button>
+							<div className="t_txt mt40">
+								<p className="l">아직 회원이 아니시라구요?</p>
+								<p className="r"><Link to="/certification" className="c-blue">회원가입</Link></p>
+							</div>
+							{/*<div className="t_txt mt40">*/}
+							{/*	<p className="l">아이디를 잊으셨나요?</p>*/}
+							{/*	<p className="r"><Link to="/findid" className="c-blue">아이디 찾기</Link></p>*/}
+							{/*</div>*/}
+							{/*<div className="t_txt mt30">*/}
+							{/*	<p className="l">비밀번호를 잊으셨나요?</p>*/}
+							{/*	<p className="r"><Link to="/findpw" className="c-blue">비밀번호 찾기</Link></p>*/}
+							{/*</div>*/}
 						</div>
-						<div className="mb30" ref={errorRef}>
-							<span className="ico"><i className="i-set i_pw"></i></span>
-							<input type="password" id="password" className="inp_txt w100p" placeholder="비밀번호를 입력해 주세요"
-								value={password} onChange={(e) => setPassword(e.target.value)} onKeyDown={handleKeyPress} />
-						</div>
-						<p className="t_error mb30 hidden">아이디와 비밀번호를 정확하게 입력해주세요.</p>
-						<div className="mb10">
-							<label className="inp_checkbox2 mr60 va-t">
-								<input type="checkbox" checked={leftBox} onChange={onChangeLeftBox} />
-								<span>로그인 유지하기</span>
-							</label>
-							<label className="inp_checkbox2 va-t">
-								<input type="checkbox" checked={rightBox} onChange={onChangeRightBox} />
-								<span>아이디 기억하기</span>
-							</label>
-						</div>
-						<button type="button" onClick={onSignIn} className="btn-pk s blue w100p bdrs"><span>로그인</span></button>
-						<div className="t_txt mt40">
-							<p className="l">아직 회원이 아니시라구요?</p>
-							<p className="r"><Link to="/certification" className="c-blue">회원가입</Link></p>
-						</div>
-						{/*<div className="t_txt mt40">*/}
-						{/*	<p className="l">아이디를 잊으셨나요?</p>*/}
-						{/*	<p className="r"><Link to="/findid" className="c-blue">아이디 찾기</Link></p>*/}
-						{/*</div>*/}
-						{/*<div className="t_txt mt30">*/}
-						{/*	<p className="l">비밀번호를 잊으셨나요?</p>*/}
-						{/*	<p className="r"><Link to="/findpw" className="c-blue">비밀번호 찾기</Link></p>*/}
-						{/*</div>*/}
 					</div>
 				</div>
 			</div>
-		</div>
+		</>
 	);
 };
 

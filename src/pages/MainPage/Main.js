@@ -8,7 +8,6 @@ import $ from "jquery";
 
 const Main = () => {
 	// const isMounted = useIsMounted()
-	const accessTknRefresh = useAccessTknRefresh();
 	const navigate = useNavigate();
 	const location = useLocation();
 	const [username, setUsername] = useState("");
@@ -49,16 +48,18 @@ const Main = () => {
 	/* findout currently logged in user */
 	useEffect(() => {
 		let isMounted = true;
+		const accessTknRefresh = useAccessTknRefresh;
 		$.ajax({
 			async: false, type: 'GET',
 			url: "https://dev.odoc-api.com/member/member_display?member_id=" + sessionStorage.getItem("user_pk"),
+			beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh()),
 			success: (response) => {
 				if (isMounted)
 					setUsername(response[0].username);
 			},
 			error: (response) => {
 				console.log("error", response);
-				alert("login failed.");
+				alert("다시 로그인 해주세요.");
 				const logout = useLogout;
 				logout();
 			},
@@ -84,10 +85,11 @@ const Main = () => {
 	/* loading recommended products */
 	const recommendProduct = () => {
 		let isMounted = true;
+		const accessTknRefresh = useAccessTknRefresh;
 		$.ajax({
 			async: true, type: 'GET',
 			url: "https://dev.odoc-api.com/recommendation/list?member_id=" + sessionStorage.getItem("user_pk"),
-			beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
+			beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh()),
 			success: (response) => {
 				if (isMounted)
 					setRecommendedProd(response.result);
@@ -123,7 +125,6 @@ const Main = () => {
 		$.ajax({
 			async: true, type: "GET",
 			url: "https://dev.odoc-api.com/member_product/product_like_display?member_id=" + sessionStorage.getItem("user_pk"),
-			beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
 			success: (response) => {
 				response.map((v) => {
 					const product_id = v.like_product.product_id;
@@ -132,14 +133,11 @@ const Main = () => {
 				});
 			},
 			error: (response) => {
-				if (response.statusText === "Unauthorized") {
-					sessionStorage.setItem("access_token", accessTknRefresh());
-					navigate(0);
-				}
+				console.log(response);
 			},
 		});
 		return () => isMounted = false;
-	}, []);
+	});
 
 
 	/* coloring bottom navigation bar icons */
@@ -160,7 +158,6 @@ const Main = () => {
 		$.ajax({
 			async: false, type: "GET",
 			url: "https://dev.odoc-api.com/member_product/product_like_display?member_id=" + sessionStorage.getItem("user_pk"),
-			beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
 			success: (response) => {
 				info = response;
 				for (let i = 0; i < info.length; i++) {
@@ -172,7 +169,7 @@ const Main = () => {
 			},
 			error: (response) => { console.log(response); }
 		});
-	});
+	}, []);
 
 
 	/* find products user wants to try */
@@ -203,6 +200,7 @@ const Main = () => {
 
 
 	const likeProduct = (product_id) => {
+		const accessTknRefresh = useAccessTknRefresh;
 		$.ajax({
 			async: true, type: "POST",
 			url: "https://dev.odoc-api.com/member_product/product_like",
@@ -211,7 +209,7 @@ const Main = () => {
 				"member_id": sessionStorage.getItem("user_pk")
 			},
 			dataType: "json",
-			beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
+			beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh()),
 			success: (response) => {
 				const element = document.getElementsByName(product_id);
 				$(element).toggleClass("on");
@@ -337,7 +335,7 @@ const Main = () => {
 							<div className="col">
 								<img src={require('../../assets/images/common/img_ad2.jpg')} />
 								<div className="txt">
-									<p className="t1" style={{color: "#0d47ca"}}>키인 사용 설명서</p>
+									<p className="t1" style={{ color: "#0d47ca" }}>키인 사용 설명서</p>
 									<p className="t2">손쉬운 키인 사용법 <br /><strong>배워보아요!</strong></p>
 								</div>
 							</div>
@@ -346,7 +344,7 @@ const Main = () => {
 						<div className="col">
 							<img src={require('../../assets/images/common/img_ad1.jpg')} />
 							<div className="txt">
-								<p className="t1" style={{color: "#972c1d"}}>나한테 딱 맞는 제품 찾기</p>
+								<p className="t1" style={{ color: "#972c1d" }}>나한테 딱 맞는 제품 찾기</p>
 								<p className="t2"><strong>{username}</strong>님을 위한 <br />봄철 수분관리 팁! (Coming Soon)</p>
 							</div>
 						</div>

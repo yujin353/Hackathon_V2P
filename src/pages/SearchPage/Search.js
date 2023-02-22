@@ -19,7 +19,6 @@ const Search = () => {
     let [likeProducts, setLikeProducts] = useState([]);
     const [after, setAfter] = useState("");
     let latestLikeProducts = useRef(likeProducts);
-    const accessTknRefresh = useAccessTknRefresh();
 
     /* coloring bottom navigation bar icons */
     useEffect(() => {
@@ -92,10 +91,11 @@ const Search = () => {
     /* retrieves user's favorite product */
     useEffect(() => {
         let isMounted = true;
+        const accessTknRefresh = useAccessTknRefresh;
         $.ajax({
             async: true, type: "GET",
             url: "https://dev.odoc-api.com/member_product/product_like_display?member_id=" + sessionStorage.getItem("user_pk"),
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh()),
             success: (response) => {
                 response.map((v) => {
                     const product_id = v.like_product.product_id;
@@ -104,10 +104,7 @@ const Search = () => {
                 });
             },
             error: (response) => {
-                if (response.statusText === "Unauthorized") {
-                    sessionStorage.setItem("access_token", accessTknRefresh());
-                    navigate(0);
-                }
+                console.log(response);
             },
         });
         return () => isMounted = false;
@@ -139,6 +136,7 @@ const Search = () => {
     };
 
     const likeProduct = (product_id) => {
+        const accessTknRefresh = useAccessTknRefresh;
         $.ajax({
             async: true, type: "POST",
             url: "https://dev.odoc-api.com/member_product/product_like",
@@ -147,7 +145,7 @@ const Search = () => {
                 "member_id": sessionStorage.getItem("user_pk")
             },
             dataType: "json",
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh()),
             success: (response) => {
                 const element = document.getElementsByName(product_id);
                 $(element).toggleClass("on");

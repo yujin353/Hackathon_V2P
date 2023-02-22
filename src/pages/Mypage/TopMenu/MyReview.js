@@ -5,15 +5,15 @@ import $ from "jquery";
 
 const MyReview = () => {
     const navigate = useNavigate();
-    const accessTknRefresh = useAccessTknRefresh();
     const [reviewList, setReviewList] = useState([]);
 
     useEffect(() => {
+        const accessTknRefresh = useAccessTknRefresh;
         $.ajax({
             async: true,
             url: "https://dev.odoc-api.com/member_product/review_member?member_id=" + sessionStorage.getItem("user_pk"),
             type: "GET",
-            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
+            beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh()),
             success: function (response) {
                 setReviewList(response.reverse());
             },
@@ -24,11 +24,12 @@ const MyReview = () => {
     }, []);
 
     const deleteReview = (review_id) => {
+        const accessTknRefresh = useAccessTknRefresh;
         if (window.confirm("정말 삭제하시겠습니까?") === true) {
             $.ajax({
                 async: true, type: "DELETE",
                 url: `https://dev.odoc-api.com/member_product/member_review_delete/${review_id}`,
-                beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
+                beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh()),
                 success: (response) => {
                     alert("리뷰가 삭제되었습니다.");
                     window.location.reload();
