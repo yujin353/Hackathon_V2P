@@ -94,7 +94,7 @@ const Interest = () => {
             dataType: "json",
             beforeSend: (xhr) => xhr.setRequestHeader("Authorization", "Bearer " + accessTknRefresh),
             success: function (response) {
-                if (response.message === "Like") alert("관심리뷰에 추가되었습니다.");
+                if (response.message === "LIKE") alert("관심리뷰에 추가되었습니다.");
                 else alert("관심리뷰에서 제거되었습니다.");
             },
             error: (response) => console.log(response),
