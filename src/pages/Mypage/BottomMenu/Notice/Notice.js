@@ -10,8 +10,11 @@ const Notice = () => {
     useEffect(() => {
         $.ajax({
             async: true, type: "GET",
-            url: "https://dev.odoc-api.com/event/list",
-            success: (response) => setNoticeList(response),
+            url: "https://dev.odoc-api.com/notice/list",
+            success: (response) => {
+                console.log(response)
+                setNoticeList(response)
+            },
             error: (response) => console.log(response),
         });
     }, [])

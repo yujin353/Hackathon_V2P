@@ -18,22 +18,44 @@ const View = () => {
     const [count, setCount] = useState(1);
     const [recommend, setRecommend] = useState([]);
     let [likeProducts, setLikeProducts] = useState([]);
-    let latestLikeProducts = useRef(likeProducts);
+    let latestLikeProducts = useRef(likeProducts)
+    const [sortMatching, setSortMatching] = useState(false);
 
     useEffect(() => {
         $.ajax({
             async: false, type: 'GET',
-            url: "https://dev.odoc-api.com/product/search?word=" + input,
+            url: "https://dev.odoc-api.com/product/search?member_id="+ sessionStorage.getItem("user_pk") + "&word=" + input,
             success: (response) => {
-                if (response.result.length === 0) setEmpty(true);
-                setResults(response.result);
+                if (response.results.length === 0) setEmpty(true);
+                setResults(response.results);
             },
             error: (response) => console.log(response)
         });
     }, [searchPressed]);
 
     const matching = () => {
+        setSortMatching(!sortMatching)
+        let matching = [];
+        results.map((v) => {
+            matching.push(v.MatchingRate);
+        });
+        matching.sort().reverse();
 
+        let temp = [];
+        let len = matching.length;
+        for (let i = 0; i < len; i++) {
+            results.map((v) => {
+                if (v.MatchingRate == matching[i]) {
+                    temp[i] = v;
+                    v.MatchingRate += 100.0;
+                }
+            })
+        }
+        temp.map((v) => {
+            v.MatchingRate -= 100.0;
+            v.MatchingRate = v.MatchingRate.toFixed(2);
+        })
+        setResults(temp)
     };
 
     // /* autoSearchResults */
@@ -224,17 +246,17 @@ const View = () => {
                         <div className="area_search1">
                             <div className="lst_prd2">
                                 <h2 className="h_tit2"><span className="c-blue">{results.length}개</span>의 검색결과가 있습니다.</h2>
-                                {/*<select className="select1 hd_ty2"*/}
-                                {/*        onChange={(e) => {*/}
-                                {/*            if (e.target.value == "abc") matching();*/}
-                                {/*            else setSearchPressed(!searchPressed);*/}
-                                {/*        }}>*/}
-                                {/*    <option value="">정렬</option>*/}
-                                {/*    <option value="abc">가나다 순</option>*/}
-                                {/*    <option value="matching">피부매칭율 순</option>*/}
-                                {/*</select>*/}
+                                <select className="select1 hd_ty2"
+                                        onChange={(e) => {
+                                            if (e.target.value == "matching") matching();
+                                            else setSearchPressed(!searchPressed);
+                                        }}>
+                                    <option value="">정렬</option>
+                                    <option value="abc">가나다 순</option>
+                                    <option value="matching">피부적합도 순</option>
+                                </select>
                                 <ul id="prod_list">
-                                    {results.map((v) => {
+                                    {results.map((v, i) => {
                                         return (
                                             <li className="prod" key={v.ID}>
                                                 <div className="thumb">
@@ -252,6 +274,7 @@ const View = () => {
                                                     <Link to={`/main/products/${v.ID}`}>
                                                         <p className="t1">{v.Brand}</p>
                                                         <p className="t2">{v.Name}</p>
+                                                        <p className="t3" style={{color: "rgba(20,92,255,0.74)", marginTop: "3vw", marginBottom: "-5vw"}}>피부 적합도 : {v.MatchingRate}</p>
                                                         {/* <p className="t1 mt20"><span className="i-aft i_star">4.6</span></p> */}
                                                     </Link>
                                                     <button

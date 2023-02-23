@@ -6776,5 +6776,27 @@ body.fix {
   }
 }
 .blink {
-  animation: blink-effect 1s step-end 7;
+  animation: blink-effect 1s step-end 3;
+}
+.btn_review {
+  position: absolute;
+  right: 0;
+  bottom: 0vw;
+  color: #92969d;
+}
+.review_point {
+  font-size: 5vw;
+  font-weight: bolder;
+  margin-top: -18vw;
+  margin-bottom: 10.5vw;
+  opacity: 1;
+}
+.review_point.blue {
+  color: #145cff;
+}
+.review_point.red {
+  color: #ff1414;
+}
+.review_point.gray{
+  color: #999999;
 }
