@@ -19,12 +19,12 @@ const View = () => {
     const [recommend, setRecommend] = useState([]);
     let [likeProducts, setLikeProducts] = useState([]);
     let latestLikeProducts = useRef(likeProducts)
-    const [sortMatching, setSortMatching] = useState(false);
+    // const [sortMatching, setSortMatching] = useState(false);
 
     useEffect(() => {
         $.ajax({
             async: false, type: 'GET',
-            url: "https://dev.odoc-api.com/product/search?member_id="+ sessionStorage.getItem("user_pk") + "&word=" + input,
+            url: "https://dev.odoc-api.com/product/search_by_name?word=" + input + "&member_id="+ sessionStorage.getItem("user_pk"),
             success: (response) => {
                 if (response.results.length === 0) setEmpty(true);
                 setResults(response.results);
@@ -34,28 +34,15 @@ const View = () => {
     }, [searchPressed]);
 
     const matching = () => {
-        setSortMatching(!sortMatching)
-        let matching = [];
-        results.map((v) => {
-            matching.push(v.MatchingRate);
+        $.ajax({
+            async: false, type: 'GET',
+            url: "https://dev.odoc-api.com/product/search_by_matching_rate?word=" + input + "&member_id="+ sessionStorage.getItem("user_pk"),
+            success: (response) => {
+                if (response.results.length === 0) setEmpty(true);
+                setResults(response.results);
+            },
+            error: (response) => console.log(response)
         });
-        matching.sort().reverse();
-
-        let temp = [];
-        let len = matching.length;
-        for (let i = 0; i < len; i++) {
-            results.map((v) => {
-                if (v.MatchingRate == matching[i]) {
-                    temp[i] = v;
-                    v.MatchingRate += 100.0;
-                }
-            })
-        }
-        temp.map((v) => {
-            v.MatchingRate -= 100.0;
-            v.MatchingRate = v.MatchingRate.toFixed(2);
-        })
-        setResults(temp)
     };
 
     // /* autoSearchResults */
@@ -103,6 +90,7 @@ const View = () => {
         if (input.trim() === "") {
             setEmpty(true);
         } else {
+            window.location.reload();
             setEmpty(false);
             let day = new Date();
             day.setDate(day.getDate() + 7);
