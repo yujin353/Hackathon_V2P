@@ -234,16 +234,16 @@ const Main = () => {
 
 
 	return (
-		<div>
+		<div style={{width: "98%", marginLeft: "1%"}}>
 			<header id="header" className="header">
 				<div className="inr-c">
 					<h2 className="hidden">메인</h2>
 				</div>
 			</header>
-			<div id="container" className="container main" style={{width: "99%", marginLeft: "0.2%"}}>
+			<div id="container" className="container main" style={{width: "98%", marginLeft: "1%"}}>
 				<div className="top_sch">
 					<div className="inr-c">
-						<div className="in" style={{ width: '100%' }}>
+						<div className="in" style={{ width: '98%' }}>
 							<Link to="/search">
 								<div className="inp_txt">제품을 검색해 보세요</div>
 								<button className="btn">
