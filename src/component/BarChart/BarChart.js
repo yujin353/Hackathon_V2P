@@ -137,7 +137,7 @@ const BarChart = ({ userPK }) => {
         <div className="b_chart">
             <p className="skinType">{myskinType ? myskinType : "undefined"}</p>
             <p className="skinTypeName">{myskinTypeName ? myskinTypeName : "undefined"}</p>
-            <img className="skinTypeImg" src={myskinTypeImg ? myskinTypeImg : "undefined"} />
+            <img className="skinTypeImg" src={myskinTypeImg ? myskinTypeImg : require("../../assets/images/common/bg_reviewbox.jpg")} />
             <p className="skinTypetxt">{myskinTypetxt ? myskinTypetxt : "undefined"}</p>
             <div className="tit">
                 <div className="balancing">

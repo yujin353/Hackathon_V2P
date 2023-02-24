@@ -16,10 +16,6 @@ const Login = () => {
 
 	useEffect(() => {
 		document.getElementById('NotLoading').style.display = "none";
-		if (cookies.load("email")) {
-			setEmail(cookies.load("email"));
-			setRightBox(true);
-		}
 		if (cookies.load("refresh_token")) {
 			setLeftBox(true);
 			const cookieToRefresh = useCookieToRefresh;
@@ -30,6 +26,10 @@ const Login = () => {
 			}
 		}
 		else {
+			if (cookies.load("email")) {
+				setEmail(cookies.load("email"));
+				setRightBox(true);
+			}
 			document.getElementById('loading').style.display = "none";
 			document.getElementById('NotLoading').style.display = "block";
 		}
@@ -111,7 +111,7 @@ const Login = () => {
 			<div id="loading">
 				<img src={require("../../assets/images/kiinLoading.png")} style={{ width: '100%' }} />
 			</div>
-			<div id="NotLoading">
+			<div id="NotLoading" style={{ display: 'none' }}>
 				<header id="header" className="header">
 					<div className="inr-c">
 						<h2 className="tit">로그인</h2>
