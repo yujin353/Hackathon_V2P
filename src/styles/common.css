@@ -2558,7 +2558,7 @@ html {
   top: 0;
 }
 .header .rgh .btn-pk.ss {
-  position: absolute;
+  /* position: absolute; */
   right: 70px;
   right: 9.33333333vw;
   top: 20px;

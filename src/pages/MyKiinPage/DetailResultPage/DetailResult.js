@@ -112,25 +112,26 @@ const DetailResult = () => {
         }
     };
 
-    const onSaveAs = (uri, filename) => {
-        const link = document.createElement('a');
-        document.body.appendChild(link);
-        link.href = uri;
-        link.download = filename;
-        link.click();
-        document.body.removeChild(link);
-    };
+    /* detail result download to Img */
+    // const onSaveAs = (uri, filename) => {
+    //     const link = document.createElement('a');
+    //     document.getElementById('header').appendChild(link);
+    //     link.href = uri;
+    //     link.download = filename;
+    //     link.click();
+    //     document.getElementById('header').removeChild(link);
+    // };
 
-    const downloadImg = () => {
-        if (document.getElementById("imgDownload").classList.contains("blue2")) {
-            $(document.getElementById("imgDownload")).toggleClass("blue");
-            $(document.getElementById("imgDownload")).toggleClass("blue2");
-        }
-        html2canvas(document.getElementById('kiinResult'))
-            .then(canvas => {
-                onSaveAs(canvas.toDataURL('image/png'), `KiiN_${username}.png`);
-            });
-    };
+    // const downloadImg = () => {
+    //     if (document.getElementById("imgDownload").classList.contains("blue2")) {
+    //         $(document.getElementById("imgDownload")).toggleClass("blue");
+    //         $(document.getElementById("imgDownload")).toggleClass("blue2");
+    //     }
+
+    //     html2canvas(document.getElementById('kiinResult')).then(canvas => {
+    //         onSaveAs(canvas.toDataURL('image/jpeg'), `${username}KiiN.jpg`);
+    //     });
+    // };
 
     return (
         <div>
@@ -152,13 +153,13 @@ const DetailResult = () => {
 
             <div id="container" className="container sub myk">
                 <div className="inr-c">
-                    <div className="hd_tit" style={{ margin: '0.5vh 0' }}>
+                    <div className="hd_tit" style={{ margin: '0.1vh 0', marginBottom: '0.6vh' }}>
                         <h2 className="h_tit1" style={{ display: 'inline-block' }}>상세 분석결과</h2>
-                        <button id="imgDownload" type="button" className="btn-pk ss blue2 bdrs" style={{ float: 'right' }} onClick={downloadImg}>
-                            <span>이미지로 저장</span>
-                        </button>
+                        {/* <button id="imgDownload" type="button" className="btn-pk ss blue2 bdrs" style={{ position: 'absolute', right: '0' }} onClick={downloadImg}>
+                            <span>이미지 저장</span>
+                        </button> */}
                     </div>
-                    <div className="d_R_box" id="kiinResult">
+                    <div className="d_R_box" id="kiinResult" style={{ marginTop: '1vh' }}>
                         <BarChart userPK={userPK} />
 
                         <h2 className="h_tit1" style={{ textAlign: "center" }}>부스팅 타겟</h2>
