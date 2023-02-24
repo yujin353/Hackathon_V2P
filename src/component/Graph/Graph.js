@@ -88,7 +88,7 @@ const Graph = ({ userPK }) => {
                     <p>부스팅 타겟은 <strong>{bTarget ? bTarget : "undefined"}</strong>입니다.
                         {bTarget ?
                             <button type="button" className="btn_bmore" ref={btnRef1} onClick={() => navigate(`/mykiin/detailresult?id=${userPK}`)}>
-                                <span>결과가 더 궁금하다면?</span></button>
+                                <span>결과가 더 궁금하다면 클릭해주세요.</span></button>
                             : null}
                     </p>
                 </div>

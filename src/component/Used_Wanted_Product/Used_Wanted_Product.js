@@ -6,6 +6,7 @@ const Used_Wanted_Product = ({ userPK }) => {
     const [used, setUsed] = useState([]);
     const [wanted, setWanted] = useState([]);
     const [username, setUsername] = useState();
+    const [username_len, setUsername_len] = useState();
     const [count, setCount] = useState(6);
     const btnRef1 = useRef(null);
     const btnRef2 = useRef(null);
@@ -25,7 +26,10 @@ const Used_Wanted_Product = ({ userPK }) => {
         $.ajax({
             async: false, type: 'GET',
             url: "https://dev.odoc-api.com/member/member_display?member_id=" + userPK,
-            success: (response) => setUsername(response[0].username),
+            success: (response) => {
+                setUsername_len(response[0].username.length)
+                setUsername(response[0].username)
+            },
             error: (response) => console.log(response)
         });
     }, []);
@@ -35,15 +39,11 @@ const Used_Wanted_Product = ({ userPK }) => {
             async: true, type: "GET",
             url: "https://dev.odoc-api.com/member_product/review_member?member_id=" + userPK,
             success: (response) => {
-                console.log(response)
                 const result = [];
-                // const pid = [];
                 response.map(v => { if (v.product != null) {
                     result.push(v);
-                    // pid.push(v.product.product_id);
                 } });
                 setUsed(result);
-                // setUsedPid(pid);
             },
             error: (response) => console.log(response.results)
         });
@@ -58,19 +58,6 @@ const Used_Wanted_Product = ({ userPK }) => {
         });
     }, []);
 
-    // const showReviewPoint = () => {
-    //     let totPoint = [];
-    //     usedPid.map((id) => {
-    //         $.ajax({
-    //             async: true, type: "GET",
-    //             url: "https://dev.odoc-api.com/member_product/review_average?product_id=" + id,
-    //             success: (response) => totPoint.push(response.message),
-    //             error: (response) => console.log(response),
-    //         });
-    //     })
-    //     setTotalPoint(totPoint);
-    // };
-
     return (
         <>
             <div className="pr-mb2">
@@ -82,10 +69,13 @@ const Used_Wanted_Product = ({ userPK }) => {
                             :
                             <p className="h_txt1"><span>{username}님이 리뷰를 남긴 제품들이에요.</span></p>
                     }
-                    <p className="h_txt1"><span style={{color: "blue", boxShadow: "none", fontWeight: "bolder"}}>{username}</span>님의 평점과 <span style={{color: "black", boxShadow: "none", fontWeight: "bolder"}}>전체평점</span>을 볼 수 있어요.
-                        <button type="button" className="btn_review" ref={btnRef1} onClick={() => {setReviewPoint(!reviewPoint)}}>평점 보기</button>
-                        {/*<button type="button" className="btn_review" ref={btnRef1} onClick={() => setReviewPoint(!reviewPoint)}>평점 보기</button>*/}
-                    </p>
+                    <p className="h_txt1"><span style={{color: "blue", boxShadow: "none", fontWeight: "bolder"}}>{username}</span>님의 평점과 <span style={{color: "black", boxShadow: "none", fontWeight: "bolder"}}>전체평점</span>을 볼 수 있어요.</p>
+                    {
+                        username_len > 7 ?
+                            <p className="h_txt1" style={{marginTop: "-5vw"}}><br /><button type="button" className="btn_review" ref={btnRef1} onClick={() => {setReviewPoint(!reviewPoint)}}>평점 보기</button></p>
+                        :
+                            <p className="h_txt1"><button type="button" className="btn_review" ref={btnRef1} onClick={() => {setReviewPoint(!reviewPoint)}}>평점 보기</button></p>
+                    }
                 </div>
 
                 {
