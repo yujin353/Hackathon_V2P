@@ -129,7 +129,7 @@ const FindId = () => {
                                         </button>
                                     </div>
                                 </div>
-                                <p id="error_1" className="t_error hidden">전화번호를 정확하게 입력해 주세요</p>
+                                <p id="error_1" className="t_error hidden">핸드폰번호를 정확하게 입력해 주세요</p>
                             </div>
                             {timer ? <Timer minute={5} second={0} setTimer={setTimer} /> : <></>}
                             <div>

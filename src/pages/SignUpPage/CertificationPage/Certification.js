@@ -30,7 +30,7 @@ const Certification = () => {
             error: (response) => {
                 setTimer(false);
                 document.getElementById("error_1").className = "t_error";
-                alert('전화번호를 정확하게 입력해 주십시오.');
+                alert('핸드폰번호를 정확하게 입력해 주십시오.');
             }
         });
     };
@@ -84,7 +84,7 @@ const Certification = () => {
                         <h2 className="h_tit1 mb60"><br />본인 확인을 위해 <br />휴대폰 인증을 완료해 주세요.</h2>
                         <div className="box-inp">
                             <div>
-                                <label htmlFor="phone">전화번호 입력</label>
+                                <label htmlFor="phone">핸드폰번호 입력</label>
                                 <div className="ip">
                                     <input type="text" id="phone" name="phone" placeholder="' - '없이 입력해 주세요"
                                         value={phone} onChange={(e) => { setPhone(e.target.value); }}
@@ -99,7 +99,7 @@ const Certification = () => {
                                         </button>
                                     </div>
                                 </div>
-                                <p id="error_1" className="t_error hidden">전화번호를 정확하게 입력해 주세요.</p>
+                                <p id="error_1" className="t_error hidden">핸드폰번호를 정확하게 입력해 주세요.</p>
                             </div>
                             {timer ? <Timer minute={5} second={0} setTimer={setTimer} /> : <></>}
                             <div>

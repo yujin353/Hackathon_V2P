@@ -289,9 +289,7 @@ input[type='tel']:hover::-webkit-outer-spin-button {
   position: relative;
 }
 .inr-c {
-  margin-left: 30px;
   margin-left: 4vw;
-  margin-right: 30px;
   margin-right: 4vw;
 }
 .inr-c-policy {
@@ -6776,7 +6774,7 @@ body.fix {
   }
 }
 .blink {
-  animation: blink-effect 1s step-end 3;
+  animation: blink-effect 1s step-end 7;
 }
 .btn_review {
   position: absolute;
@@ -6784,12 +6782,21 @@ body.fix {
   bottom: 0vw;
   color: #92969d;
 }
+@import url('https://fonts.googleapis.com/css2?family=Mr+Dafoe&display=swap');
 .review_point {
-  font-size: 5vw;
-  font-weight: bolder;
-  margin-top: -18vw;
-  margin-bottom: 10.5vw;
+  font-size: 8vw;
+  margin-top: -24vw;
+  margin-bottom: 2.5vw;
   opacity: 1;
+}
+.review_point .usr {
+  font-family: 'Mr Dafoe', cursive;
+  font-weight: bolder;
+}
+.review_point_average .tot {
+  color: black;
+  font-size: 3vw;
+  margin-bottom: 10vw;
 }
 .review_point.blue {
   color: #145cff;

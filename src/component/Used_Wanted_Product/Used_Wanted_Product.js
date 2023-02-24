@@ -35,6 +35,7 @@ const Used_Wanted_Product = ({ userPK }) => {
             async: true, type: "GET",
             url: "https://dev.odoc-api.com/member_product/review_member?member_id=" + userPK,
             success: (response) => {
+                console.log(response)
                 const result = [];
                 // const pid = [];
                 response.map(v => { if (v.product != null) {
@@ -81,7 +82,7 @@ const Used_Wanted_Product = ({ userPK }) => {
                             :
                             <p className="h_txt1"><span>{username}님이 리뷰를 남긴 제품들이에요.</span></p>
                     }
-                    <p className="h_txt1"><span style={{color: "blue", boxShadow: "none", fontWeight: "bolder"}}>{username}</span>님이 부여한 평점을 볼 수 있어요.
+                    <p className="h_txt1"><span style={{color: "blue", boxShadow: "none", fontWeight: "bolder"}}>{username}</span>님의 평점과 <span style={{color: "black", boxShadow: "none", fontWeight: "bolder"}}>전체평점</span>을 볼 수 있어요.
                         <button type="button" className="btn_review" ref={btnRef1} onClick={() => {setReviewPoint(!reviewPoint)}}>평점 보기</button>
                         {/*<button type="button" className="btn_review" ref={btnRef1} onClick={() => setReviewPoint(!reviewPoint)}>평점 보기</button>*/}
                     </p>
@@ -111,14 +112,13 @@ const Used_Wanted_Product = ({ userPK }) => {
                                                 </div>
                                                 <div className="txt"><Link to={`/main/products/${v.product.product_id}`}>
                                                     {
-                                                        (v.rating) == 5 ?
-                                                            <p className="review_point blue">{v.rating}</p>
-                                                        : (v.rating) == 1 ?
-                                                            <p className="review_point red">{v.rating}</p>
+                                                        (v.rating) >= (v.review_rating_average) ?
+                                                            <p className="review_point blue"><span className="usr">&nbsp;{v.rating}&nbsp;</span></p>
                                                         :
-                                                            <p className="review_point gray">{v.rating}</p>
+                                                            <p className="review_point red"><span className="usr">&nbsp;{v.rating}&nbsp;</span></p>
                                                     }
-                                                    <p className="t1">{v.product.brand.brand_name}</p>
+                                                    <p className="review_point_average"><span className="tot">평균 평점 : {v.review_rating_average}</span></p>
+                                                    <p className="t1" style={{marginTop: "3.57vw"}}>{v.product.brand.brand_name}</p>
                                                     <p className="t2">{v.product.product_name}</p>
                                                 </Link></div>
                                             </li>

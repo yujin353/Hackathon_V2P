@@ -240,7 +240,7 @@ const Main = () => {
 					<h2 className="hidden">메인</h2>
 				</div>
 			</header>
-			<div id="container" className="container main">
+			<div id="container" className="container main" style={{width: "99%", marginLeft: "0.2%"}}>
 				<div className="top_sch">
 					<div className="inr-c">
 						<div className="in" style={{ width: '100%' }}>

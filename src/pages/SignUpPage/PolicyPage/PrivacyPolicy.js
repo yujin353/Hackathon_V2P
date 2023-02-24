@@ -101,7 +101,7 @@ const PrivacyPolicy = () => {
                 <ul className="list_indent2 mgt10">
                     <li className="tt">1&lt; 홈페이지 회원가입 및 관리&gt;
                     </li>
-                    <li>필수항목 : 이메일, 휴대전화번호, 비밀번호 질문과 답, 비밀번호, 로그인ID</li>
+                    <li>필수항목 : 이메일, 핸드폰번호, 비밀번호 질문과 답, 비밀번호, 로그인ID</li>
                     <li>선택항목 : </li>
                 </ul>
                 <ul className="list_indent2 mgt10">
