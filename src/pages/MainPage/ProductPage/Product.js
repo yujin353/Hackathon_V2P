@@ -414,7 +414,43 @@ const Product = () => {
                                 return (
                                     <li className="col" key={v.review_id}>
                                         <div className="tit">
-                                            <div className="thumb" onClick={() => navigate(`/mykiin/neighbor?id=${v.member.member_id}`)}><span><img src={require("../../../assets/images/common/img_nomem.jpg")} /></span></div>
+                                            <div className="thumb" onClick={() => navigate(`/mykiin/neighbor?id=${v.member.member_id}`)}><span>
+                                                {
+                                                    v.type.type_id == 1 ?
+                                                        <img src= {require("../../../assets/images/animal/DRNT.png")} />
+                                                    : v.type.type_id == 2 ?
+                                                        <img src= {require("../../../assets/images/animal/DRNW.png")} />
+                                                    : v.type.type_id == 3 ?
+                                                        <img src= {require("../../../assets/images/animal/DSNT.png")} />
+                                                    : v.type.type_id == 4 ?
+                                                        <img src= {require("../../../assets/images/animal/DSNW.png")} />
+                                                    : v.type.type_id == 5 ?
+                                                        <img src= {require("../../../assets/images/animal/DRPT2.png")} />
+                                                    : v.type.type_id == 6 ?
+                                                        <img src= {require("../../../assets/images/animal/DRPW.png")} />
+                                                    : v.type.type_id == 7 ?
+                                                        <img src= {require("../../../assets/images/animal/DSPT.png")} />
+                                                    : v.type.type_id == 8 ?
+                                                        <img src= {require("../../../assets/images/animal/DSPW.png")} />
+                                                    : v.type.type_id == 9 ?
+                                                        <img src= {require("../../../assets/images/animal/ORNT.png")} />
+                                                    : v.type.type_id == 10 ?
+                                                        <img src= {require("../../../assets/images/animal/ORNW2.png")} />
+                                                    : v.type.type_id == 11 ?
+                                                        <img src= {require("../../../assets/images/animal/OSNT.png")} />
+                                                    : v.type.type_id == 12 ?
+                                                        <img src= {require("../../../assets/images/animal/OSNW.png")} />
+                                                    : v.type.type_id == 13 ?
+                                                        <img src= {require("../../../assets/images/animal/ORPT2.png")} />
+                                                    : v.type.type_id == 14 ?
+                                                        <img src= {require("../../../assets/images/animal/ORPW.png")} />
+                                                    : v.type.type_id == 15 ?
+                                                        <img src= {require("../../../assets/images/animal/OSPT2.png")} />
+                                                    : v.type.type_id == 16 ?
+                                                        <img src= {require("../../../assets/images/animal/OSPW.png")} />
+                                                    : <img src={require("../../../assets/images/common/img_nomem.jpg")} />
+                                                }
+                                            </span></div>
                                             <p className="h1" onClick={() => navigate(`/mykiin/neighbor?id=${v.member.member_id}`)}>{v.member.username}</p>
                                             {/* <p className="t1">피부 유사도 <span className="c-blue">{rand_simil ? rand_simil : "undefined"}%</span></p> */}
                                             {/* <div className="bar_b"><span style={{width: `${rand_simil}%`}}></span></div> */}

@@ -1,8 +1,6 @@
-import React, { useRef } from "react"
-import $ from "jquery";
+import React from "react"
 
 const Description_Test_Result_Item = () => {
-    const btnRef2 = useRef(null)
 
     return (
         <>
@@ -32,19 +30,6 @@ const Description_Test_Result_Item = () => {
                     </div>
                 </div>
             </div>
-            <button type="button" id="btn_box_more" className="btn-pk s blue2 bdrs w100p" ref={btnRef2} style={{marginTop: "3vw"}}
-                    onClick={() => {
-                        $(btnRef2.current).children(".i-aft").toggleClass("i_arr_b1 i_arr_b2")
-                        if ($(btnRef2.current).children(".i-aft").contents()[0].data === "평가 항목 세부 설명 보기") {
-                            $(btnRef2.current).children(".i-aft").contents()[0].data = "닫기"
-                            $(btnRef2.current).prev().show()
-                        } else {
-                            $(btnRef2.current).children(".i-aft").contents()[0].data = "평가 항목 세부 설명 보기"
-                            $(btnRef2.current).prev().hide()
-                        }
-                    }}>
-                <span className="i-aft i_arr_b1">평가 항목 세부 설명 보기</span>
-            </button>
         </>
     )
 }

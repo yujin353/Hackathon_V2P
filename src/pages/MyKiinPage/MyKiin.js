@@ -7,7 +7,7 @@ import $ from "jquery";
 const MyKiin = () => {
     const [tested, setTested] = useState(false);
     const [userList, setUserList] = useState([]);
-
+    const [myskinTypeImg, setMyskinTypeImg] = useState("");
     const [count, setCount] = useState(3);
 
     useEffect(() => {
@@ -61,6 +61,74 @@ const MyKiin = () => {
         return () => isMounted = false;
     };
 
+    /* find skin type */
+    useEffect(() => {
+        $.ajax({
+            async: false, type: "GET",
+            url: "https://dev.odoc-api.com/member/my_skin?member_id=" + sessionStorage.getItem("user_pk"),
+            success: (response) => {
+                const results = response[0];
+                if (results === undefined) return;
+                skinTypeName(results.do_alphabet + results.rs_alphabet + results.np_alphabet + results.tw_alphabet);
+            },
+            error: (response) => console.log(response)
+        });
+    }, []);
+
+    /* set same skin type user img */
+    const skinTypeName = (myskinType) => {
+        switch (myskinType) {
+            case 'DSPW':
+                setMyskinTypeImg(require("../../assets/images/animal/DSPW.png"));
+                break;
+            case 'DSPT':
+                setMyskinTypeImg(require("../../assets/images/animal/DSPT.png"));
+                break;
+            case 'DSNW':
+                setMyskinTypeImg(require("../../assets/images/animal/DSNW.png"));
+                break;
+            case 'DSNT':
+                setMyskinTypeImg(require("../../assets/images/animal/DSNT.png"));
+                break;
+            case 'DRPW':
+                setMyskinTypeImg(require("../../assets/images/animal/DRPW.png"));
+                break;
+            case 'DRPT':
+                setMyskinTypeImg(require("../../assets/images/animal/DRPT.png"));
+                break;
+            case 'DRNW':
+                setMyskinTypeImg(require("../../assets/images/animal/DRNW.png"));
+                break;
+            case 'DRNT':
+                setMyskinTypeImg(require("../../assets/images/animal/DRNT.png"));
+                break;
+            case 'OSPW':
+                setMyskinTypeImg(require("../../assets/images/animal/OSPW.png"));
+                break;
+            case 'OSPT':
+                setMyskinTypeImg(require("../../assets/images/animal/OSPT.png"));
+                break;
+            case 'OSNW':
+                setMyskinTypeImg(require("../../assets/images/animal/OSNW.png"));
+                break;
+            case 'OSNT':
+                setMyskinTypeImg(require("../../assets/images/animal/OSNT.png"));
+                break;
+            case 'ORPW':
+                setMyskinTypeImg(require("../../assets/images/animal/ORPW.png"));
+                break;
+            case 'ORPT':
+                setMyskinTypeImg(require("../../assets/images/animal/ORPT.png"));
+                break;
+            case 'ORNW':
+                setMyskinTypeImg(require("../../assets/images/animal/ORNW.png"));
+                break;
+            case 'ORNT':
+                setMyskinTypeImg(require("../../assets/images/animal/ORNT.png"));
+                break;
+        }
+    };
+
     useEffect(() => {
         let pathname = $(window.location).attr('pathname');
         if (pathname.startsWith("/test")) $("#fmenu1").addClass("on");
@@ -107,7 +175,7 @@ const MyKiin = () => {
                             {userList.slice(0, count).map((v) => {
                                 return (
                                     <li key={v.member_id}><Link to={`/mykiin/neighbor?id=${v.member_id}`} className="b">
-                                        <div className="im"><img src={require("../../assets/images/common/img_nomem.jpg")}></img></div>
+                                        <div className="im"><img src={myskinTypeImg ? myskinTypeImg : require("../../assets/images/common/img_nomem.jpg")} /></div>
                                         <p className="t1"><strong>{v.username}</strong>님</p>
                                         <p className="t2"><span className="i-aft i_arr1">키인</span></p>
                                     </Link></li>
