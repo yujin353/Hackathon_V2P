@@ -11,13 +11,6 @@ const Neighbor = () => {
     const userID = searchParams.get("id");
     const FbtnRef = useRef(null);
     const UbtnRef = useRef(null);
-    const btnRef1 = useRef(null);
-    const btnRef2 = useRef(null);
-    const btnRef3 = useRef(null);
-    const btnRef4 = useRef(null);
-    const btnRef5 = useRef(null);
-    const btnRef6 = useRef(null);
-    const [bScore, setBScore] = useState([]);
     const [reviewList, setReviewList] = useState([]);
 
     const rating_className = ["i_review_bad", "i_review_normal", "i_review_normal", "i_review_normal", "i_review_good"];
@@ -30,6 +23,7 @@ const Neighbor = () => {
             window.scrollTo(0, 0);
     }, []);
 
+    /* load page owner name */
     useEffect(() => {
         $.ajax({
             async: false, type: 'GET',
@@ -39,6 +33,7 @@ const Neighbor = () => {
         });
     }, []);
 
+    /* If I follow, show on the button */
     useEffect(() => {
         const accessTknRefresh = useAccessTknRefresh;
         $.ajax({
@@ -108,6 +103,7 @@ const Neighbor = () => {
         return result;
     };
 
+    /* add or delete friends user followed */
     const follow = () => {
         const accessTknRefresh = useAccessTknRefresh;
         $.ajax({
@@ -131,6 +127,7 @@ const Neighbor = () => {
         });
     };
 
+    /* add or delete user like review */
     const likeReview = (review_id) => {
         const element = document.getElementById(review_id);
         const accessTknRefresh = useAccessTknRefresh;
