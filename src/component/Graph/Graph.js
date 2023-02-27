@@ -19,6 +19,7 @@ const Graph = ({ userPK }) => {
     const btnRef1 = useRef(null);
     const navigate = useNavigate();
 
+    /* data to be used in the polar graph */
     const data = {
         labels: ['밸런싱', '견고성', '균일성', '탄력성', '안정성'],
         datasets: [
@@ -51,6 +52,7 @@ const Graph = ({ userPK }) => {
         }
     };
 
+    /* set skin type test score */
     useEffect(() => {
         $.ajax({
             async: false, type: "GET",

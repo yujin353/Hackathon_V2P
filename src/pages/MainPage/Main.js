@@ -198,7 +198,7 @@ const Main = () => {
 		}
 	};
 
-
+	/* Add or delete product list of interest */
 	const likeProduct = (product_id) => {
 		const accessTknRefresh = useAccessTknRefresh;
 		$.ajax({

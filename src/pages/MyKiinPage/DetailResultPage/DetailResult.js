@@ -19,6 +19,7 @@ const DetailResult = () => {
         window.scrollTo(0, 0);
     }, []);
 
+    /* load user boosting targer */
     useEffect(() => {
         $.ajax({
             async: false, type: "GET",
@@ -33,6 +34,7 @@ const DetailResult = () => {
         });
     }, []);
 
+    /* load user name */
     useEffect(() => {
         $.ajax({
             async: false, type: 'GET',

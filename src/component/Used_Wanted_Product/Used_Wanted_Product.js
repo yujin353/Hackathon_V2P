@@ -22,6 +22,7 @@ const Used_Wanted_Product = ({ userPK }) => {
         else return 'N';
     };
 
+    /* get page owner name length */
     useEffect(() => {
         $.ajax({
             async: false, type: 'GET',
@@ -34,6 +35,7 @@ const Used_Wanted_Product = ({ userPK }) => {
         });
     }, []);
 
+    /* load page owner-created reviews */
     useEffect(() => {
         $.ajax({
             async: true, type: "GET",
@@ -49,6 +51,7 @@ const Used_Wanted_Product = ({ userPK }) => {
         });
     }, []);
 
+    /* load page owner favorite products */
     useEffect(() => {
         $.ajax({
             async: true, type: "GET",
@@ -71,7 +74,7 @@ const Used_Wanted_Product = ({ userPK }) => {
                     }
                     <p className="h_txt1"><span style={{color: "blue", boxShadow: "none", fontWeight: "bolder"}}>{username}</span>님의 평점과 <span style={{color: "black", boxShadow: "none", fontWeight: "bolder"}}>전체평점</span>을 볼 수 있어요.</p>
                     {
-                        username_len > 7 ?
+                        username_len >= 8 ?
                             <p className="h_txt1" style={{marginTop: "-5vw"}}><br /><button type="button" className="btn_review" ref={btnRef1} onClick={() => {setReviewPoint(!reviewPoint)}}>평점 보기</button></p>
                         :
                             <p className="h_txt1"><button type="button" className="btn_review" ref={btnRef1} onClick={() => {setReviewPoint(!reviewPoint)}}>평점 보기</button></p>

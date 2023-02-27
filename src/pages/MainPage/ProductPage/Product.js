@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Wordcloud } from "../../../component";
 import { useAccessTknRefresh, useLogout } from "../../../hooks";
-import { getProductGredients } from "../../../api/product";
 import $ from "jquery";
 
 const Product = () => {
@@ -131,6 +130,7 @@ const Product = () => {
         });
     };
 
+    /* Show hearts on user-favorite-review */
     useEffect(() => {
         $.ajax({
             async: true, type: "GET",
@@ -191,6 +191,7 @@ const Product = () => {
         }
     };
 
+    /* Add or delete product list of interest */
     const likeProduct = (product_id) => {
         const accessTknRefresh = useAccessTknRefresh;
         $.ajax({
@@ -223,18 +224,6 @@ const Product = () => {
             error: (response) => console.log(response),
         });
     };
-
-    // const initProductGredient = async () => {
-    //     const res = await getProductGredients({
-    //         productId: params.id,
-    //         memberId: sessionStorage.getItem("user_pk")
-    //     });
-    //     console.log(res)
-    //     setProductIngredients(res?.data?.results);
-    // };
-    // useEffect(() => {
-    //     initProductGredient();
-    // }, [params.id]);
 
     useEffect(() => {
         $.ajax({

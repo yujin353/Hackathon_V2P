@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import $ from "jquery";
 
 const BarChart = ({ userPK }) => {
-    const [testScore, setTestScore] = useState([]);
     const [myskinType, setMyskinType] = useState(undefined);
     const [myskinTypeName, setMyskinTypeName] = useState("");
     const [myskinTypeImg, setMyskinTypeImg] = useState("");
@@ -16,6 +15,7 @@ const BarChart = ({ userPK }) => {
     const [np_alpha, setNp_alpha] = useState([]);
     const [tw_alpha, setTw_alpha] = useState([]);
 
+    /* set skin type test score */
     useEffect(() => {
         $.ajax({
             async: false, type: "GET",
@@ -29,18 +29,11 @@ const BarChart = ({ userPK }) => {
                 setNp_alpha(results.np_alphabet);
                 setTw_alpha(results.tw_alphabet);
 
-                setTestScore(() => {
-                    const result = [];
-                    setD_O(((results.do_score - 4) * 100 / 12).toFixed(0));
-                    setR_S(100 - ((results.rs_score - 6) * 100 / 18).toFixed(0));
-                    setN_P(100 - ((results.np_score - 4) * 100 / 12).toFixed(0));
-                    setT_W(100 - ((results.tw_score - 6) * 100 / 18).toFixed(0));
-                    result.push(D_O);
-                    result.push(R_S);
-                    result.push(N_P);
-                    result.push(T_W);
-                    return result;
-                });
+                setD_O(((results.do_score - 4) * 100 / 12).toFixed(0));
+                setR_S(100 - ((results.rs_score - 6) * 100 / 18).toFixed(0));
+                setN_P(100 - ((results.np_score - 4) * 100 / 12).toFixed(0));
+                setT_W(100 - ((results.tw_score - 6) * 100 / 18).toFixed(0));
+
                 setMyskinType(results.do_alphabet + results.rs_alphabet + results.np_alphabet + results.tw_alphabet);
                 skinTypeName(results.do_alphabet + results.rs_alphabet + results.np_alphabet + results.tw_alphabet);
             },
@@ -48,6 +41,7 @@ const BarChart = ({ userPK }) => {
         });
     }, []);
 
+    /* set Skin type Nicknames and Descriptions */
     const skinTypeName = (myskinType) => {
         switch (myskinType) {
             case 'DSPW':

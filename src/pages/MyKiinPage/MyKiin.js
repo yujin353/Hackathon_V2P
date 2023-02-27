@@ -5,14 +5,6 @@ import { useAccessTknRefresh } from "../../hooks";
 import $ from "jquery";
 
 const MyKiin = () => {
-    const btnRef1 = useRef(null);
-    const btnRef2 = useRef(null);
-    const btnRef3 = useRef(null);
-    const btnRef4 = useRef(null);
-    const btnRef5 = useRef(null);
-    const btnRef6 = useRef(null);
-    const [modal1, setModal1] = useState(false);
-    const [modal2, setModal2] = useState(false);
     const [tested, setTested] = useState(false);
     const [userList, setUserList] = useState([]);
 
