@@ -85,12 +85,12 @@ const Graph = ({ userPK }) => {
         <>
             <div className="area_type"><PolarArea data={data} options={options} /></div>
             <div className="txt_box1 pr-mb1">
-                <p className="tit">내 피부 타입은 <strong className="c-blue">{myskinType ? myskinType : "undefined"}</strong> 입니다.</p>
                 <div className="box">
-                    <p>부스팅 타겟은 <strong>{bTarget ? bTarget : "undefined"}</strong>입니다.
+                    <p style={{ fontSize: '4vw', height: '6vw' }}>내 피부 타입은 <strong className="c-blue">{myskinType ? myskinType : "undefined"}</strong> 입니다.</p>
+                    <p style={{ fontSize: '4vw', height: '18vw' }}>부스팅 타겟은 <strong className="c-blue">{bTarget ? bTarget : "undefined"}</strong>입니다.
                         {bTarget ?
                             <button type="button" className="btn_bmore" ref={btnRef1} onClick={() => navigate(`/mykiin/detailresult?id=${userPK}`)}>
-                                <span>결과가 더 궁금하다면 클릭해주세요.</span></button>
+                                <span className="i-aft i_link1">결과 상세분석</span></button>
                             : null}
                     </p>
                 </div>
