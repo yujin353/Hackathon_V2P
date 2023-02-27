@@ -6784,19 +6784,20 @@ body.fix {
 }
 @import url('https://fonts.googleapis.com/css2?family=Mr+Dafoe&display=swap');
 .review_point {
+  text-align: center;
   font-size: 8vw;
   margin-top: -24vw;
   margin-bottom: 2.5vw;
-  opacity: 1;
 }
 .review_point .usr {
   font-family: 'Mr Dafoe', cursive;
   font-weight: bolder;
 }
-.review_point_average .tot {
+.review_point_average {
+  width: 100%;
+  text-align: center;
   color: black;
   font-size: 3vw;
-  margin-bottom: 10vw;
 }
 .review_point.blue {
   color: #145cff;
