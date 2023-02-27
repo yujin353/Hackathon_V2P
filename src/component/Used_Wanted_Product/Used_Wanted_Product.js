@@ -99,16 +99,18 @@ const Used_Wanted_Product = ({ userPK }) => {
                                                     <button type="button" className="btn_del">
                                                         <span className="i-set i_del_b">삭제</span>
                                                     </button>
+                                                    <Link to={`/main/products/${v.product.product_id}`}>
+                                                        {
+                                                            (v.rating) >= (v.review_rating_average) ?
+                                                                <p className="review_point blue"><span className="usr">{v.rating}</span></p>
+                                                            :
+                                                                <p className="review_point red"><span className="usr">{v.rating}</span></p>
+                                                        }
+                                                        <p className="review_point_average">평균 평점 : {v.review_rating_average.toFixed(2)}</p>
+                                                    </Link>
                                                 </div>
                                                 <div className="txt"><Link to={`/main/products/${v.product.product_id}`}>
-                                                    {
-                                                        (v.rating) >= (v.review_rating_average) ?
-                                                            <p className="review_point blue"><span className="usr">&nbsp;{v.rating}&nbsp;</span></p>
-                                                        :
-                                                            <p className="review_point red"><span className="usr">&nbsp;{v.rating}&nbsp;</span></p>
-                                                    }
-                                                    <p className="review_point_average"><span className="tot">평균 평점 : {v.review_rating_average}</span></p>
-                                                    <p className="t1" style={{marginTop: "3.57vw"}}>{v.product.brand.brand_name}</p>
+                                                    <p className="t1">{v.product.brand.brand_name}</p>
                                                     <p className="t2">{v.product.product_name}</p>
                                                 </Link></div>
                                             </li>
@@ -126,7 +128,7 @@ const Used_Wanted_Product = ({ userPK }) => {
                                     return (
                                         duplicate === 'N' ?
                                             <li key={v + i}>
-                                                <div className="thumb" style={{perspective: "300px", transform: "rotateY(-180deg)", transition: ".4s"}}>
+                                                <div className="thumb" style={{perspective: "300px", transform: "rotateY(-360deg)", transition: ".4s"}}>
                                                     <Link to={`/main/products/${v.product.product_id}`}>
                                                         <span className="im" style={{ backgroundImage: `url(${v.product.product_img_path})` }}></span>
                                                     </Link>
