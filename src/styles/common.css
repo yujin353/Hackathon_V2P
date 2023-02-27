@@ -3589,6 +3589,20 @@ html {
   box-shadow: 1vw 1.2vw rgba(158, 184, 242, 0.6);
   padding: 0.3vw 2vw;
   margin: 1.5vw 1vw;
+  height: 8vw;
+}
+.btn_bmore2 {
+  position: relative;
+  left: 70vw;
+  background-color: white;
+  border: 1px solid #9eb8f2;
+  border-radius : 4vw;
+  box-shadow: 1vw 1.2vw rgba(158, 184, 242, 0.6);
+  padding: 0.3vw 2vw 1vw 1vw;
+  margin-top: -5vw;
+  margin-bottom: 14vw;
+  height: 7vw;
+  font-size: 3vw;
 }
 .btn_fix {
   z-index: 1;
@@ -3621,9 +3635,6 @@ html {
   box-sizing: border-box;
 }
 .box_cont {
-  display: none;
-}
-.detailbox {
   display: none;
 }
 .box_cont .lst_c {

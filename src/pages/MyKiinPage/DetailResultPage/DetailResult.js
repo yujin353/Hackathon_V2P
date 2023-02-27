@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import BarChart from "../../../component/BarChart";
-import Description_Test_Result_Item from "../../../component/Description_Test_Result_Item";
 import html2canvas from 'html2canvas';
 import $ from "jquery";
 
@@ -177,7 +176,6 @@ const DetailResult = () => {
                                 </div>
                         }
                     </div>
-                    <Description_Test_Result_Item />
                 </div>
             </div>
         </div>

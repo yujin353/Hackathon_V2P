@@ -131,7 +131,7 @@ const Used_Wanted_Product = ({ userPK }) => {
                                     return (
                                         duplicate === 'N' ?
                                             <li key={v + i}>
-                                                <div className="thumb" style={{perspective: "300px", transform: "rotateY(-360deg)", transition: ".4s"}}>
+                                                <div className="thumb" style={{perspective: "300px", transform: "rotateY(360deg)", transition: ".4s"}}>
                                                     <Link to={`/main/products/${v.product.product_id}`}>
                                                         <span className="im" style={{ backgroundImage: `url(${v.product.product_img_path})` }}></span>
                                                     </Link>

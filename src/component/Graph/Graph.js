@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { Modal } from "../";
 import {
     Chart as ChartJS,
     RadialLinearScale,
@@ -9,6 +10,7 @@ import {
 } from 'chart.js';
 import { PolarArea } from 'react-chartjs-2';
 import $ from "jquery";
+import Description_Test_Result_Item from "../Description_Test_Result_Item";
 
 ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend);
 
@@ -18,6 +20,7 @@ const Graph = ({ userPK }) => {
     const [bTarget, setBTarget] = useState(undefined);
     const btnRef1 = useRef(null);
     const navigate = useNavigate();
+    const [modal1, setModal1] = useState(false);
 
     /* data to be used in the polar graph */
     const data = {
@@ -81,8 +84,29 @@ const Graph = ({ userPK }) => {
         });
     }, []);
 
+    function handleButtonClick1() {
+        setModal1(!modal1);
+    }
+
     return (
         <>
+            <div>
+                <div style={{backgroundColor: "transparent", marginBottom: "-18vw"}}>
+                    <button type="button" className="btn_bmore2" onClick={() => handleButtonClick1()}><span className="i-aft">용어설명 </span><img style= {{width: "4vw", height: "4vw"}} src={require("../../assets/images/common/question_mark.jpg")} /></button>
+                    <Modal open={modal1} className="customOverlay">
+                        <div id="popIngredient" className="layerPopup pop_ingredient">
+                            <div className="popup">
+                                <div className="p_head botm">
+                                    <button type="button" className="b-close btn_close" onClick={() => setModal1()}>
+                                        <span>x</span>
+                                    </button>
+                                </div>
+                                <Description_Test_Result_Item />
+                            </div>
+                        </div>
+                    </Modal>
+                </div>
+            </div>
             <div className="area_type"><PolarArea data={data} options={options} /></div>
             <div className="txt_box1 pr-mb1">
                 <div className="box">
