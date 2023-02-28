@@ -79,52 +79,52 @@ const MyKiin = () => {
     const skinTypeName = (myskinType) => {
         switch (myskinType) {
             case 'DSPW':
-                setMyskinTypeImg(require("../../assets/images/animal/DSPW.png"));
+                setMyskinTypeImg(require("../../assets/images/profile/DSPW.png"));
                 break;
             case 'DSPT':
-                setMyskinTypeImg(require("../../assets/images/animal/DSPT.png"));
+                setMyskinTypeImg(require("../../assets/images/profile/DSPT.png"));
                 break;
             case 'DSNW':
-                setMyskinTypeImg(require("../../assets/images/animal/DSNW.png"));
+                setMyskinTypeImg(require("../../assets/images/profile/DSNW.png"));
                 break;
             case 'DSNT':
-                setMyskinTypeImg(require("../../assets/images/animal/DSNT.png"));
+                setMyskinTypeImg(require("../../assets/images/profile/DSNT.png"));
                 break;
             case 'DRPW':
-                setMyskinTypeImg(require("../../assets/images/animal/DRPW.png"));
+                setMyskinTypeImg(require("../../assets/images/profile/DRPW.png"));
                 break;
             case 'DRPT':
-                setMyskinTypeImg(require("../../assets/images/animal/DRPT.png"));
+                setMyskinTypeImg(require("../../assets/images/profile/DRPT.png"));
                 break;
             case 'DRNW':
-                setMyskinTypeImg(require("../../assets/images/animal/DRNW.png"));
+                setMyskinTypeImg(require("../../assets/images/profile/DRNW.png"));
                 break;
             case 'DRNT':
-                setMyskinTypeImg(require("../../assets/images/animal/DRNT.png"));
+                setMyskinTypeImg(require("../../assets/images/profile/DRNT.png"));
                 break;
             case 'OSPW':
-                setMyskinTypeImg(require("../../assets/images/animal/OSPW.png"));
+                setMyskinTypeImg(require("../../assets/images/profile/OSPW.png"));
                 break;
             case 'OSPT':
-                setMyskinTypeImg(require("../../assets/images/animal/OSPT.png"));
+                setMyskinTypeImg(require("../../assets/images/profile/OSPT.png"));
                 break;
             case 'OSNW':
-                setMyskinTypeImg(require("../../assets/images/animal/OSNW.png"));
+                setMyskinTypeImg(require("../../assets/images/profile/OSNW.png"));
                 break;
             case 'OSNT':
-                setMyskinTypeImg(require("../../assets/images/animal/OSNT.png"));
+                setMyskinTypeImg(require("../../assets/images/profile/OSNT.png"));
                 break;
             case 'ORPW':
-                setMyskinTypeImg(require("../../assets/images/animal/ORPW.png"));
+                setMyskinTypeImg(require("../../assets/images/profile/ORPW.png"));
                 break;
             case 'ORPT':
-                setMyskinTypeImg(require("../../assets/images/animal/ORPT.png"));
+                setMyskinTypeImg(require("../../assets/images/profile/ORPT.png"));
                 break;
             case 'ORNW':
-                setMyskinTypeImg(require("../../assets/images/animal/ORNW.png"));
+                setMyskinTypeImg(require("../../assets/images/profile/ORNW.png"));
                 break;
             case 'ORNT':
-                setMyskinTypeImg(require("../../assets/images/animal/ORNT.png"));
+                setMyskinTypeImg(require("../../assets/images/profile/ORNT.png"));
                 break;
         }
     };

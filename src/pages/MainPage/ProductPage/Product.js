@@ -417,38 +417,38 @@ const Product = () => {
                                             <div className="thumb" onClick={() => navigate(`/mykiin/neighbor?id=${v.member.member_id}`)}><span>
                                                 {
                                                     v.type.type_id == 1 ?
-                                                        <img src= {require("../../../assets/images/animal/DRNT.png")} />
-                                                    : v.type.type_id == 2 ?
-                                                        <img src= {require("../../../assets/images/animal/DRNW.png")} />
-                                                    : v.type.type_id == 3 ?
-                                                        <img src= {require("../../../assets/images/animal/DSNT.png")} />
-                                                    : v.type.type_id == 4 ?
-                                                        <img src= {require("../../../assets/images/animal/DSNW.png")} />
-                                                    : v.type.type_id == 5 ?
-                                                        <img src= {require("../../../assets/images/animal/DRPT2.png")} />
-                                                    : v.type.type_id == 6 ?
-                                                        <img src= {require("../../../assets/images/animal/DRPW.png")} />
-                                                    : v.type.type_id == 7 ?
-                                                        <img src= {require("../../../assets/images/animal/DSPT.png")} />
-                                                    : v.type.type_id == 8 ?
-                                                        <img src= {require("../../../assets/images/animal/DSPW.png")} />
-                                                    : v.type.type_id == 9 ?
-                                                        <img src= {require("../../../assets/images/animal/ORNT.png")} />
-                                                    : v.type.type_id == 10 ?
-                                                        <img src= {require("../../../assets/images/animal/ORNW2.png")} />
-                                                    : v.type.type_id == 11 ?
-                                                        <img src= {require("../../../assets/images/animal/OSNT.png")} />
-                                                    : v.type.type_id == 12 ?
-                                                        <img src= {require("../../../assets/images/animal/OSNW.png")} />
-                                                    : v.type.type_id == 13 ?
-                                                        <img src= {require("../../../assets/images/animal/ORPT2.png")} />
-                                                    : v.type.type_id == 14 ?
-                                                        <img src= {require("../../../assets/images/animal/ORPW.png")} />
-                                                    : v.type.type_id == 15 ?
-                                                        <img src= {require("../../../assets/images/animal/OSPT2.png")} />
-                                                    : v.type.type_id == 16 ?
-                                                        <img src= {require("../../../assets/images/animal/OSPW.png")} />
-                                                    : <img src={require("../../../assets/images/common/img_nomem.jpg")} />
+                                                        <img src= {require("../../../assets/images/profile/DRNT.png")} />
+                                                        : v.type.type_id == 2 ?
+                                                            <img src= {require("../../../assets/images/profile/DRNW.png")} />
+                                                            : v.type.type_id == 3 ?
+                                                                <img src= {require("../../../assets/images/profile/DSNT.png")} />
+                                                                : v.type.type_id == 4 ?
+                                                                    <img src= {require("../../../assets/images/profile/DSNW.png")} />
+                                                                    : v.type.type_id == 5 ?
+                                                                        <img src= {require("../../../assets/images/profile/DRPT.png")} />
+                                                                        : v.type.type_id == 6 ?
+                                                                            <img src= {require("../../../assets/images/profile/DRPW.png")} />
+                                                                            : v.type.type_id == 7 ?
+                                                                                <img src= {require("../../../assets/images/profile/DSPT.png")} />
+                                                                                : v.type.type_id == 8 ?
+                                                                                    <img src= {require("../../../assets/images/profile/DSPW.png")} />
+                                                                                    : v.type.type_id == 9 ?
+                                                                                        <img src= {require("../../../assets/images/profile/ORNT.png")} />
+                                                                                        : v.type.type_id == 10 ?
+                                                                                            <img src= {require("../../../assets/images/profile/ORNW.png")} />
+                                                                                            : v.type.type_id == 11 ?
+                                                                                                <img src= {require("../../../assets/images/profile/OSNT.png")} />
+                                                                                                : v.type.type_id == 12 ?
+                                                                                                    <img src= {require("../../../assets/images/profile/OSNW.png")} />
+                                                                                                    : v.type.type_id == 13 ?
+                                                                                                        <img src= {require("../../../assets/images/profile/ORPT.png")} />
+                                                                                                        : v.type.type_id == 14 ?
+                                                                                                            <img src= {require("../../../assets/images/profile/ORPW.png")} />
+                                                                                                            : v.type.type_id == 15 ?
+                                                                                                                <img src= {require("../../../assets/images/profile/OSPT.png")} />
+                                                                                                                : v.type.type_id == 16 ?
+                                                                                                                    <img src= {require("../../../assets/images/profile/OSPW.png")} />
+                                                                                                                    : <img src={require("../../../assets/images/common/img_nomem.jpg")} />
                                                 }
                                             </span></div>
                                             <p className="h1" onClick={() => navigate(`/mykiin/neighbor?id=${v.member.member_id}`)}>{v.member.username}</p>

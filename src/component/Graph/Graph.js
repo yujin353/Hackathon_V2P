@@ -92,7 +92,7 @@ const Graph = ({ userPK }) => {
         <>
             <div>
                 <div style={{backgroundColor: "transparent", marginBottom: "-18vw"}}>
-                    <button type="button" className="btn_bmore2" onClick={() => handleButtonClick1()}><span className="i-aft">용어설명 </span><img style= {{width: "4vw", height: "4vw"}} src={require("../../assets/images/common/question_mark.jpg")} /></button>
+                    <button type="button" className="btn_bmore2" onClick={() => handleButtonClick1()}><span className="i-aft">&nbsp;용어설명 </span><img style= {{width: "3.7vw", height: "3.7vw", marginTop: "0.4vw"}} src={require("../../assets/images/common/question_mark.jpg")} /></button>
                     <Modal open={modal1} className="customOverlay">
                         <div id="popIngredient" className="layerPopup pop_ingredient">
                             <div className="popup">

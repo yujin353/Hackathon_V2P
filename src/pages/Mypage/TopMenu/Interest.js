@@ -136,7 +136,43 @@ const Interest = () => {
                                             </div>
                                             <div className="tit">
                                                 <div className="thumb" onClick={() => navigate(`/mykiin/neighbor?id=${review.member.member_id}`)}>
-                                                    <span><img src={require("../../../assets/images/common/img_nomem.jpg")}></img></span>
+                                                    <span>
+                                                        {
+                                                            v.like_review.type.type_id == 1 ?
+                                                                <img src= {require("../../../assets/images/profile/DRNT.png")} />
+                                                                : v.like_review.type.type_id == 2 ?
+                                                                    <img src= {require("../../../assets/images/profile/DRNW.png")} />
+                                                                    : v.like_review.type.type_id == 3 ?
+                                                                        <img src= {require("../../../assets/images/profile/DSNT.png")} />
+                                                                        : v.like_review.type.type_id == 4 ?
+                                                                            <img src= {require("../../../assets/images/profile/DSNW.png")} />
+                                                                            : v.like_review.type.type_id == 5 ?
+                                                                                <img src= {require("../../../assets/images/profile/DRPT.png")} />
+                                                                                : v.like_review.type.type_id == 6 ?
+                                                                                    <img src= {require("../../../assets/images/profile/DRPW.png")} />
+                                                                                    : v.like_review.type.type_id == 7 ?
+                                                                                        <img src= {require("../../../assets/images/profile/DSPT.png")} />
+                                                                                        : v.like_review.type.type_id == 8 ?
+                                                                                            <img src= {require("../../../assets/images/profile/DSPW.png")} />
+                                                                                            : v.like_review.type.type_id == 9 ?
+                                                                                                <img src= {require("../../../assets/images/profile/ORNT.png")} />
+                                                                                                : v.like_review.type.type_id == 10 ?
+                                                                                                    <img src= {require("../../../assets/images/profile/ORNW.png")} />
+                                                                                                    : v.like_review.type.type_id == 11 ?
+                                                                                                        <img src= {require("../../../assets/images/profile/OSNT.png")} />
+                                                                                                        : v.like_review.type.type_id == 12 ?
+                                                                                                            <img src= {require("../../../assets/images/profile/OSNW.png")} />
+                                                                                                            : v.like_review.type.type_id == 13 ?
+                                                                                                                <img src= {require("../../../assets/images/profile/ORPT.png")} />
+                                                                                                                : v.like_review.type.type_id == 14 ?
+                                                                                                                    <img src= {require("../../../assets/images/profile/ORPW.png")} />
+                                                                                                                    : v.like_review.type.type_id == 15 ?
+                                                                                                                        <img src= {require("../../../assets/images/profile/OSPT.png")} />
+                                                                                                                        : v.like_review.type.type_id == 16 ?
+                                                                                                                            <img src= {require("../../../assets/images/profile/OSPW.png")} />
+                                                                                                                        : <img src={require("../../../assets/images/common/img_nomem.jpg")} />
+                                                        }
+                                                    </span>
                                                 </div>
                                                 <p className="h1" onClick={() => navigate(`/mykiin/neighbor?id=${review.member.member_id}`)}>{review.member.username}</p>
                                                 <p className="t1">피부 유사도 <span className="c-blue">{rand_simil}%</span></p>

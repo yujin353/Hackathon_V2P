@@ -174,7 +174,40 @@ const Friend = () => {
                                                 return (
                                                     <li key={v + i}><Link to={`/mykiin/neighbor?id=${follower.member_id}`} className="b">
                                                         <div className="im">
-                                                            <img src={require("../../../assets/images/common/img_nomem.jpg")} />
+                                                            {
+                                                                v.type_id_follower == 1 ?
+                                                                    <img src= {require("../../../assets/images/profile/DRNT.png")} />
+                                                                    : v.type_id_follower == 2 ?
+                                                                        <img src= {require("../../../assets/images/profile/DRNW.png")} />
+                                                                        : v.type_id_follower == 3 ?
+                                                                            <img src= {require("../../../assets/images/profile/DSNT.png")} />
+                                                                            : v.type_id_follower == 4 ?
+                                                                                <img src= {require("../../../assets/images/profile/DSNW.png")} />
+                                                                                : v.type_id_follower == 5 ?
+                                                                                    <img src= {require("../../../assets/images/profile/DRPT.png")} />
+                                                                                    : v.type_id_follower == 6 ?
+                                                                                        <img src= {require("../../../assets/images/profile/DRPW.png")} />
+                                                                                        : v.type_id_follower == 7 ?
+                                                                                            <img src= {require("../../../assets/images/profile/DSPT.png")} />
+                                                                                            : v.type_id_follower == 8 ?
+                                                                                                <img src= {require("../../../assets/images/profile/DSPW.png")} />
+                                                                                                : v.type_id_follower == 9 ?
+                                                                                                    <img src= {require("../../../assets/images/profile/ORNT.png")} />
+                                                                                                    : v.type_id_follower == 10 ?
+                                                                                                        <img src= {require("../../../assets/images/profile/ORNW.png")} />
+                                                                                                        : v.type_id_follower == 11 ?
+                                                                                                            <img src= {require("../../../assets/images/profile/OSNT.png")} />
+                                                                                                            : v.type_id_follower == 12 ?
+                                                                                                                <img src= {require("../../../assets/images/profile/OSNW.png")} />
+                                                                                                                : v.type_id_follower == 13 ?
+                                                                                                                    <img src= {require("../../../assets/images/profile/ORPT.png")} />
+                                                                                                                    : v.type_id_follower == 14 ?
+                                                                                                                        <img src= {require("../../../assets/images/profile/ORPW.png")} />
+                                                                                                                        : v.type_id_follower == 15 ?
+                                                                                                                            <img src= {require("../../../assets/images/profile/OSPT.png")} />
+                                                                                                                            : v.type_id_follower == 16 ?
+                                                                                                                                <img src= {require("../../../assets/images/profile/OSPW.png")} />
+                                                                                                                                : <img src={require("../../../assets/images/common/img_nomem.jpg")} />}
                                                         </div>
                                                         <p className="t3"><strong>{follower.username}</strong>님</p>
                                                         <span className="cnt_follower">팔로워 <br /> <span>{func_cntFollowing(follower.member_id)}</span></span>
@@ -197,7 +230,40 @@ const Friend = () => {
                                                 return (
                                                     <li key={v + i}><Link to={`/mykiin/neighbor?id=${followee.member_id}`} className="b">
                                                         <div className="im">
-                                                            <img src={require("../../../assets/images/common/img_nomem.jpg")} />
+                                                            {
+                                                                v.type_id_following == 1 ?
+                                                                    <img src= {require("../../../assets/images/profile/DRNT.png")} />
+                                                                    : v.type_id_following == 2 ?
+                                                                        <img src= {require("../../../assets/images/profile/DRNW.png")} />
+                                                                        : v.type_id_following == 3 ?
+                                                                            <img src= {require("../../../assets/images/profile/DSNT.png")} />
+                                                                            : v.type_id_following == 4 ?
+                                                                                <img src= {require("../../../assets/images/profile/DSNW.png")} />
+                                                                                : v.type_id_following == 5 ?
+                                                                                    <img src= {require("../../../assets/images/profile/DRPT.png")} />
+                                                                                    : v.type_id_following == 6 ?
+                                                                                        <img src= {require("../../../assets/images/profile/DRPW.png")} />
+                                                                                        : v.type_id_following == 7 ?
+                                                                                            <img src= {require("../../../assets/images/profile/DSPT.png")} />
+                                                                                            : v.type_id_following == 8 ?
+                                                                                                <img src= {require("../../../assets/images/profile/DSPW.png")} />
+                                                                                                : v.type_id_following == 9 ?
+                                                                                                    <img src= {require("../../../assets/images/profile/ORNT.png")} />
+                                                                                                    : v.type_id_following == 10 ?
+                                                                                                        <img src= {require("../../../assets/images/profile/ORNW.png")} />
+                                                                                                        : v.type_id_following == 11 ?
+                                                                                                            <img src= {require("../../../assets/images/profile/OSNT.png")} />
+                                                                                                            : v.type_id_following == 12 ?
+                                                                                                                <img src= {require("../../../assets/images/profile/OSNW.png")} />
+                                                                                                                : v.type_id_following == 13 ?
+                                                                                                                    <img src= {require("../../../assets/images/profile/ORPT.png")} />
+                                                                                                                    : v.type_id_following == 14 ?
+                                                                                                                        <img src= {require("../../../assets/images/profile/ORPW.png")} />
+                                                                                                                        : v.type_id_following == 15 ?
+                                                                                                                            <img src= {require("../../../assets/images/profile/OSPT.png")} />
+                                                                                                                            : v.type_id_following == 16 ?
+                                                                                                                                <img src= {require("../../../assets/images/profile/OSPW.png")} />
+                                                                                                                                : <img src={require("../../../assets/images/common/img_nomem.jpg")} />}
                                                         </div>
                                                         <p className="t3"><strong>{followee.username}</strong>님</p>
                                                         <span className="cnt_follower">팔로워 <br /> <span>{func_cntFollowing(followee.member_id)}</span></span>
@@ -228,7 +294,40 @@ const Friend = () => {
                                                 return (
                                                     <li key={v + i}><Link to={`/mykiin/neighbor?id=${v.id}`} className="b">
                                                         <div className="im">
-                                                            <img src={require("../../../assets/images/common/img_nomem.jpg")} />
+                                                            {
+                                                                v.type_id == 1 ?
+                                                                    <img src= {require("../../../assets/images/profile/DRNT.png")} />
+                                                                    : v.type_id == 2 ?
+                                                                        <img src= {require("../../../assets/images/profile/DRNW.png")} />
+                                                                        : v.type_id == 3 ?
+                                                                            <img src= {require("../../../assets/images/profile/DSNT.png")} />
+                                                                            : v.type_id == 4 ?
+                                                                                <img src= {require("../../../assets/images/profile/DSNW.png")} />
+                                                                                : v.type_id == 5 ?
+                                                                                    <img src= {require("../../../assets/images/profile/DRPT.png")} />
+                                                                                    : v.type_id == 6 ?
+                                                                                        <img src= {require("../../../assets/images/profile/DRPW.png")} />
+                                                                                        : v.type_id == 7 ?
+                                                                                            <img src= {require("../../../assets/images/profile/DSPT.png")} />
+                                                                                            : v.type_id == 8 ?
+                                                                                                <img src= {require("../../../assets/images/profile/DSPW.png")} />
+                                                                                                : v.type_id == 9 ?
+                                                                                                    <img src= {require("../../../assets/images/profile/ORNT.png")} />
+                                                                                                    : v.type_id == 10 ?
+                                                                                                        <img src= {require("../../../assets/images/profile/ORNW.png")} />
+                                                                                                        : v.type_id == 11 ?
+                                                                                                            <img src= {require("../../../assets/images/profile/OSNT.png")} />
+                                                                                                            : v.type_id == 12 ?
+                                                                                                                <img src= {require("../../../assets/images/profile/OSNW.png")} />
+                                                                                                                : v.type_id == 13 ?
+                                                                                                                    <img src= {require("../../../assets/images/profile/ORPT.png")} />
+                                                                                                                    : v.type_id == 14 ?
+                                                                                                                        <img src= {require("../../../assets/images/profile/ORPW.png")} />
+                                                                                                                        : v.type_id == 15 ?
+                                                                                                                            <img src= {require("../../../assets/images/profile/OSPT.png")} />
+                                                                                                                            : v.type_id == 16 ?
+                                                                                                                                <img src= {require("../../../assets/images/profile/OSPW.png")} />
+                                                                                                                                : <img src={require("../../../assets/images/common/img_nomem.jpg")} />}
                                                         </div>
                                                         <p className="t3"><strong>{v.name}</strong>님</p>
                                                         <span className="cnt_follower">팔로워 <br /> <span>{v.following}</span></span>

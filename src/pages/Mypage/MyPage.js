@@ -13,6 +13,7 @@ const MyPage = () => {
     const android = useRef();
     const apple = useRef();
     const web = useRef();
+    const [myskinTypeImg, setMyskinTypeImg] = useState("");
 
     /* findout currently logged in user */
     useEffect(() => {
@@ -88,6 +89,74 @@ const MyPage = () => {
         logout();
     };
 
+    /* find skin type */
+    useEffect(() => {
+        $.ajax({
+            async: false, type: "GET",
+            url: "https://dev.odoc-api.com/member/my_skin?member_id=" + sessionStorage.getItem("user_pk"),
+            success: (response) => {
+                const results = response[0];
+                if (results === undefined) return;
+                skinTypeName(results.do_alphabet + results.rs_alphabet + results.np_alphabet + results.tw_alphabet);
+            },
+            error: (response) => console.log(response)
+        });
+    }, []);
+
+    /* set same skin type user img */
+    const skinTypeName = (myskinType) => {
+        switch (myskinType) {
+            case 'DSPW':
+                setMyskinTypeImg(require("../../assets/images/profile/DSPW.png"));
+                break;
+            case 'DSPT':
+                setMyskinTypeImg(require("../../assets/images/profile/DSPT.png"));
+                break;
+            case 'DSNW':
+                setMyskinTypeImg(require("../../assets/images/profile/DSNW.png"));
+                break;
+            case 'DSNT':
+                setMyskinTypeImg(require("../../assets/images/profile/DSNT.png"));
+                break;
+            case 'DRPW':
+                setMyskinTypeImg(require("../../assets/images/profile/DRPW.png"));
+                break;
+            case 'DRPT':
+                setMyskinTypeImg(require("../../assets/images/profile/DRPT.png"));
+                break;
+            case 'DRNW':
+                setMyskinTypeImg(require("../../assets/images/profile/DRNW.png"));
+                break;
+            case 'DRNT':
+                setMyskinTypeImg(require("../../assets/images/profile/DRNT.png"));
+                break;
+            case 'OSPW':
+                setMyskinTypeImg(require("../../assets/images/profile/OSPW.png"));
+                break;
+            case 'OSPT':
+                setMyskinTypeImg(require("../../assets/images/profile/OSPT.png"));
+                break;
+            case 'OSNW':
+                setMyskinTypeImg(require("../../assets/images/profile/OSNW.png"));
+                break;
+            case 'OSNT':
+                setMyskinTypeImg(require("../../assets/images/profile/OSNT.png"));
+                break;
+            case 'ORPW':
+                setMyskinTypeImg(require("../../assets/images/profile/ORPW.png"));
+                break;
+            case 'ORPT':
+                setMyskinTypeImg(require("../../assets/images/profile/ORPT.png"));
+                break;
+            case 'ORNW':
+                setMyskinTypeImg(require("../../assets/images/profile/ORNW.png"));
+                break;
+            case 'ORNT':
+                setMyskinTypeImg(require("../../assets/images/profile/ORNT.png"));
+                break;
+        }
+    };
+
     return (
         <div>
             <header id="header" className="header">
@@ -106,7 +175,7 @@ const MyPage = () => {
                     <div className="inr-c">
                         <div className="area_profile">
                             <div className="thumb">
-                                <span><img src={require("../../assets/images/common/img_nomem.jpg")} onClick={goAccount}></img></span>
+                                <span><img src={myskinTypeImg ? myskinTypeImg : require("../../assets/images/common/img_nomem.jpg")} onClick={goAccount}></img></span>
                             </div>
                             <div className="txt">
                                 <p className="h1" onClick={goAccount}><strong className="c-blue usernick">{username}</strong>님</p><br />
