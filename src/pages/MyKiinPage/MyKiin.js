@@ -79,52 +79,52 @@ const MyKiin = () => {
     const skinTypeName = (myskinType) => {
         switch (myskinType) {
             case 'DSPW':
-                setMyskinTypeImg(require("../../assets/images/profile/DSPW.png"));
+                setMyskinTypeImg("https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/DSPW.png");
                 break;
             case 'DSPT':
-                setMyskinTypeImg(require("../../assets/images/profile/DSPT.png"));
+                setMyskinTypeImg("https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/DSPT.png");
                 break;
             case 'DSNW':
-                setMyskinTypeImg(require("../../assets/images/profile/DSNW.png"));
+                setMyskinTypeImg("https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/DSNW.png");
                 break;
             case 'DSNT':
-                setMyskinTypeImg(require("../../assets/images/profile/DSNT.png"));
+                setMyskinTypeImg("https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/DSNT.png");
                 break;
             case 'DRPW':
-                setMyskinTypeImg(require("../../assets/images/profile/DRPW.png"));
+                setMyskinTypeImg("https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/DRPW.png");
                 break;
             case 'DRPT':
-                setMyskinTypeImg(require("../../assets/images/profile/DRPT.png"));
+                setMyskinTypeImg("https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/DRPT.png");
                 break;
             case 'DRNW':
-                setMyskinTypeImg(require("../../assets/images/profile/DRNW.png"));
+                setMyskinTypeImg("https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/DRNW.png");
                 break;
             case 'DRNT':
-                setMyskinTypeImg(require("../../assets/images/profile/DRNT.png"));
+                setMyskinTypeImg("https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/DRNT.png");
                 break;
             case 'OSPW':
-                setMyskinTypeImg(require("../../assets/images/profile/OSPW.png"));
+                setMyskinTypeImg("https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/OSPW.png");
                 break;
             case 'OSPT':
-                setMyskinTypeImg(require("../../assets/images/profile/OSPT.png"));
+                setMyskinTypeImg("https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/OSPT.png");
                 break;
             case 'OSNW':
-                setMyskinTypeImg(require("../../assets/images/profile/OSNW.png"));
+                setMyskinTypeImg("https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/OSNW.png");
                 break;
             case 'OSNT':
-                setMyskinTypeImg(require("../../assets/images/profile/OSNT.png"));
+                setMyskinTypeImg("https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/OSNT.png");
                 break;
             case 'ORPW':
-                setMyskinTypeImg(require("../../assets/images/profile/ORPW.png"));
+                setMyskinTypeImg("https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/ORPW.png");
                 break;
             case 'ORPT':
-                setMyskinTypeImg(require("../../assets/images/profile/ORPT.png"));
+                setMyskinTypeImg("https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/ORPT.png");
                 break;
             case 'ORNW':
-                setMyskinTypeImg(require("../../assets/images/profile/ORNW.png"));
+                setMyskinTypeImg("https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/ORNW.png");
                 break;
             case 'ORNT':
-                setMyskinTypeImg(require("../../assets/images/profile/ORNT.png"));
+                setMyskinTypeImg("https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/ORNT.png");
                 break;
         }
     };

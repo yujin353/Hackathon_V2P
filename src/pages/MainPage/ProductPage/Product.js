@@ -417,37 +417,37 @@ const Product = () => {
                                             <div className="thumb" onClick={() => navigate(`/mykiin/neighbor?id=${v.member.member_id}`)}><span>
                                                 {
                                                     v.type.type_id == 1 ?
-                                                        <img src= {require("../../../assets/images/profile/DRNT.png")} />
+                                                        <img src= "https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/DRNT.png" />
                                                         : v.type.type_id == 2 ?
-                                                            <img src= {require("../../../assets/images/profile/DRNW.png")} />
+                                                            <img src= "https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/DRNW.png" />
                                                             : v.type.type_id == 3 ?
-                                                                <img src= {require("../../../assets/images/profile/DSNT.png")} />
+                                                                <img src= "https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/DSNT.png" />
                                                                 : v.type.type_id == 4 ?
-                                                                    <img src= {require("../../../assets/images/profile/DSNW.png")} />
+                                                                    <img src= "https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/DSNW.png" />
                                                                     : v.type.type_id == 5 ?
-                                                                        <img src= {require("../../../assets/images/profile/DRPT.png")} />
+                                                                        <img src= "https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/DRPT.png" />
                                                                         : v.type.type_id == 6 ?
-                                                                            <img src= {require("../../../assets/images/profile/DRPW.png")} />
+                                                                            <img src= "https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/DRPW.png" />
                                                                             : v.type.type_id == 7 ?
-                                                                                <img src= {require("../../../assets/images/profile/DSPT.png")} />
+                                                                                <img src= "https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/DSPT.png" />
                                                                                 : v.type.type_id == 8 ?
-                                                                                    <img src= {require("../../../assets/images/profile/DSPW.png")} />
+                                                                                    <img src= "https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/DSPW.png" />
                                                                                     : v.type.type_id == 9 ?
-                                                                                        <img src= {require("../../../assets/images/profile/ORNT.png")} />
+                                                                                        <img src= "https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/ORNT.png" />
                                                                                         : v.type.type_id == 10 ?
-                                                                                            <img src= {require("../../../assets/images/profile/ORNW.png")} />
+                                                                                            <img src= "https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/ORNW.png" />
                                                                                             : v.type.type_id == 11 ?
-                                                                                                <img src= {require("../../../assets/images/profile/OSNT.png")} />
+                                                                                                <img src= "https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/OSNT.png" />
                                                                                                 : v.type.type_id == 12 ?
-                                                                                                    <img src= {require("../../../assets/images/profile/OSNW.png")} />
+                                                                                                    <img src= "https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/OSNW.png" />
                                                                                                     : v.type.type_id == 13 ?
-                                                                                                        <img src= {require("../../../assets/images/profile/ORPT.png")} />
+                                                                                                        <img src= "https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/ORPT.png" />
                                                                                                         : v.type.type_id == 14 ?
-                                                                                                            <img src= {require("../../../assets/images/profile/ORPW.png")} />
+                                                                                                            <img src= "https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/ORPW.png" />
                                                                                                             : v.type.type_id == 15 ?
-                                                                                                                <img src= {require("../../../assets/images/profile/OSPT.png")} />
+                                                                                                                <img src= "https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/OSPT.png" />
                                                                                                                 : v.type.type_id == 16 ?
-                                                                                                                    <img src= {require("../../../assets/images/profile/OSPW.png")} />
+                                                                                                                    <img src= "https://pinktrano.s3.ap-northeast-2.amazonaws.com/event/OSPW.png" />
                                                                                                                     : <img src={require("../../../assets/images/common/img_nomem.jpg")} />
                                                 }
                                             </span></div>
