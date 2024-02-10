@@ -1,1 +1,0 @@
-export { default } from './Used_Wanted_Product'

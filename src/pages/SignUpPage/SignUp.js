@@ -11,7 +11,6 @@ const SignUp = () => {
     const [gender, setGender] = useState("");
     const [region, setRegion] = useState("");
     const [age, setAge] = useState("");
-    const [nickname, setNickname] = useState("");
     const [disabled, setDisabled] = useState(false);
     const emailRegex =
         /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/
@@ -60,11 +59,6 @@ const SignUp = () => {
         document.getElementById("pwderror5").className = "hidden";
         document.getElementById("gendererror1").className = "hidden";
         document.getElementById("regionerror1").className = "hidden";
-        document.getElementById("ageerror1").className = "hidden";
-        document.getElementById("ageerror2").className = "hidden";
-        document.getElementById("nickname_in_use").className = "hidden";
-        document.getElementById("nickname_long").className = "hidden";
-        document.getElementById("nicknameerror1").className = "hidden";
         if (email1 === "" || email2 === "") {
             document.getElementById("emailerror1").className = "t_error";
             flag = true;
@@ -84,20 +78,6 @@ const SignUp = () => {
             document.getElementById("regionerror1").className = "t_error";
             flag = true;
         }
-        if (age === "") {
-            document.getElementById("ageerror1").className = "t_error";
-            flag = true;
-        } else if (age < 0 || age > 120) {
-            document.getElementById("ageerror2").className = "t_error";
-            flag = true;
-        }
-        if (nickname === "") {
-            document.getElementById("nicknameerror1").className = "t_error";
-            flag = true;
-        } else if (nickname.length > 8) {
-            document.getElementById("nickname_long").className = "t_error";
-            flag = true;
-        }
         if (flag) return false;
         else return true;
     };
@@ -110,7 +90,6 @@ const SignUp = () => {
                 "email": email1 + "@" + email2,
                 "password": password1,
                 "gender": gender, "region": region, "age": age,
-                "username": nickname
             }, dataType: 'json',
             success: (response) => {
                 alert("회원가입이 완료되었습니다.");
@@ -124,8 +103,6 @@ const SignUp = () => {
                     return;
                 }
                 const text = JSON.parse(response.responseText);
-                if (text.username) document.getElementById('nickname_in_use').className = "t_error";
-                else document.getElementById('nickname_in_use').className = "hidden";
                 if (text.password1) {
                     if (text.password1[0] === "비밀번호가 너무 일상적인 단어입니다.") {
                         document.getElementById('pwderror2').className = "t_error";
@@ -140,23 +117,6 @@ const SignUp = () => {
         sessionStorage.removeItem("phone_certification");
         sessionStorage.removeItem("policy_checked");
     };
-
-    const autoRecommend = () => {
-        $.ajax({
-            async: true, type: 'GET',
-            url: "https://dev.odoc-api.com/member/random_username",
-            success: (response) => setNickname(response.message),
-            error: (error) => console.log(error)
-        });
-    };
-
-    // const checkInt = (age) => {
-    //     console.log(typeof(age))
-    //     if (typeof(age) == 'number')
-    //         setAge(age)
-    //     else
-    //         alert('숫자를 입력해주세요')
-    // };
 
     return (
         <div>
@@ -207,7 +167,7 @@ const SignUp = () => {
                             </div>
                             <div>
                                 <label htmlFor="password">비밀번호</label>
-                                <input type="password" placeholder="10~20자 이내의 영문, 숫자를 입력하세요"
+                                <input type="password" placeholder="8~20자 이내의 영문, 숫자를 입력하세요"
                                     onChange={(e) => {
                                         document.getElementById("pwderror1").className = "hidden";
                                         setPassword1(e.target.value);
@@ -275,44 +235,6 @@ const SignUp = () => {
                                 </div>
                             </div>
 
-                            <div>
-                                <label htmlFor="age">나이</label>
-                                <div className="ip">
-                                    <input type="text" placeholder="나이를 입력하세요" value={age}
-                                        onChange={(e) => {
-                                            document.getElementById("ageerror1").className = "hidden";
-                                            document.getElementById("ageerror2").className = "hidden";
-                                            setAge(e.target.value);
-                                        }} />
-                                </div>
-                                <p id="ageerror1" className="t_error hidden">나이를 입력해주세요</p>
-                                <p id="ageerror2" className="t_error hidden">나이를 정확하게 입력해주세요</p>
-                            </div>
-
-                            <div>
-                                <label htmlFor="nickname">키인 닉네임</label>
-                                <div className="ip">
-                                    <input type="text" placeholder="키인 닉네임을 입력하세요"
-                                        value={nickname} onChange={(e) => {
-                                            document.getElementById("nicknameerror1").className = "hidden";
-                                            document.getElementById('nickname_in_use').className = "hidden";
-                                            setNickname(e.target.value);
-                                        }} />
-                                    <div>
-                                        <button type="button" className="btn-pk ss blue2 bdrs"
-                                            onClick={() => {
-                                                document.getElementById("nicknameerror1").className = "hidden";
-                                                document.getElementById('nickname_in_use').className = "hidden";
-                                                autoRecommend();
-                                            }}>
-                                            <span>자동추천</span>
-                                        </button>
-                                    </div>
-                                </div>
-                                <p id="nickname_in_use" className="t_error hidden">사용중인 닉네임 입니다</p>
-                                <p id="nickname_long" className="t_error hidden">8글자 이하로 입력해주세요</p>
-                                <p id="nicknameerror1" className="t_error hidden">닉네임을 입력해주세요</p>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -320,7 +242,7 @@ const SignUp = () => {
                     <button type="button" className="btn-pk blue n"
                         onClick={() => {
                             if (fieldCheck() == false) return;
-                            register();
+                            navigate("/login");//임시register();
                         }}>
                         <span>가입완료</span>
                     </button>

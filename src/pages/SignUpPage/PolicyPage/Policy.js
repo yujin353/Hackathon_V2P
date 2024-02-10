@@ -121,13 +121,13 @@ const Policy = () => {
 
                             <div className="p mb40" ref={errorRef2}>
                                 <p className="t1">[필수]<span>&nbsp;</span>
-                                    <Link to="/" className="a_link" onClick={(e) => {e.preventDefault(); setSecondModal(!secondModal)}}>키인 서비스 이용약관</Link>
+                                    <Link to="/" className="a_link" onClick={(e) => {e.preventDefault(); setSecondModal(!secondModal)}}>어리버리 서비스 이용약관</Link>
                                 </p>
                                 <Modal open={secondModal} className="policy">
                                     <div id="popTerms" className="layerPopup pop_terms">
                                         <div className="popup">
                                             <div className="p_head">
-                                                <h2 className="h_tit1 ta-c">키인 서비스 이용약관</h2>
+                                                <h2 className="h_tit1 ta-c">어리버리 서비스 이용약관</h2>
                                                 <button type="button" className="btn_close b-close" onClick={() => {setSecondModal(!secondModal)}}><span>닫기</span></button>
                                             </div>
                                             <div className="p_cont">
@@ -140,7 +140,7 @@ const Policy = () => {
                                     <input type="checkbox" id="agree2" name="agree2" onChange={(e)=>onClickCheckBox(e)} checked={checkBox.agree2}/><span>&nbsp;</span>
                                 </label>
                             </div>
-                            <div id="error_2" className="p t_error mt10 mb20 hidden">키인 서비스 이용약관에 동의해주시기 바랍니다.</div>
+                            <div id="error_2" className="p t_error mt10 mb20 hidden">어리버리 서비스 이용약관에 동의해주시기 바랍니다.</div>
                             <div className="p">
                                 <p className="t1">
                                     <Link to="/" onClick={(e) => {e.preventDefault()}}>[선택] 맞춤형 혜택 정보 푸시 알림 수신</Link>

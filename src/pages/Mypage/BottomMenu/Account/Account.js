@@ -64,7 +64,6 @@ const Account = () => {
                                 </button>
                             </li> */}
                             {/*<li><Link to="#" onClick={goLogout}>로그아웃</Link></li>*/}
-                            <li><Link to="changeNickname">닉네임 변경</Link></li>
                             <li><Link to="#" onClick={withdraw}>회원탈퇴</Link></li>
                             {/* <li><Link to="changepw">비밀번호 변경</Link></li> */}
                         </ul>

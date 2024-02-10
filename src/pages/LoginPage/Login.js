@@ -38,58 +38,47 @@ const Login = () => {
 	}, []);
 
 	const onSignIn = () => {
-		$.ajax({
-			async: true, type: "POST",
-			url: "https://dev.odoc-api.com/member/auth/",
-			data: {
-				"email": email,
-				"password": password,
-			}, dataType: "json",
-			success: (response) => {
-				sessionStorage.setItem("access_token", response.token.access);
-				sessionStorage.setItem("refresh_token", response.token.refresh);
-				sessionStorage.setItem("user_pk", response.user.member_id);
-				if (leftBox) {
-					let day = new Date();
-					let time = new Date();
-					day.setDate(day.getDate() + 7);
-					time.setHours(time.getHours() + 2);
-					cookies.save('access_token', response.token.access, { expires: time });
-					cookies.save('refresh_token', response.token.refresh, { expires: day });
-					localStorage.setItem("user_pk", response.user.member_id); // change after
-				}
-				else {
-					cookies.remove('access_token');
-					cookies.remove('refresh_token');
-					localStorage.removeItem("user_pk"); // change after
-				}
-				if (rightBox) {
-					let day = new Date();
-					day.setDate(day.getDate() + 7);
-					cookies.save("email", email, { expires: day });
-				}
-				else cookies.remove("email");
-				navigate("/main");
-			},
-			error: (response) => {
-				console.log(response);
-				errorRef.current.className = "mb10";
-				$($(errorRef.current).next()[0]).removeClass("hidden");
-
-				// const message = JSON.parse(response.responseText);
-				// for (const msg in message) {
-				// 	if (email === "") {
-				// 		alert("이메일 주소를 입력해 주세요."); return;
-				// 	} else if (msg === "non_field_errors") {
-				// 		alert("비밀번호가 틀렸습니다."); return;
-				// 	} else if (msg === "email") {
-				// 		alert('유효한 이메일 주소를 입력하십시오.'); return;
-				// 	} else if (msg === "password") {
-				// 		alert('비밀번호를 입력해 주십시오.'); return;
-				// 	}
-				// }
-			},
-		});
+		navigate("/main");
+		// 임시
+		// $.ajax({
+		// 	async: true, type: "POST",
+		// 	url: "https://dev.odoc-api.com/member/auth/",
+		// 	data: {
+		// 		"email": email,
+		// 		"password": password,
+		// 	}, dataType: "json",
+		// 	success: (response) => {
+		// 		sessionStorage.setItem("access_token", response.token.access);
+		// 		sessionStorage.setItem("refresh_token", response.token.refresh);
+		// 		sessionStorage.setItem("user_pk", response.user.member_id);
+		// 		if (leftBox) {
+		// 			let day = new Date();
+		// 			let time = new Date();
+		// 			day.setDate(day.getDate() + 7);
+		// 			time.setHours(time.getHours() + 2);
+		// 			cookies.save('access_token', response.token.access, { expires: time });
+		// 			cookies.save('refresh_token', response.token.refresh, { expires: day });
+		// 			localStorage.setItem("user_pk", response.user.member_id); // change after
+		// 		}
+		// 		else {
+		// 			cookies.remove('access_token');
+		// 			cookies.remove('refresh_token');
+		// 			localStorage.removeItem("user_pk"); // change after
+		// 		}
+		// 		if (rightBox) {
+		// 			let day = new Date();
+		// 			day.setDate(day.getDate() + 7);
+		// 			cookies.save("email", email, { expires: day });
+		// 		}
+		// 		else cookies.remove("email");
+		// 		navigate("/main");
+		// 	},
+		// 	error: (response) => {
+		// 		console.log(response);
+		// 		errorRef.current.className = "mb10";
+		// 		$($(errorRef.current).next()[0]).removeClass("hidden");
+		// 	},
+		// });
 	};
 
 	const emailChange = () => {
@@ -109,7 +98,7 @@ const Login = () => {
 	return (
 		<>
 			<div id="loading">
-				<img src={require("../../assets/images/kiinLoading.png")} style={{ width: '100%' }} />
+				<img src={require("../../assets/images/urburLoading.png")} style={{ width: '100%' }} />
 			</div>
 			<div id="NotLoading" style={{ display: 'none' }}>
 				<header id="header" className="header">
@@ -148,19 +137,12 @@ const Login = () => {
 									<span>아이디 기억하기</span>
 								</label>
 							</div>
+							<br/>
 							<button type="button" onClick={onSignIn} className="btn-pk s blue w100p bdrs"><span>로그인</span></button>
 							<div className="t_txt mt40">
-								<p className="l">아직 회원이 아니시라구요?</p>
+								<p className="l">아직 회원이 아니시다면?</p>
 								<p className="r"><Link to="/certification" className="c-blue">회원가입</Link></p>
 							</div>
-							{/*<div className="t_txt mt40">*/}
-							{/*	<p className="l">아이디를 잊으셨나요?</p>*/}
-							{/*	<p className="r"><Link to="/findid" className="c-blue">아이디 찾기</Link></p>*/}
-							{/*</div>*/}
-							{/*<div className="t_txt mt30">*/}
-							{/*	<p className="l">비밀번호를 잊으셨나요?</p>*/}
-							{/*	<p className="r"><Link to="/findpw" className="c-blue">비밀번호 찾기</Link></p>*/}
-							{/*</div>*/}
 						</div>
 					</div>
 				</div>

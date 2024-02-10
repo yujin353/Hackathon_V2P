@@ -56,7 +56,7 @@ const Support = () => {
 
                                         <div className="p_cont">
                                             <p className="h_tit1">이메일 문의</p>
-                                            <center><input type="text" id="copy_text_input2" defaultValue="ask@odoc.co.kr" className="form-control" ref={linkRef} style={{width: "100%"}} /></center>
+                                            <center><input type="text" id="copy_text_input2" defaultValue="mobisUrbur@naver.com" className="form-control" ref={linkRef} style={{width: "100%"}} /></center>
                                             <br/>
                                             <center><button id="copy_btn2" onClick={copyLink}><span className="i-aft i_url">URL 복사</span></button></center>
                                         </div>
@@ -67,7 +67,7 @@ const Support = () => {
                     </ul>
                 </div>
                 <div className="inr-c pd-ty2">
-                    <p className="fz-s1"><span>전화문의 : 070-4143-0617</span><br />평일 10:00 ~ 18:00 (주말, 공휴일 제외)</p>
+                    <p className="fz-s1"><span>전화문의 : 010-1234-5678</span><br />평일 10:00 ~ 18:00 (주말, 공휴일 제외)</p>
                 </div>
             </div>
         </div>

@@ -13,7 +13,7 @@ const TOS = () => {
         <div>
             <header id="header" className="header">
                 <div className="inr-c">
-                    <h2 className="tit">키인 서비스 이용 약관</h2>
+                    <h2 className="tit">어리버리 서비스 이용 약관</h2>
                     <div className="lft">
                         <button type="button" className="btn-back c-white"
                             onClick={() => navigate(-1)}>

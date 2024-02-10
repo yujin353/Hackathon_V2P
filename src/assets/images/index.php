@@ -54,7 +54,7 @@ $product_data = json_decode($response)->results;
 		</div>
 	</div>
 	<div class="inr-c">
-		<h2 class="h_tit1"><a href="#"><span class="i-aft i_link1"><strong class="c-blue">키인친구님</strong>을 위한 추천</span></a></h2>
+		<h2 class="h_tit1"><a href="#"><span class="i-aft i_link1"><strong class="c-blue">어리버리친구님</strong>을 위한 추천</span></a></h2>
 		<div class="lst_prd pr-mb2">
 			<div class="slider owl-carousel">
 			<?php foreach($product_data as $key => $value) { 
@@ -104,7 +104,7 @@ $product_data = json_decode($response)->results;
 			</div>
 		</div>
 
-		<h2 class="h_tit1"><a href="#"><span class="i-aft i_link1"><strong class="c-blue">키인친구님</strong>에게 딱 맞는 팁!</span></a></h2>
+		<h2 class="h_tit1"><a href="#"><span class="i-aft i_link1"><strong class="c-blue">어리버리친구님</strong>에게 딱 맞는 팁!</span></a></h2>
 		<div class="area_ad">
 			<div class="col">
 				<div class="img"><span style="background-image: url(images/common/img_ad2.jpg);"></span></div>
@@ -116,7 +116,7 @@ $product_data = json_decode($response)->results;
 			<div class="col">
 				<div class="img"><span style="background-image: url(images/common/img_ad1.jpg);"></span></div>
 				<div class="txt">
-					<p class="t1" style="color: #972c1d;">키인 베스트 제품</p>
+					<p class="t1" style="color: #972c1d;">어리버리 베스트 제품</p>
 					<p class="t2">지금 핫한 제품! <br><strong>나한테도 잘 맞을까?</strong></p>
 				</div>
 			</div>
