@@ -57,7 +57,10 @@ const Intro = () => {
                                 환영합니다! <br />
                                 안전한 미래를 위한 첫 걸음, <br />
                             </p>
-                            <img className="img_1" src={require("../../assets/images/safeDrive.png")} />
+                            <div className="intro_img">
+                                <img className="img_intro1" src={require("../../assets/images/appExam1.png")} />
+                                <img className="img_intro2" src={require("../../assets/images/appExam2.png")} />
+                            </div>
                         </div>
                         <div className="item">
                             <br />
@@ -65,7 +68,7 @@ const Intro = () => {
                             <p className="t1 rgh"><br /></p>
                             <p className="t2 rgh">
                                 현대모비스와 함께<br />
-                                안전한 도로 환경을 만들어요<br />
+                                안전한 도로 환경 만들어요<br />
                             </p>
                         </div>
                     </Slider>

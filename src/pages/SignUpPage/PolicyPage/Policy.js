@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Modal } from "../../../component"
 import PrivacyPolicy from "./PrivacyPolicy";
-import KiinPolicy from "./KiinPolicy";
+import UrburPolicy from "./UrburPolicy";
 import $ from "jquery"
 
 const Policy = () => {
@@ -131,7 +131,7 @@ const Policy = () => {
                                                 <button type="button" className="btn_close b-close" onClick={() => {setSecondModal(!secondModal)}}><span>닫기</span></button>
                                             </div>
                                             <div className="p_cont">
-                                                <KiinPolicy />
+                                                <UrburPolicy />
                                             </div>
                                         </div>
                                     </div>

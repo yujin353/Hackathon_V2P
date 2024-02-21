@@ -3027,56 +3027,6 @@ html {
   line-height: 1.2;
   color: #5577c5;
 }
-.area_test.ty2 .inp_txt {
-  margin-bottom: 25px;
-  margin-bottom: 3.33333333vw;
-  padding-left: 20px;
-  padding-left: 2.66666667vw;
-  border-width: 1px;
-  border-width: 0.13333333vw;
-  border-style: solid;
-  border-color: #e3e5ee;
-  -webkit-border-radius: 20px;
-  -moz-border-radius: 20px;
-  border-radius: 20px;
-  -webkit-border-radius: 2.66666667vw;
-  -moz-border-radius: 2.66666667vw;
-  border-radius: 2.66666667vw;
-  font-size: 30px;
-  font-size: 4vw;
-  background-image: url(../assets/images/test/ico_arr.png);
-  background-repeat: no-repeat;
-  background-position: 96% center;
-  -webkit-background-size: 25px;
-  background-size: 25px;
-  -webkit-background-size: 3.33333333vw;
-  background-size: 3.33333333vw;
-}
-.area_test.ty2 .select1 {
-  margin-bottom: 25px;
-  margin-bottom: 3.33333333vw;
-  padding-left: 20px;
-  padding-left: 2.66666667vw;
-  border-width: 1px;
-  border-width: 0.13333333vw;
-  border-style: solid;
-  border-color: #e3e5ee;
-  -webkit-border-radius: 20px;
-  -moz-border-radius: 20px;
-  border-radius: 20px;
-  -webkit-border-radius: 2.66666667vw;
-  -moz-border-radius: 2.66666667vw;
-  border-radius: 2.66666667vw;
-  font-size: 30px;
-  font-size: 4vw;
-  background-image: url(../assets/images/test/ico_arr.png);
-  background-repeat: no-repeat;
-  background-position: 96% center;
-  -webkit-background-size: 25px;
-  background-size: 25px;
-  -webkit-background-size: 3.33333333vw;
-  background-size: 3.33333333vw;
-}
 .area_test.ty2 .textarea {
   display: none;
   overflow-y: auto;
@@ -3536,25 +3486,6 @@ html {
   color: #34373f;
   background-color: #edf2ff;
 }
-.txt_box1 .box:after {
-  content: "";
-  position: absolute;
-  left: 20px;
-  left: 2.66666667vw;
-  top: -28px;
-  top: -3.73333333vw;
-  width: 22px;
-  width: 2.93333333vw;
-  height: 28px;
-  height: 3.73333333vw;
-  background-image: url(../assets/images/common/bg_box.png);
-  background-repeat: no-repeat;
-  background-position: 0 0;
-  -webkit-background-size: 22px;
-  background-size: 22px;
-  -webkit-background-size: 2.93333333vw;
-  background-size: 2.93333333vw;
-}
 .txt_box1 .box p {
   position: relative;
   overflow: hidden;
@@ -3580,13 +3511,13 @@ html {
 }
 .btn_bmore2 {
   position: relative;
-  left: 70vw;
+  left: 3vw;
   background-color: white;
   border: 1px solid #9eb8f2;
   border-radius : 4vw;
   box-shadow: 1vw 1.2vw rgba(158, 184, 242, 0.6);
   padding: 0.3vw 2vw 1vw 1vw;
-  margin-top: -5vw;
+  margin-top: -3vw;
   margin-bottom: 14vw;
   height: 7vw;
   font-size: 3vw;
@@ -3680,8 +3611,7 @@ html {
 .lst_prd .thumb {
   position: relative;
   width: 100%;
-  height: 210px;
-  height: 28vw;
+  height: 140vw;
   -webkit-border-radius: 20px;
   -moz-border-radius: 20px;
   border-radius: 20px;
@@ -3975,6 +3905,36 @@ html {
   display: block;
   width: 100%;
   margin: 0px auto;
+}
+.area_first .intro_img {
+  display: flex;
+  justify-content: space-betwee;
+  width: 100%;
+  /* margin: 0px auto;
+  margin-top: 6.93333333vw; */
+}
+.area_first .img_intro1 {
+  /* display: flex; */
+  width: 50%;
+  /* object-fit: cover; */
+  /* margin: 0px auto; */
+  margin-top: 12%;
+  margin-left: 10%;
+  border-radius: 10px;
+  border: 2px solid #ddd;
+  transform: skewX(-1deg);
+}
+.area_first .img_intro2 {
+  /* display: flex; */
+  width: 50%;
+  object-fit: cover;
+  /* margin: 0px auto; */
+  margin-top: 15%;
+  margin-bottom: -3%;
+  margin-left: -20%;
+  border-radius: 10px;
+  border: 2px solid #ddd;
+  transform: skewX(-1deg);
 }
 .area_first .img_2 {
   display: block;
@@ -4481,7 +4441,7 @@ html {
 }
 #container.main > .inr-c {
   padding-top: 30px;
-  padding-top: 4vw;
+  padding-top: 0vw;
 }
 #container.main .lst_prd {
   padding-right: 10px;
@@ -5053,39 +5013,6 @@ html {
   line-height: 30px;
   line-height: 4vw;
 }
-.lst_grade .i_grade {
-  position: relative;
-  right: 10px;
-  width: 192px;
-  width: 25.6vw;
-  height: 30px;
-  height: 4vw;
-  background-image: url(../assets/images/common/ico_grade.png);
-  background-repeat: no-repeat;
-  background-position: 0 0;
-  -webkit-background-size: 192px;
-  background-size: 192px;
-  -webkit-background-size: 25.6vw;
-  background-size: 25.6vw;
-}
-.lst_grade .i_grade > span {
-  z-index: 1;
-  position: absolute;
-  left: 0;
-  top: 50%;
-  width: 192px;
-  width: 25.6vw;
-  height: 30px;
-  height: 4vw;
-  transform: translateY(-50%);
-  background-image: url(../assets/images/common/ico_grade.png);
-  background-repeat: no-repeat;
-  background-position: 0 bottom;
-  -webkit-background-size: 192px;
-  background-size: 192px;
-  -webkit-background-size: 25.6vw;
-  background-size: 25.6vw;
-}
 .lst_bar li {
   position: relative;
   padding-left: 125px;
@@ -5316,6 +5243,7 @@ html {
 }
 .b_txt1 span {
   display: inline-block;
+  margin-left: 3%;
 }
 .b_txt1 span strong {
   display: inline-block;
@@ -5639,20 +5567,6 @@ html {
   padding-left: 4vw;
   font-size: 3.73333333vw;
   color: red;
-}
-.area_review .box_rang {
-  width: 314px;
-  width: 41.86666667vw;
-  height: 164px;
-  height: 21.86666667vw;
-  padding-top: 50px;
-  padding-top: 6.66666667vw;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 40px;
-  margin-bottom: 5.33333333vw;
-  background-image: url(../assets/images/common/bg_reviewbox.jpg);
-  background-size: cover;
 }
 /*
 .ui-slider {
@@ -6593,59 +6507,8 @@ body.fix {
   box-shadow: inset 0 -10px 0 #e1eaff;
   font-size: 1.05em;
 }
-.pop_quiz li {
-  position: relative;
-  padding-left: 35px;
-  padding-left: 4.66666667vw;
-  margin-top: 30px;
-  margin-top: 4vw;
-  font-size: 28px;
-  font-size: 3.73333333vw;
-  line-height: 1.4;
-  letter-spacing: -0.03em;
-}
-.pop_quiz li:first-child {
-  margin-top: 0;
-}
-.pop_quiz li:after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 5px;
-  top: 0.66666667vw;
-  width: 28px;
-  width: 3.73333333vw;
-  height: 28px;
-  height: 3.73333333vw;
-  background-image: url('../assets/images/test/ico_quiz.png');
-  background-position: 0 0;
-  background-repeat: no-repeat;
-  -webkit-background-size: 28px;
-  background-size: 28px;
-  -webkit-background-size: 3.73333333vw;
-  background-size: 3.73333333vw;
-}
 .pop_quiz li .i_end {
   position: relative;
-}
-.pop_quiz li .i_end:after {
-  content: "";
-  position: absolute;
-  right: -36px;
-  right: -4.8vw;
-  bottom: 0px;
-  bottom: 0vw;
-  width: 36px;
-  width: 4.8vw;
-  height: 38px;
-  height: 5.06666667vw;
-  background-image: url('../assets/images/test/ico_quiz2.png');
-  background-position: 0 0;
-  background-repeat: no-repeat;
-  -webkit-background-size: 36px;
-  background-size: 36px;
-  -webkit-background-size: 4.8vw;
-  background-size: 4.8vw;
 }
 .pop_sns ul {
   display: flex;

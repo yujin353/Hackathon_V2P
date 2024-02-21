@@ -1,6 +1,6 @@
 import React, {useEffect} from "react"
 import { useNavigate } from "react-router-dom";
-import KiinPolicy from "../../../SignUpPage/PolicyPage/KiinPolicy"
+import UrburPolicy from "../../../SignUpPage/PolicyPage/UrburPolicy"
 
 const TOS = () => {
     const navigate = useNavigate()
@@ -24,7 +24,7 @@ const TOS = () => {
             </header>
             <div id="container" className="container sub mypage2">
                 <div className="inr-c-policy">
-                    <KiinPolicy/>
+                    <UrburPolicy/>
                 </div>
             </div>
         </div>

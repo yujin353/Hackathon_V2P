@@ -10,7 +10,6 @@ const SignUp = () => {
     const [password2, setPassword2] = useState("");
     const [gender, setGender] = useState("");
     const [region, setRegion] = useState("");
-    const [age, setAge] = useState("");
     const [disabled, setDisabled] = useState(false);
     const emailRegex =
         /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/
@@ -82,40 +81,36 @@ const SignUp = () => {
         else return true;
     };
 
-    const register = () => {
-        $.ajax({
-            async: true, type: 'POST',
-            url: "https://dev.odoc-api.com/member/register/",
-            data: {
-                "email": email1 + "@" + email2,
-                "password": password1,
-                "gender": gender, "region": region, "age": age,
-            }, dataType: 'json',
-            success: (response) => {
-                alert("회원가입이 완료되었습니다.");
-                if (response.user.email === email1 + "@" + email2)
-                    navigate("/login");
-            },
-            error: (response) => {
-                if (response.status === 500) {
-                    alert("사용중인 이메일 주소입니다.");
-                    document.getElementById("email_in_use").className = "t_error";
-                    return;
-                }
-                const text = JSON.parse(response.responseText);
-                if (text.password1) {
-                    if (text.password1[0] === "비밀번호가 너무 일상적인 단어입니다.") {
-                        document.getElementById('pwderror2').className = "t_error";
-                        document.getElementById('pwdok').className = "hidden";
-                    } else if (text.password1[0] === "비밀번호가 전부 숫자로 되어 있습니다.") {
-                        document.getElementById('pwderror3').className = "t_error";
-                        document.getElementById('pwdok').className = "hidden";
-                    }
-                }
+    const register = async () => {
+        const url = 'http://5.36.111.164:40765/signup'; // 엔드포인트 주소에 맞게 수정
+        const email = email1 + "@" + email2;
+        console.log(email, password1, gender, region);
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email,
+                    password1, gender, region,
+                }),
+            });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
             }
-        });
-        sessionStorage.removeItem("phone_certification");
-        sessionStorage.removeItem("policy_checked");
+            
+            const data = await response.json();
+            console.log('Response from server:', data);
+            alert("회원가입이 완료되었습니다.");
+            navigate("/login");
+            localStorage.setItem("userId", response.id);
+            sessionStorage.removeItem("policy_checked");
+        } catch (error) {
+            console.error('Error sending position to server:', error);
+        }
     };
 
     return (
@@ -242,7 +237,7 @@ const SignUp = () => {
                     <button type="button" className="btn-pk blue n"
                         onClick={() => {
                             if (fieldCheck() == false) return;
-                            navigate("/login");//임시register();
+                            register();
                         }}>
                         <span>가입완료</span>
                     </button>

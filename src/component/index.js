@@ -4,3 +4,6 @@ export { default as Footer } from './Footer';
 export { default as CompoundSlider } from './CompoundSlider';
 export { default as CollisionWarning } from './CollisionWarning';
 export { default as Vibration } from './Vibration';
+export { default as MainMap } from './MainMap';
+export { default as WarningSound } from './WarningSound';
+export { default as PushNotification } from './PushNotification';

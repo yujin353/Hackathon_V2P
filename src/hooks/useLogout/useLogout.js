@@ -2,6 +2,7 @@ import cookies from "react-cookies";
 import $ from "jquery";
 
 const useLogout = () => {
+    // 임시
     // $.ajax({
     //     async: true, type: 'POST',
     //     url: "https://api.odoc-api.com/rest_auth/logout/",
