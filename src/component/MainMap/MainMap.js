@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, CollisionWarning } from "../../component";
+import { UrbrFront } from 'urbr_wasm';
 import { get } from 'jquery';
 import { set } from 'react-ga';
 
