@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, CollisionWarning } from "../../component";
-import init, { UrbrFront } from '../LSTM/pkg/urbr_wasm.js';
+// import init, { UrbrFront } from '../LSTM/pkg/urbr_wasm.js';
 import { get } from 'jquery';
 import { set } from 'react-ga';
 
@@ -18,32 +18,32 @@ const MainMap = () => {
 
   // 연오한테서 SILS 속 위치 받아오기
   const getSILSGPS = async () => {
-    setLat(37.555);
-    setLng(117.333);
-    // const url = 'http://';
+    // setLat(37.555);
+    // setLng(117.333);
+    const url = 'http://';
   
-    // try {
-    //   const response = await fetch(url, {
-    //     method: 'GET',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //     },
-    //   });
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+      });
   
-    //   if (!response.ok) {
-    //     throw new Error(`HTTP error! Status: ${response.status}`);
-    //   }
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
   
-    //   console.log('Response from server:', response);
+      console.log('Response from server:', response);
 
-    //   const data = await response.json();
-    //   setLat(data.latitude);
-    //   setLng(data.longitude);
+      const data = await response.json();
+      setLat(data.latitude);
+      setLng(data.longitude);
 
-    //   console.log('SILS GPS:', data.latitude, data.longitude);
-    // } catch (error) {
-    //   console.error('Error getting position from SILS server:', error);
-    // }
+      console.log('SILS GPS:', data.latitude, data.longitude);
+    } catch (error) {
+      console.error('Error getting position from SILS server:', error);
+    }
   };
 
   // init().then(() => {
