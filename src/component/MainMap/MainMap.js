@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, CollisionWarning } from "../../component";
-import init, { UrbrFront } from '../LSTM/pkg/urbr_wasm.js';
 import { get } from 'jquery';
 import { set } from 'react-ga';
 
@@ -21,7 +20,7 @@ const MainMap = () => {
     setLat(37.555);
     setLng(117.333);
     // const url = 'http://';
-  
+
     // try {
     //   const response = await fetch(url, {
     //     method: 'GET',
@@ -29,11 +28,11 @@ const MainMap = () => {
     //         'Content-Type': 'application/json',
     //     },
     //   });
-  
+
     //   if (!response.ok) {
     //     throw new Error(`HTTP error! Status: ${response.status}`);
     //   }
-  
+
     //   console.log('Response from server:', response);
 
     //   const data = await response.json();
@@ -60,7 +59,7 @@ const MainMap = () => {
   //   // output을 서버로 전송
   //   console.log(out_buffer);
   // });
-  
+
   // useEffect(() => {
   //   init().then(() => {
   //     setUrbrFront(new UrbrFront());
@@ -79,7 +78,7 @@ const MainMap = () => {
   //   // LSTM 수행하고 나면 output에 100개가 담김
   //   urbr.forward(lat, lat, output);
   // }
-  
+
 
   useEffect(() => {
     // 현재 위치 가져오기 및 서버로 위치 전송
@@ -112,7 +111,7 @@ const MainMap = () => {
         // Retrieve session UUID from sessionStorage
         const storedSessionUUID = sessionStorage.getItem("user_id");
         setSessionUUID(storedSessionUUID);
-    
+
         // Check for collision
         checkForCollision(storedSessionUUID, data.pedestrianUUIDs);
         console.log('Response from server:', data.pedestrianUUIDs);
@@ -165,17 +164,17 @@ const MainMap = () => {
       navigator.geolocation.clearWatch(watchPositionId);
     };
   }, [lat, lng]);
-	
+
 	function checkForCollision(sessionUUID, serverUUIDs) {
 		// Check if session UUID is present in server UUIDs
 		const isCollision = serverUUIDs.includes(sessionUUID);
-	
+
 		if (isCollision) {
 		  // Trigger collision warning
 		  setModal1(true);
 		}
 	}
-  
+
   return (
     <>
     <div id="map" style={{ width: '100%', height: '100%' }}></div>
