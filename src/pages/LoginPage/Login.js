@@ -30,7 +30,7 @@ const Login = () => {
 	}, []);
 
 	const onSignIn = async () => {
-		const url = 'http://5.36.111.164:40765/login';
+		const url = 'https://5.36.111.164:40765/login';
         try {
 			const response = await fetch(url, {
 				method: 'POST',
