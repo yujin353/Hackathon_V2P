@@ -82,7 +82,7 @@ const SignUp = () => {
     };
 
     const register = async () => {
-        const url = 'https://5.36.111.164:40765/signup'; // 엔드포인트 주소에 맞게 수정
+        const url = 'http://5.36.111.164:40765/signup'; // 엔드포인트 주소에 맞게 수정
         const email = email1 + "@" + email2;
         console.log(email, password1, gender, region);
 
