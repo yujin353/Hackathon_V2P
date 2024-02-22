@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 // import { useIsMounted } from "../../hooks"
 import { useAccessTknRefresh, useLogout } from "../../hooks";
-import { Footer, Modal, CollisionWarning, PushNotification, MainMap } from "../../component";
+import { Footer, SILSMap, MainMap } from "../../component";
 import $ from "jquery";
 
 const Main = () => {
@@ -26,34 +26,6 @@ const Main = () => {
 		else if (pathname.startsWith("/mypage")) $("#fmenu5").addClass("on");
 	}, []);
 
-	// const fetchServerUUIDs = async () => {  
-	// 	const url = 'http://5.36.111.164:40765/peduuids';
-  
-	// 	try {
-	// 		const response = await fetch(url, {
-	// 			method: 'GET',
-	// 			headers: {
-	// 		  		'Content-Type': 'application/json',
-	// 			},
-	// 		});
-  
-	// 		if (!response.ok) {
-	// 			throw new Error(`HTTP error! Status: ${response.status}`);
-	// 		}
-  
-	// 		console.log('Response from server:', response);
-	// 		const data = await response.json();
-	// 		// Retrieve session UUID from sessionStorage
-	// 		const storedSessionUUID = sessionStorage.getItem("user_id");
-	// 		setSessionUUID(storedSessionUUID);
-	
-	// 		// Check for collision
-	// 		checkForCollision(storedSessionUUID, data.pedestrianUUIDs);
-	// 	} catch (error) {
-	// 		console.error('Error sending position to server:', error);
-	// 	}
-	// };
-	
 	return (
 		<div style={{width: "98%", marginLeft: "1%"}}>
 			<header id="header" className="header">
@@ -68,7 +40,7 @@ const Main = () => {
 						{
 							<div className="item">
 							<div className="thumb">
-									<MainMap />
+								<MainMap />
 							</div>
 						</div>
 						}
