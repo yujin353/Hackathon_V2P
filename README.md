@@ -1,6 +1,6 @@
 <div align="center">
  
-<img width="100%" height="100%" src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=2&height=200&section=header&animation=fadeIn&fontAlignY=40&text=Y%20A%20M%20M%20Y&fontSize=75" alt="header" />
+<img width="100%" height="100%" src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=2&height=200&section=header&animation=fadeIn&fontAlignY=40&text=U%20R%20B%20U%20R&fontSize=75" alt="header" />
 </div>
 
 <h3 align="center"> URBUR with hyundai Mobis MobilitY </h3>
@@ -8,10 +8,10 @@
 <h4 align="center">✨ Contributors ✨</h4>
 <p align="center">
 <b> AI LSTM model 🚶‍♂️ KIM SUNGA</b><br>
-<b> User App, 백엔드 📱💾 KIM YUJIN</b><br>
+<b> User App FrontEnd, BackEnd 📱💾 KIM YUJIN</b><br>
 <b> Federated Learning✈🔐 KIM HAWNHEE</b><br>
 <b> SILS 환경 구축 🎮 JUNG YEONO</b><br>
-<b> Car App 🚗 JUNG JINA</b>
+<b> Car App FrontEnd 🚗 JUNG JINA</b>
 </p>
 
 <br>
