@@ -39,6 +39,15 @@
 
 <h3>🎬 시연 영상 🎬</h3>
 
+https://github.com/yujin353/Hackathon_V2P/assets/87658036/4345a416-6b95-4e57-afe8-2969fd8becec
+
+
+<br><br>
+
+<h3>🗄️ 서버 구성성 🗄️</h3>
+
+![server_structure](https://github.com/yujin353/Hackathon_V2P/assets/87658036/5ae63090-2d14-48fb-9014-667c1018c726)
+
 <br><br>
 
 <h3>💻 사용한 기술 스택 💻</h3>
