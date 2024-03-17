@@ -18,13 +18,15 @@
 
 <hr>
 
-### V2P 통신을 통한 보행자 및 운전자 충돌 알림 서비스스
+### V2P 통신을 통한 보행자 및 운전자 충돌 알림 서비스
 
 #### 핵심 포인트
 
 1. LSTM모델: 기존 SOTA 모델이 데이터셋의 특성을 고려하지 못한 부분을 캐치하여 높은 Accracy 달성
 2. Federated Learning: 민감한 위치 정보의 보안을 보장
 3. 쉽고 직관적인 UI
+
+<br>
 
 <h3>📝 프로젝트 개요 📝</h3>
   
@@ -43,15 +45,11 @@
 
 <br>
 <h3>💻 사용한 기술 스택 💻</h3>
-<img src="https://img.shields.io/badge/React-61DAFB?style=flat&logo=React&logoColor=white"/>
-<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=JavaScript&logoColor=white"/>
+<img src="https://img.shields.io/badge/React-61DAFB?style=flat&logo=React&logoColor=white"/><img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=JavaScript&logoColor=white"/>
   <br>
-<img src="https://img.shields.io/badge/Node.js-339933?style=flat&logo=Node.js&logoColor=white"/>
-<img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=TypeScript&logoColor=white"/>
-<img src="https://img.shields.io/badge/aws-232F3E?style=flat&logo=Amazon AWS&logoColor=white"/>
+<img src="https://img.shields.io/badge/Node.js-339933?style=flat&logo=Node.js&logoColor=white"/><img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=TypeScript&logoColor=white"/><img src="https://img.shields.io/badge/aws-232F3E?style=flat&logo=Amazon AWS&logoColor=white"/>
   <br>
-<img src="https://img.shields.io/badge/Figma-F24E1E?style=flat&logo=Figma&logoColor=white"/>
-<img src="https://img.shields.io/badge/GitHub-181717?style=flat&logo=Github&logoColor=white"/>
+<img src="https://img.shields.io/badge/Figma-F24E1E?style=flat&logo=Figma&logoColor=white"/><img src="https://img.shields.io/badge/GitHub-181717?style=flat&logo=Github&logoColor=white"/>
   <br><br>
 <hr>
 
