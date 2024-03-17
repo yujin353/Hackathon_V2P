@@ -1,6 +1,7 @@
 <div align="center">
  
 <img width="100%" height="100%" src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=2&height=200&section=header&animation=fadeIn&fontAlignY=40&text=U%20R%20B%20U%20R&fontSize=75" alt="header" />
+![header](https://capsule-render.vercel.app/api?type=waving&color=0:263F81,100:E92B25&height=120&fontColor=263F81&fontSize=27&text=현대모비스%20%%20Mobility%20SW%20Hackathon)
 </div>
 
 <h3 align="center"> URBUR with hyundai Mobis MobilitY </h3>
@@ -20,7 +21,7 @@
 
 ### V2P 통신을 통한 보행자 및 운전자 충돌 알림 서비스
 
-#### 핵심 포인트
+<h3>⭐ 핵심 포인트 ⭐</h3>
 
 1. LSTM모델: 기존 SOTA 모델이 데이터셋의 특성을 고려하지 못한 부분을 캐치하여 높은 Accracy 달성
 2. Federated Learning: 민감한 위치 정보의 보안을 보장
